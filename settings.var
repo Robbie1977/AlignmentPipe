@@ -1,5 +1,5 @@
-infiles, proc dir,z,z,z,z,z, out dir, Fiji/ImageJ file, cmtk dir,z,z,z,z,z,z,z,z, lsm2nrrd batchfile, z,z,z,z,z,z,z,z,z, Background, Signal, [Neurolian]. 
-./inbox/*.lsm
+in dir, proc dir,z,z,z,z,z, out dir, Fiji/ImageJ file, cmtk dir,z,z,z,z,z,z,z,z, lsm2nrrd batchfile, z,z,z,z,z,z,z,z,z, Background, Signal, [Neurolian]. 
+./inbox/
 ./processing/
 z
 z

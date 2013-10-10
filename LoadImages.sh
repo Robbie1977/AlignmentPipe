@@ -9,7 +9,7 @@ proc=${3}
 ppro=${21}
 chn=${30}
 
-for f in $inbox
+for f in $inbox*.lsm
 do
 	echo Processing $f
 	$Ij -macro $lsm2nrrd $f -batch
