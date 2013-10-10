@@ -30,6 +30,7 @@ do
 		    echo 'Pushed for processing...'
         else
             echo Error preprocessing $fr!
+        fi
 	else
 		echo Error converting $f into NRRD files!
 	fi
