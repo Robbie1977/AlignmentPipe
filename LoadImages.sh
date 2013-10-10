@@ -11,7 +11,7 @@ chn=${30}
 
 for f in $inbox
 do
-	echo 'Processing $f'
+	echo Processing $f
 	$Ij -macro $lsm2nrrd $f -batch
 	fr=`echo $f | rev | cut -c 4- |rev`
 	if [ -e $fr*$chn.nrrd ] #note last channel number! 
