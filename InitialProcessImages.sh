@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -- $(<karenin.var)
+set -- $(<settings.var)
 
 proc=${3}
 cmtk=${11}
