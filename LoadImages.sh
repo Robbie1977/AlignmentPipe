@@ -14,7 +14,7 @@ do
 	echo Processing $f
 	xvfb-run $Ij -macro $lsm2nrrd $f -batch
 	fr=`echo $f | rev | cut -c 5- |rev`
-	if [ -e $fr*$chn.nrrd ] #note last channel number! 
+	if [ -e $fr*$chn.nrrd ] 
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
