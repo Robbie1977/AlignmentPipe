@@ -1,3 +1,4 @@
+infiles, proc dir,z,z,z,z,z, out dir, Fiji/ImageJ file, cmtk dir,z,z,z,z,z,z,z,z, lsm2nrrd batchfile, z,z,z,z,z,z,z,z,z, Background, Signal, [Neurolian]. 
 ./inbox/*.lsm
 ./processing/
 z
@@ -5,10 +6,9 @@ z
 z
 z
 z
-z
 ./outbox/
 /disk/data/VFBTools/Fiji/ImageJ-linux64
-z
+/disk/data/VFBTools/cmtk/bin/
 z
 z
 z
@@ -21,3 +21,12 @@ z
 z
 z
 z
+z
+z
+z
+z
+z
+z
+C3
+C1
+C2

@@ -4,8 +4,8 @@ set -- $(<karenin.var)
 
 Ij=${10}
 lsm2nrrd=${20}
-inbox=${1}
-proc=${2}
+inbox=${2}
+proc=${3}
 
 for f in $inbox
 do
