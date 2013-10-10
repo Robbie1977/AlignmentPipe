@@ -8,6 +8,7 @@ inbox=${2}
 proc=${3}
 ppro=${21}
 chn=${30}
+log=${4}
 
 for f in $inbox*.lsm
 do
@@ -25,8 +26,9 @@ do
         if [ -e $fr*BG.nrrd ]		
         then
             echo 'Cleaning...'
-#		    rm $f
-#		    mv $fr*.nrrd $processing
+		    rm $f
+		    mv $fr*.nrrd $proc
+            mv $fr*.log $log
 		    echo 'Pushed for processing...'
         else
             echo Error preprocessing $fr!
