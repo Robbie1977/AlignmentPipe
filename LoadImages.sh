@@ -13,7 +13,9 @@ for f in $inbox*.lsm
 do
 	echo Processing $f
 	xvfb-run $Ij -macro $lsm2nrrd $f -batch
-	fr=`echo $f | rev | cut -c 5- |rev`
+	inl=`echo $inbox | wc -c`
+	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
+	
 	echo $fr $chn
 	if [ -e $fr*$chn.nrrd ] 
 	then
