@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -- $(<karenin.var)
+set -- $(<settings.var)
 
 Ij=${10}
 lsm2nrrd=${20}
