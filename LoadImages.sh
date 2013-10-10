@@ -23,6 +23,8 @@ do
 		rm $f
 		mv $fr*.nrrd $processing
 		echo 'Pushed for processing...'
+	else
+		echo Error converting $f into NRRD files!
 	fi
 done		
 		
