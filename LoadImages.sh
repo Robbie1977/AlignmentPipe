@@ -22,10 +22,14 @@ do
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
 		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd C 10 
-		echo 'Cleaning...'
-#		rm $f
-#		mv $fr*.nrrd $processing
-		echo 'Pushed for processing...'
+        if [ -e $fr*BG.nrrd ]		
+        then
+            echo 'Cleaning...'
+#		    rm $f
+#		    mv $fr*.nrrd $processing
+		    echo 'Pushed for processing...'
+        else
+            echo Error preprocessing $fr!
 	else
 		echo Error converting $f into NRRD files!
 	fi
