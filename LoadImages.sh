@@ -1,9 +1,11 @@
 #!/bin/bash
 
-Ij='/disk/data/VFBTools/Fiji/ImageJ-linux64'
-lsm2nrrd='/disk/data/VFBTools/lsm2nrrd/lsm2nrrd.ijm'
-inbox='./inbox/*.lsm'
-proc='./processing/'
+set -- $(<karenin.var)
+
+Ij=${10}
+lsm2nrrd=${20}
+inbox=${1}
+proc=${2}
 
 for f in $inbox
 do
