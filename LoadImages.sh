@@ -14,14 +14,15 @@ do
 	echo Processing $f
 	xvfb-run $Ij -macro $lsm2nrrd $f -batch
 	fr=`echo $f | rev | cut -c 5- |rev`
+	echo $fr $chn
 	if [ -e $fr*$chn.nrrd ] 
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
 		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd C 10 
 		echo 'Cleaning...'
-		rm $f
-		mv $fr*.nrrd $processing
+#		rm $f
+#		mv $fr*.nrrd $processing
 		echo 'Pushed for processing...'
 	else
 		echo Error converting $f into NRRD files!
