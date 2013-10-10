@@ -12,7 +12,7 @@ chn=${30}
 for f in $inbox*.lsm
 do
 	echo Processing $f
-	$Ij -macro $lsm2nrrd $f -batch
+	xvfb-run $Ij -macro $lsm2nrrd $f -batch
 	fr=`echo $f | rev | cut -c 4- |rev`
 	if [ -e $fr*$chn.nrrd ] #note last channel number! 
 	then
