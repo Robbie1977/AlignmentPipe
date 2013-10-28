@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -- $(<settings.var)
+set -- $(<./AlignmentPipe/settings.var)
 
 Ij=${10}
 lsm2nrrd=${20}
@@ -13,7 +13,7 @@ log=${4}
 for f in $inbox*.lsm
 do
 	echo Processing $f
-	nice xvfb-run `$Ij -macro $lsm2nrrd $f -batch`
+	nice xvfb-run ${Ij} -macro ${lsm2nrrd} ${f} -batch
 	inl=`echo $inbox | wc -c`
 	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
 	
