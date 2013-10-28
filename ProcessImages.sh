@@ -69,7 +69,7 @@ do
                                 echo .
                             fi
                         else
-                            echo error: warp did not apply to all channels correctly! (See above for details)
+                            echo 'error: warp did not apply to all channels correctly! (See above for details)'
                         fi
                     else
                         echo error producing final warp alignment for $fr
@@ -81,10 +81,10 @@ do
                 echo error producing initial alignment for $fr
             fi
         else
-            echo failed to claim file. (OK if claimed by another machine)
+            echo 'failed to claim file. (OK if claimed by another machine)'
         fi
     echo
-        echo file no longer available for processing. (OK if processed by another machine)
+        echo 'file no longer available for processing. (OK if processed by another machine)'
     fi    
     if [ -e ${proc}${fr}${HOSTNAME}.nrrd ]
     then
