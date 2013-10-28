@@ -20,7 +20,7 @@ do
         if [ -e ${proc}${fr}${HOSTNAME}.nrrd ]
         then
             echo Processing $f
-        	er = 0
+        	er=0
             echo Initial aligment:
             if [ ! -e ${proc}${fr}-initial.xform ]
             then
@@ -51,7 +51,7 @@ do
                                 echo ${sfr} aligned OK.
                             else
                                 echo error applying warp to ${sfr}
-                                er = er + 1
+                                er=er+1
                             fi
                         done
                         if [ er == 0 ]
