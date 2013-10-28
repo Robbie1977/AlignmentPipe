@@ -7,8 +7,8 @@ z
 z
 z
 ./outbox/
-/disk/data/VFBTools/Fiji/ImageJ-linux64
-/disk/data/VFBTools/cmtk/bin/
+./Fiji/ImageJ-linux64
+./cmtk/bin/
 z
 z
 z
@@ -17,8 +17,8 @@ z
 z
 z
 z
-/disk/data/VFBTools/lsm2nrrd/lsm2nrrd.ijm
-/disk/data/VFBTools/lsm2nrrd/PreProcess3Chan.py
+./lsm2nrrd/lsm2nrrd.ijm
+./lsm2nrrd/PreProcess3Chan.py
 z
 z
 z
