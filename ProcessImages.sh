@@ -20,7 +20,7 @@ do
         if [ -e ${proc}${fr}${HOSTNAME}.nrrd ]
         then
             echo Processing $f
-        	er=0
+            er=0
             echo Initial aligment:
             if [ ! -e ${proc}${fr}-initial.xform ]
             then
