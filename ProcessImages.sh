@@ -7,6 +7,7 @@ logdir=${4}
 outdir=${9}
 cmtkdir=${11}
 Tfile=${29}
+host=-${HOSTNAME//./_}
 
 for f in $proc*BG.nrrd
 do
@@ -15,29 +16,29 @@ do
     fm=`echo $f | rev | cut -c 8- |rev | cut -c $inl-`
     if [ -e $f ]
     then
-        echo claiming $fr on ${HOSTNAME}...
-        mv $f ${proc}${fr}${HOSTNAME}.nrrd
-        if [ -e ${proc}${fr}${HOSTNAME}.nrrd ]
+        echo claiming $fr on ${host}...
+        mv $f ${proc}${fr}${host}.nrrd
+        if [ -e ${proc}${fr}${host}.nrrd ]
         then
             echo Processing $f
             er=0
             echo Initial aligment:
             if [ ! -e ${proc}${fr}-initial.xform ]
             then
-        	    nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${HOSTNAME}.nrrd ${proc}${fr}-initial.xform
+        	    nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
         	fi
             if [ -e ${proc}${fr}-initial.xform ]
             then
                 echo Affine alignment:
                 if [ ! -e ${proc}${fr}-affine.xform ]
                 then
-                    nice ${cmtkdir}registration --initial ${proc}${fr}-initial.xform --dofs 6,9 --auto-multi-levels 4 -o ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${HOSTNAME}.nrrd
+                    nice ${cmtkdir}registration --initial ${proc}${fr}-initial.xform --dofs 6,9 --auto-multi-levels 4 -o ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${host}.nrrd
                 fi
                 if [ -e ${proc}${fr}-affine.xform ]
                 then
                     if [ ! -e ${proc}${fr}-warp.xform ]
                     then
-                        nice ${cmtkdir}warp -o ${proc}${fr}-warp.xform --grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1 --initial ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${HOSTNAME}.nrrd
+                        nice ${cmtkdir}warp -o ${proc}${fr}-warp.xform --grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1 --initial ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${host}.nrrd
                     fi
                     if [ -e ${proc}${fr}-warp.xform ]
                     then
@@ -86,9 +87,9 @@ do
     echo
         echo 'file no longer available for processing. (OK if processed by another machine)'
     fi    
-    if [ -e ${proc}${fr}${HOSTNAME}.nrrd ]
+    if [ -e ${proc}${fr}${host}.nrrd ]
     then
-        mv ${proc}${fr}${HOSTNAME}.nrrd $f
+        mv ${proc}${fr}${host}.nrrd $f
     fi
     echo finished working with ${fm}.
 done		
