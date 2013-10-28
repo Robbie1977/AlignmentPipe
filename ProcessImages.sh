@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -- $(<settings.var)
+set -- $(<./AlignmentPipe/settings.var)
 
 proc=${3}
 logdir=${4}
