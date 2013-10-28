@@ -13,7 +13,7 @@ log=${4}
 for f in $inbox*.lsm
 do
 	echo Processing $f
-	xvfb-run nice $Ij -macro $lsm2nrrd $f -batch
+	nice xvfb-run `$Ij -macro $lsm2nrrd $f -batch`
 	inl=`echo $inbox | wc -c`
 	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
 	
