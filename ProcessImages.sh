@@ -6,6 +6,9 @@ proc=${3}
 logdir=${4}
 outdir=${9}
 cmtkdir=${11}
+py=${12}
+om=${22}
+cm=${23}
 Tfile=${29}
 host=-${HOSTNAME//./_}
 
@@ -66,6 +69,9 @@ do
                         if $ok
                         then
                             echo Alignment completed sucessfully!
+                            echo checking quality of alignment:
+                            nice $py $om ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv
+                            nice $py $cm ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv 
                             echo tidying up...
                             mv ${proc}${fm}*-aligned.nrrd ${outdir}
                             echo compressing:

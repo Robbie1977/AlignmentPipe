@@ -9,7 +9,7 @@ z
 ./outbox/
 ./Fiji/fiji-linux64
 ./cmtk/bin/
-z
+python
 z
 z
 z
@@ -19,8 +19,8 @@ z
 z
 ./lsm2nrrd/lsm2nrrd.ijm
 ./lsm2nrrd/PreProcess3Chan.py
-z
-z
+./3DwarpScoring/OverlapCoeff.py
+./3DwarpScoring/ObjPearsonCoeff.py
 z
 z
 z
