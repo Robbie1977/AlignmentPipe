@@ -16,12 +16,13 @@ do
     fm=`echo $f | rev | cut -c 8- |rev | cut -c $inl-`
     if [ -e $f ]
     then
-        echo claiming $fr on ${host}...
+        echo claiming $fr on ${HOSTNAME}...
         mv $f ${proc}${fr}${host}.nrrd
         if [ -e ${proc}${fr}${host}.nrrd ]
         then
             echo Processing $f
-            er=0
+            ok=true
+            echo 'NOTE: there should be two warning messages reported as the files should not contain orientation data'
             echo Initial aligment:
             if [ ! -e ${proc}${fr}-initial.xform ]
             then
@@ -36,6 +37,7 @@ do
                 fi
                 if [ -e ${proc}${fr}-affine.xform ]
                 then
+                    echo 'Calulating final warp alignment: (This will take a long time...)'
                     if [ ! -e ${proc}${fr}-warp.xform ]
                     then
                         nice ${cmtkdir}warp -o ${proc}${fr}-warp.xform --grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1 --initial ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${host}.nrrd
@@ -52,10 +54,10 @@ do
                                 echo ${sfr} aligned OK.
                             else
                                 echo error applying warp to ${sfr}
-                                er=er+1
+                                ok=false
                             fi
                         done
-                        if [ er == 0 ]
+                        if $ok
                         then
                             echo Alignment completed sucessfully!
                             echo tidying up...
@@ -84,13 +86,13 @@ do
         else
             echo 'failed to claim file. (OK if claimed by another machine)'
         fi
-    echo
+    else
         echo 'file no longer available for processing. (OK if processed by another machine)'
     fi    
     if [ -e ${proc}${fr}${host}.nrrd ]
     then
         mv ${proc}${fr}${host}.nrrd $f
     fi
-    echo finished working with ${fm}.
+    echo 'finished working with ${fm}*.'
 done		
 	
