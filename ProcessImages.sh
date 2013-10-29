@@ -22,11 +22,13 @@ do
         then
             echo Processing $f
             ok=true
-            echo 'NOTE: there should be two warning messages reported as the files should not contain orientation data'
+            echo 'NOTE: there should be two warning messages reported as the files should not contain orientation meta data'
             echo Initial aligment:
             if [ ! -e ${proc}${fr}-initial.xform ]
             then
         	    nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
+            else
+                echo initial alignment already exists
         	fi
             if [ -e ${proc}${fr}-initial.xform ]
             then
@@ -34,6 +36,8 @@ do
                 if [ ! -e ${proc}${fr}-affine.xform ]
                 then
                     nice ${cmtkdir}registration --initial ${proc}${fr}-initial.xform --dofs 6,9 --auto-multi-levels 4 -o ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${host}.nrrd
+                else
+                    echo affine alignment already exists
                 fi
                 if [ -e ${proc}${fr}-affine.xform ]
                 then
@@ -41,6 +45,8 @@ do
                     if [ ! -e ${proc}${fr}-warp.xform ]
                     then
                         nice ${cmtkdir}warp -o ${proc}${fr}-warp.xform --grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1 --initial ${proc}${fr}-affine.xform ${Tfile} ${proc}${fr}${host}.nrrd
+                    else
+                        echo 'complete warp alignment already exists'
                     fi
                     if [ -e ${proc}${fr}-warp.xform ]
                     then
@@ -64,13 +70,12 @@ do
                             mv ${proc}${fm}*-aligned.nrrd ${outdir}
                             echo compressing:
                             tar -cvzf ${logdir}${fm}-warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
-                            rm -R ${proc}${fm}
+                            rm -R ${proc}${fm}*
                             if [ -e ${proc}${fm}* ]
                             then
                                 echo 'cleaning error: files remain in processing directory!'
                             else
                                 echo 'Aligned files are in the output directory; compressed transforms and original converted files are stored in the log directory if required.'
-                                echo .
                             fi
                         else
                             echo 'error: warp did not apply to all channels correctly! (See above for details)'
@@ -94,6 +99,6 @@ do
     then
         mv ${proc}${fr}${host}.nrrd $f
     fi
-    echo finished working with ${fm}*.
+    echo finished working with ${fm}*
 done		
 	
