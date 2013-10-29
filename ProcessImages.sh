@@ -61,14 +61,15 @@ do
                         then
                             echo Alignment completed sucessfully!
                             echo tidying up...
-                            tar -cvzf ${logdir}${fm}-warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
                             mv ${proc}${fm}*-aligned.nrrd ${outdir}
+                            echo compressing:
+                            tar -cvzf ${logdir}${fm}-warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
                             rm -R ${proc}${fm}
                             if [ -e ${proc}${fm}* ]
                             then
-                                echo cleaning error: files remain in processing directory!
+                                echo 'cleaning error: files remain in processing directory!'
                             else
-                                echo Aligned files are in the output directory; compressed transforms and original converted files are stored in the log directory if required.
+                                echo 'Aligned files are in the output directory; compressed transforms and original converted files are stored in the log directory if required.'
                                 echo .
                             fi
                         else
@@ -93,6 +94,6 @@ do
     then
         mv ${proc}${fr}${host}.nrrd $f
     fi
-    echo 'finished working with ${fm}*.'
+    echo finished working with ${fm}*.
 done		
 	
