@@ -77,6 +77,7 @@ do
                             echo compressing:
                             tar -cvzf ${logdir}${fm}warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
                             rm -R ${proc}${fm}*
+                            mv ${outdir}${fr}${host}-aligned.nrrd ${outdir}${fr}-aligned.nrrd 
                             if [ -e ${proc}${fm}* ]
                             then
                                 echo 'cleaning error: files remain in processing directory!'
