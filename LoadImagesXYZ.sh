@@ -21,7 +21,7 @@ do
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
-		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd C 10 
+		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd ZXYC 10 
         if [ -e $fr*BG.nrrd ]		
         then
             echo 'Cleaning...'
