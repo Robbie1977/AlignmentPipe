@@ -10,7 +10,7 @@ ppro=${21}
 chn=${30}
 log=${4}
 
-for f in $inbox*.lsm
+for f in $inbox*.{lsm,tif}
 do
 	echo Processing $f
 	nice xvfb-run ${Ij} -macro ${lsm2nrrd} ${f} -batch
