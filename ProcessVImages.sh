@@ -27,13 +27,132 @@ do
             ok=true
             echo 'NOTE: there should be two warning messages reported as the files should not contain orientation meta data'
             echo Initial aligment:
-            if [ ! -e ${proc}${fr}-initial.nrrd ]
+            if [[ $fr == *_F?-PP* ]]
             then
-                nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
-            else
-                echo initial alignment already exists
-        	fi
+                fr = echo ${fr/_F?-PP/_Fo-PP}
+                if [ -e ${proc}${fr}.nrrd ]
+                then
+                    mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
+                fi
+                
+                fr = echo ${fr/_F?-PP/_Fz-PP}
+                if [ -e ${proc}${fr}.nrrd ]
+                then
+                    mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
+                fi
+                
+                fr = echo ${fr/_F?-PP/_Fc-PP}
+                if [ -e ${proc}${fr}.nrrd ]
+                then
+                    mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
+                fi
+                
+                fr = echo ${fr/_F?-PP/_Fu-PP}
+                if [ -e ${proc}${fr}.nrrd ]
+                then
+                    mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
+                fi
+                
+                echo 'Finding the best orientation...'
+                
+                fr = echo ${fr/_F?-PP/_Fo-PP}
+                if [ -e ${proc}${fr}${host}.nrrd ]    
+                then
+                    if [ ! -e ${proc}${fr}-initial.nrrd ]
+                    then
+                        echo 'Test aligning $fr...'
+                        nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                    else
+                        echo initial alignment already exists
+            	    fi
+                    o=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                else
+                    o=-1
+                    echo 'Error isolating' $fr 
+                    ok=false
+                fi
+                
+                fr = echo ${fr/_F?-PP/_Fz-PP}
+                if [ -e ${proc}${fr}${host}.nrrd ]    
+                then
+                    if [ ! -e ${proc}${fr}-initial.nrrd ]
+                    then
+                        echo 'Test aligning $fr...'
+                        nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                    else
+                        echo initial alignment already exists
+                    fi
+                    z=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                else
+                    z=-1
+                    echo 'Error isolating' $fr 
+                    ok=false
+                fi
+                                
+                fr = echo ${fr/_F?-PP/_Fc-PP}
+                if [ -e ${proc}${fr}${host}.nrrd ]    
+                then
+                    if [ ! -e ${proc}${fr}-initial.nrrd ]
+                    then
+                        echo 'Test aligning $fr...'
+                        nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                    else
+                        echo initial alignment already exists
+                    fi
+                    c=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                else
+                    c=-1
+                    echo 'Error isolating' $fr 
+                    ok=false
+                fi
+
+                fr = echo ${fr/_F?-PP/_Fu-PP}
+                if [ -e ${proc}${fr}${host}.nrrd ]    
+                then
+                    if [ ! -e ${proc}${fr}-initial.nrrd ]
+                    then
+                        echo 'Test aligning $fr...'
+                        nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                    else
+                        echo initial alignment already exists
+                    fi
+                    u=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                else
+                    u=-1
+                    echo 'Error isolating' $fr 
+                    ok=false
+                fi
+
+                echo 'Results:/n$o/n$z/n$c/n$u'
+
+                if [ $(echo '($o > $z) + ($o > $c) + ($o > $u)' | bc) == 3 ] 
+                then
+                    fr = echo ${fr/_F?-PP/_Fo-PP}
+                fi
+
+                if [ $(echo '($z > $o) + ($z > $c) + ($z > $u)' | bc) == 3 ] 
+                then
+                    fr = echo ${fr/_F?-PP/_Fz-PP}
+                fi
+
+                if [ $(echo '($c > $z) + ($c > $o) + ($c > $u)' | bc) == 3 ] 
+                then
+                    fr = echo ${fr/_F?-PP/_Fc-PP}
+                fi
+
+                if [ $(echo '($u > $z) + ($u > $c) + ($u > $o)' | bc) == 3 ] 
+                then
+                    fr = echo ${fr/_F?-PP/_Fu-PP}
+                fi
+                
+                echo '$fr chosen'
+                                                                    
+            fi    
+            
             if [ -e ${proc}${fr}-initial.xform ]
             then
                 echo Affine alignment:
