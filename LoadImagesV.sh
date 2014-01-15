@@ -26,8 +26,8 @@ do
         then
             echo 'Cleaning...'
 		    rm $f
-		    mv $fr*.nrrd $proc
-            mv $fr*.log $log
+		    mv ${fr}_Fo*.nrrd $proc
+            mv ${fr}_Fo*.log $log
 		    echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fo!
@@ -38,8 +38,8 @@ do
         then
             echo 'Cleaning...'
             rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+            mv ${fr}_Fz*.nrrd $proc
+            mv ${fr}_Fz*.log $log
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fz!
@@ -50,8 +50,8 @@ do
         then
             echo 'Cleaning...'
             rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+            mv ${fr}_Fc*.nrrd $proc
+            mv ${fr}_Fc*.log $log
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fc!
@@ -62,8 +62,8 @@ do
         then
             echo 'Cleaning...'
             rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+            mv ${fr}_Fu*.nrrd $proc
+            mv ${fr}_Fu*.log $log
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fu!
