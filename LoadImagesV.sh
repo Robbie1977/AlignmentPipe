@@ -27,7 +27,7 @@ do
             echo 'Cleaning...'
 		    rm $f
 		    mv ${fr}_Fo*.nrrd $proc
-            mv ${fr}_Fo*.log $log
+            
 		    echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fo!
@@ -39,7 +39,7 @@ do
             echo 'Cleaning...'
             rm $f
             mv ${fr}_Fz*.nrrd $proc
-            mv ${fr}_Fz*.log $log
+            
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fz!
@@ -51,7 +51,7 @@ do
             echo 'Cleaning...'
             rm $f
             mv ${fr}_Fc*.nrrd $proc
-            mv ${fr}_Fc*.log $log
+            
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fc!
@@ -63,12 +63,12 @@ do
             echo 'Cleaning...'
             rm $f
             mv ${fr}_Fu*.nrrd $proc
-            mv ${fr}_Fu*.log $log
+            
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fu!
         fi
-
+        mv ${fr}*.log $log
         
 	else
 		echo Error converting $f into NRRD files!
