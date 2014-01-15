@@ -243,7 +243,8 @@ do
         then
             mv ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fu-PP}.nrrd
         fi
+        echo finished working with ${fm}*
     fi    
-    echo finished working with ${fm}*
+    
 done		
 	
