@@ -62,7 +62,7 @@ do
                     then
                         echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
                         echo initial alignment already exists
             	    fi
@@ -80,7 +80,7 @@ do
                     then
                         echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
                         echo initial alignment already exists
                     fi
@@ -98,7 +98,7 @@ do
                     then
                         echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
                         echo initial alignment already exists
                     fi
@@ -116,7 +116,7 @@ do
                     then
                         echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
                         echo initial alignment already exists
                     fi
