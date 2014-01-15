@@ -17,7 +17,7 @@ do
 	inl=`echo $inbox | wc -c`
 	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
 	
-	if [ -e $fr_Fu*$chn.nrrd ]
+	if [ -e ${fr}_Fu*${chn}.nrrd ]
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
