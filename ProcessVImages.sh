@@ -66,7 +66,7 @@ do
                     else
                         echo initial alignment already exists
             	    fi
-                    o=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    o=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     o=-1
                     echo 'Error isolating' $fr 
@@ -84,7 +84,7 @@ do
                     else
                         echo initial alignment already exists
                     fi
-                    z=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    z=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     z=-1
                     echo 'Error isolating' $fr 
@@ -102,7 +102,7 @@ do
                     else
                         echo initial alignment already exists
                     fi
-                    c=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    c=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     c=-1
                     echo 'Error isolating' $fr 
@@ -120,7 +120,7 @@ do
                     else
                         echo initial alignment already exists
                     fi
-                    u=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    u=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     u=-1
                     echo 'Error isolating' $fr 
