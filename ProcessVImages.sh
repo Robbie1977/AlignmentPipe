@@ -25,7 +25,7 @@ do
         then
             echo Processing $f
             ok=true
-            echo 'NOTE: there should be two warning messages reported as the files should not contain orientation meta data'
+            echo 'NOTE: there should be multiple warning messages reported as the files should not contain orientation meta data'
             echo Initial aligment:
             if [[ $fr == *_F?-PP* ]]
             then
@@ -127,7 +127,7 @@ do
                     ok=false
                 fi
 
-                echo 'Results:/n$o/n$z/n$c/n$u'
+                echo 'Results:'$'\n'$o$'\n'$z$'\n'$c$'\n'$u
 
                 if [ $(echo '($o > $z) + ($o > $c) + ($o > $u)' | bc) == 3 ] 
                 then
