@@ -14,7 +14,8 @@ host=-${HOSTNAME//./_}
 
 for f in $proc*BG.nrrd
 do
-	inl=`echo $proc | wc -c`
+	skip=false
+    inl=`echo $proc | wc -c`
     fr=`echo $f | rev | cut -c 6- |rev | cut -c $inl-`
     fm=`echo $f | rev | cut -c 8- |rev | cut -c $inl-`
     if [ -e $f ]
@@ -222,23 +223,27 @@ do
         fi
     else
         echo 'file no longer available for processing. (OK if processed by another machine)'
+        skip=true
+    fi
+    if [ skip == fasle ] 
+    then   
+        if [ -e "${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fo-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fz-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fc-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fu-PP}.nrrd
+        fi
     fi    
-    if [ -e ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ]
-    then
-        mv ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fo-PP}.nrrd
-    fi
-    if [ -e ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ]
-    then
-        mv ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fz-PP}.nrrd
-    fi
-    if [ -e ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ]
-    then
-        mv ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fc-PP}.nrrd
-    fi
-    if [ -e ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ]
-    then
-        mv ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fu-PP}.nrrd
-    fi
     echo finished working with ${fm}*
 done		
 	
