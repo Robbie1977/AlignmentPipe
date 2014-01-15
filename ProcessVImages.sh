@@ -60,7 +60,7 @@ do
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
@@ -78,7 +78,7 @@ do
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
@@ -96,7 +96,7 @@ do
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
@@ -114,7 +114,7 @@ do
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
@@ -149,7 +149,7 @@ do
                     fr=`echo ${fr/_F?-PP/_Fu-PP}`
                 fi
                 
-                echo '$fr chosen'
+                echo $fr' chosen'
                                                                     
             fi    
             
