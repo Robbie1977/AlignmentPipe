@@ -29,25 +29,25 @@ do
             echo Initial aligment:
             if [[ $fr == *_F?-PP* ]]
             then
-                fr = echo ${fr/_F?-PP/_Fo-PP}
+                fr=echo ${fr/_F?-PP/_Fo-PP}
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fz-PP}
+                fr=echo ${fr/_F?-PP/_Fz-PP}
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fc-PP}
+                fr=echo ${fr/_F?-PP/_Fc-PP}
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fu-PP}
+                fr=echo ${fr/_F?-PP/_Fu-PP}
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
@@ -55,7 +55,7 @@ do
                 
                 echo 'Finding the best orientation...'
                 
-                fr = echo ${fr/_F?-PP/_Fo-PP}
+                fr=echo ${fr/_F?-PP/_Fo-PP}
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
@@ -73,7 +73,7 @@ do
                     ok=false
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fz-PP}
+                fr=echo ${fr/_F?-PP/_Fz-PP}
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
@@ -91,7 +91,7 @@ do
                     ok=false
                 fi
                                 
-                fr = echo ${fr/_F?-PP/_Fc-PP}
+                fr=echo ${fr/_F?-PP/_Fc-PP}
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
@@ -109,7 +109,7 @@ do
                     ok=false
                 fi
 
-                fr = echo ${fr/_F?-PP/_Fu-PP}
+                fr=echo ${fr/_F?-PP/_Fu-PP}
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
@@ -131,22 +131,22 @@ do
 
                 if [ $(echo '($o > $z) + ($o > $c) + ($o > $u)' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fo-PP}
+                    fr=echo ${fr/_F?-PP/_Fo-PP}
                 fi
 
                 if [ $(echo '($z > $o) + ($z > $c) + ($z > $u)' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fz-PP}
+                    fr=echo ${fr/_F?-PP/_Fz-PP}
                 fi
 
                 if [ $(echo '($c > $z) + ($c > $o) + ($c > $u)' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fc-PP}
+                    fr=echo ${fr/_F?-PP/_Fc-PP}
                 fi
 
                 if [ $(echo '($u > $z) + ($u > $c) + ($u > $o)' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fu-PP}
+                    fr=echo ${fr/_F?-PP/_Fu-PP}
                 fi
                 
                 echo '$fr chosen'
