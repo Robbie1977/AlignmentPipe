@@ -64,7 +64,7 @@ do
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fo already exists'
             	    fi
                     o=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
@@ -82,7 +82,7 @@ do
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fz already exists'
                     fi
                     z=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
@@ -129,22 +129,22 @@ do
 
                 echo 'Results:'$'\n'$o$'\n'$z$'\n'$c$'\n'$u
 
-                if [ $(echo '($o > $z) + ($o > $c) + ($o > $u)' | bc) == 3 ] 
+                if [ $(echo '('$o' > '$z') + ('$o' > '$c') + ('$o' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fo-PP}`
                 fi
 
-                if [ $(echo '($z > $o) + ($z > $c) + ($z > $u)' | bc) == 3 ] 
+                if [ $(echo '('$z' > '$o') + ('$z' > '$c') + ('$z' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fz-PP}`
                 fi
 
-                if [ $(echo '($c > $z) + ($c > $o) + ($c > $u)' | bc) == 3 ] 
+                if [ $(echo '('$c' > '$z') + ('$c' > '$o') + ('$c' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fc-PP}`
                 fi
 
-                if [ $(echo '($u > $z) + ($u > $c) + ($u > $o)' | bc) == 3 ] 
+                if [ $(echo '('$u' > '$z') + ('$u' > '$c') + ('$u' > '$o')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fu-PP}`
                 fi
