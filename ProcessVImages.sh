@@ -100,7 +100,7 @@ do
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fc already exists'
                     fi
                     c=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
@@ -118,7 +118,7 @@ do
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
                         nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fu already exists'
                     fi
                     u=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
