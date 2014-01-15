@@ -25,7 +25,7 @@ do
         if [ -e ${fr}_Fo*BG.nrrd ]		
         then
             echo 'Cleaning...'
-		    rm $f
+		    
 		    mv ${fr}_Fo*.nrrd $proc
             
 		    echo 'Pushed for processing...'
@@ -37,7 +37,7 @@ do
         if [ -e ${fr}_Fz*BG.nrrd ]		
         then
             echo 'Cleaning...'
-            rm $f
+            
             mv ${fr}_Fz*.nrrd $proc
             
             echo 'Pushed for processing...'
@@ -49,7 +49,7 @@ do
         if [ -e ${fr}_Fc*BG.nrrd ]		
         then
             echo 'Cleaning...'
-            rm $f
+            
             mv ${fr}_Fc*.nrrd $proc
             
             echo 'Pushed for processing...'
