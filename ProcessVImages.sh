@@ -223,9 +223,21 @@ do
     else
         echo 'file no longer available for processing. (OK if processed by another machine)'
     fi    
-    if [ -e ${proc}${fr}${host}.nrrd ]
+    if [ -e ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ]
     then
-        mv ${proc}${fr}${host}.nrrd $f
+        mv ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fo-PP}.nrrd
+    fi
+    if [ -e ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ]
+    then
+        mv ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fz-PP}.nrrd
+    fi
+    if [ -e ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ]
+    then
+        mv ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fc-PP}.nrrd
+    fi
+    if [ -e ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ]
+    then
+        mv ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fu-PP}.nrrd
     fi
     echo finished working with ${fm}*
 done		
