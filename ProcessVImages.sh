@@ -133,21 +133,25 @@ do
                 if [ $(echo '('$o' > '$z') + ('$o' > '$c') + ('$o' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fo-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fo-PP}`
                 fi
 
                 if [ $(echo '('$z' > '$o') + ('$z' > '$c') + ('$z' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fz-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fz-PP}`
                 fi
 
                 if [ $(echo '('$c' > '$z') + ('$c' > '$o') + ('$c' > '$u')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fc-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fc-PP}`
                 fi
 
                 if [ $(echo '('$u' > '$z') + ('$u' > '$c') + ('$u' > '$o')' | bc) == 3 ] 
                 then
                     fr=`echo ${fr/_F?-PP/_Fu-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fu-PP}`
                 fi
                 
                 echo $fr' chosen'
