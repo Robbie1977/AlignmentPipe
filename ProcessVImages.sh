@@ -201,8 +201,7 @@ do
                             mv ${proc}${fm}*-aligned.nrrd ${outdir}
                             echo compressing:
                             tar -cvzf ${logdir}${fm}warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
-                            rm -R ${proc}${fm}*
-                            rm -R ${proc}${fr/_F?-PP/"_F?-PP"}*
+                            rm -R ${proc}${fm/_F?-PP/"_F?-PP"}*
                             mv ${outdir}${fr}${host}-aligned.nrrd ${outdir}${fr}-aligned.nrrd 
                             if [ -e ${proc}${fm}* ]
                             then
