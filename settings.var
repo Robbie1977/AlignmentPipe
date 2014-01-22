@@ -18,7 +18,7 @@ z
 z
 z
 ./lsm2nrrd/lsm2nrrdV.ijm
-./lsm2nrrd/PrePro3ChV.py
+./lsm2nrrd/PreProcessMin3ch.py
 ./3DwarpScoring/OverlapCoeff.py
 ./3DwarpScoring/ObjPearsonCoeff.py
 z
