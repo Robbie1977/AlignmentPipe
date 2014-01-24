@@ -16,6 +16,10 @@ host=-${HOSTNAME//./_}
 
 for f in $outdir*BG.nrrd
 do
+    if [ -e ${f/PP_BG/PP_NG} ]
+    then
+        nice $py $st ${f/PP_BG/PP_NG} ${f/PP_BG/PP_SG}
+    fi
     score=$(nice $py $om ${f} ${Tfile} Q)
     if [ ${score} > ${th} ]
     then
