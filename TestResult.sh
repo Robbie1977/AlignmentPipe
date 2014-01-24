@@ -15,7 +15,7 @@ st=${24}
 Tfile=${29}
 host=-${HOSTNAME//./_}
 
-for f in $outdir*BG.nrrd
+for f in $outdir*BG-aligned.nrrd
 do
     if [ -e ${f/PP_BG/PP_NG} ]
     then
