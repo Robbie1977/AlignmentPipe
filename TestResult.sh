@@ -11,6 +11,7 @@ py=${12}
 om=${22}
 cm=${23}
 th=${33}
+st=${24}
 Tfile=${29}
 host=-${HOSTNAME//./_}
 

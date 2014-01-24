@@ -21,7 +21,7 @@ z
 ./lsm2nrrd/PreProcessMin3ch.py
 ./3DwarpScoring/OverlapCoeff.py
 ./3DwarpScoring/ObjPearsonCoeff.py
-z
+./AlignmentPipe/SortNG-SG.py
 z
 z
 z
