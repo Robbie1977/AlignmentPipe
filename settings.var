@@ -10,7 +10,7 @@ z
 ./Fiji/fiji-linux64
 ./cmtk/bin/
 python
-z
+./passed/
 z
 z
 z
