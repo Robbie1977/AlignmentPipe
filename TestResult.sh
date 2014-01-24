@@ -10,13 +10,14 @@ cmtkdir=${11}
 py=${12}
 om=${22}
 cm=${23}
+th=${33}
 Tfile=${29}
 host=-${HOSTNAME//./_}
 
 for f in $outdir*BG.nrrd
 do
     score=$(nice $py $om ${f} ${Tfile} Q)
-    if [ score > 60 ]
+    if [ ${score} > ${th} ]
     then
         fa=`echo ${f/PP_BG/"PP_?G"}`
         mv ${fa} ${passdir}
