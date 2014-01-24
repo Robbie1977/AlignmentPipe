@@ -19,9 +19,10 @@ else:
     if (im1.size <> im2.size):
         print '\n\nError: Images must be the same size!!'
     else:
-        
-        print 'NG:%s SG:%s' %(str(im1.sum), str(im2.sum))
-        if (im1.sum < im2.sum):
+        sm1=np.sum(im1)
+        sm2=np.sum(im2)        
+        print 'NG:%s SG:%s' %(str(sm1), str(sm2))
+        if (sm1 < sm2):
             print 'swapping the files due to inconsistency in assignment...'
             nrrd.write(str(sys.argv[1]), im2, options=op2)
             nrrd.write(str(sys.argv[2]), im1, options=op1)
