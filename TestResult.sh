@@ -22,7 +22,7 @@ do
         nice $py $st ${f/PP_BG/PP_NG} ${f/PP_BG/PP_SG}
     fi
     score=$(nice $py $om ${f} ${Tfile} Q)
-    if [ ${score} > ${th} ]
+    if [ $(echo ${score}' > '${th} | bc) ]
     then
         fa=`echo ${f/PP_BG/"PP_?G"}`
         mv ${fa} ${passdir}
