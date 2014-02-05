@@ -198,7 +198,7 @@ do
                             nice $py $om ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv
                             nice $py $cm ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv 
                             echo tidying up...
-                            mv ${proc}${fm}*-aligned.nrrd ${outdir}
+                            mv ${proc}${fm}*G-aligned.nrrd ${outdir}
                             echo compressing:
                             tar -cvzf ${logdir}${fm}warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
                             rm -R ${proc}${fm/_F?-PP/"_F?-PP"}*
