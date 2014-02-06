@@ -15,6 +15,6 @@ host=-${HOSTNAME//./_}
 
 for f in $proc*BG*uk.nrrd
 do
-    echo 'remaning ' ${f} ' to ' ${f/_BG-*_inf.ed.ac.uk.nrrd/_BG.nrrd}
-    mv ${f} ${f/_BG-*_inf.ed.ac.uk.nrrd/_BG.nrrd} 
+    echo 'remaning ' ${f} ' to ' ${f/BG*uk.nrrd/BG.nrrd}
+    mv ${f} ${f/BG*uk.nrrd/BG.nrrd} 
 done
