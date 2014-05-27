@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import os, sys, nrrd
 from tiffile import TiffFile
 import numpy as np
+import bson
 
 client = MongoClient('localhost', 27017)
 db = client.alignment
@@ -29,19 +30,19 @@ def AutoBalance(data,threshold=0.00035,background=0):
     M=np.max(bins)
     for x in range(1,np.shape(bins)[0]-1):
         if np.sum(histogram[:x]) > th:
-            m = x-1
+            m = bins[x-1]
             break
     for x in range(np.shape(bins)[0]-1,0,-1):
         if np.sum(histogram[x:]) > th:
-            M = x
+            M = bins[x]
             break
     data[data>M]=M
     data[data<m]=m
     dataA=np.round((data-m)*(255.0/(M-m)))
-    return (dataA, np.array([m, M], dtype=np.uint32), np.array([bins,histogram],dtype=np.uint32))
+    return (dataA, {'min': int(m),'max': int(M)}, { str(bins[x]): int(histogram[x]) for x in range(0,np.shape(bins)[0]-1)} )
 
 
-for record in collection.find({'original_nrrd': { '$exists': False } }):
+for record in collection.find(): # {'original_nrrd': { '$exists': False } }
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   if os.path.exists(file):
     tif = TiffFile(file)
@@ -59,15 +60,12 @@ for record in collection.find({'original_nrrd': { '$exists': False } }):
     image = np.swapaxes(image,iz,-2)
     print record['name'] + record['original_ext'] + ' - ' + str(np.shape(image))
     upd = {}
-    print record
     for c in xrange(0,sh[ch]):
       chan, Nbound, hist = AutoBalance(np.squeeze(image[:,:,:,c]))
       Sname = tempfolder + os.path.sep + record['name'] + '_Ch' + str(c+1) + '.nrrd'
       nrrd.write(Sname,np.uint8(chan))
-      upd.update({"Ch" + str(c+1) + "_file": Sname , "Ch" + str(c+1) + "_histogram": dict(zip(hist[0,:],hist[1,:])), "Ch" + str(c+1) + "_new_boundary":{"min": Nbound[0],"max": Nbound[1]}})
-    print upd
+      upd.update({'Ch' + str(c+1) + '_file': Sname , 'Ch' + str(c+1) + '_pre_histogram': hist, 'Ch' + str(c+1) + '_new_boundary': Nbound})
     record.update({'original_nrrd': upd })
-    print record
     collection.save(record)
     tif.close()
     del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname
