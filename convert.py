@@ -42,7 +42,7 @@ def AutoBalance(data,threshold=0.00035,background=0):
     return (dataA, {'min': int(m),'max': int(M)}, { str(bins[x]): int(histogram[x]) for x in range(0,np.shape(bins)[0]-1)} )
 
 
-for record in collection.find(): # {'original_nrrd': { '$exists': False } }
+for record in collection.find({'original_nrrd': { '$exists': False } }):
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   if os.path.exists(file):
     tif = TiffFile(file)
@@ -60,12 +60,26 @@ for record in collection.find(): # {'original_nrrd': { '$exists': False } }
     image = np.swapaxes(image,iz,-2)
     print record['name'] + record['original_ext'] + ' - ' + str(np.shape(image))
     upd = {}
+    rt = 0
+    mt = 0
+    sg = 0
+    bg = 0
     for c in xrange(0,sh[ch]):
       chan, Nbound, hist = AutoBalance(np.squeeze(image[:,:,:,c]))
       Sname = tempfolder + os.path.sep + record['name'] + '_Ch' + str(c+1) + '.nrrd'
       nrrd.write(Sname,np.uint8(chan))
       upd.update({'Ch' + str(c+1) + '_file': Sname , 'Ch' + str(c+1) + '_pre_histogram': hist, 'Ch' + str(c+1) + '_new_boundary': Nbound})
-    record.update({'original_nrrd': upd })
+      ct = sum(chan[chan>0])
+      if ct > rt:
+        rt = ct
+        bg = c+1
+      if mt = 0:
+        mt = ct
+        sg = c+1
+      if ct < mt:
+        mt = ct
+        sg = c+1
+    record.update({'original_nrrd': upd , 'background_channel': bg, 'signal_channel': sg})
     collection.save(record)
     tif.close()
-    del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname
+    del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
