@@ -42,7 +42,7 @@ def loadDir(dir, overwrite=False):
     for file in os.listdir(dir):
       loadFile(file, overwrite)
 
-def loadFile(file, overwrite=False)
+def loadFile(file, overwrite=False):
   if os.path.exists(file) and ('.tif' in file or '.lsm' in file):
     if collection.find({'name': os.path.splitext(os.path.basename(file))[0]}).count() < 1 or overwrite:
       collection.insert({'name': os.path.splitext(os.path.basename(file))[0], 'original_ext': os.path.splitext(os.path.basename(file))[1], 'original_path': dir})
@@ -53,3 +53,4 @@ def loadFile(file, overwrite=False)
 
 if __name__ == "__main__":
   loadDir(os.getcwd())
+  print 'done'
