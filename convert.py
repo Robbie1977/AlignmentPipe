@@ -1,8 +1,9 @@
 from pymongo import MongoClient
-import os, sys, nrrd
+import os, sys, nrrd, json
 from tiffile import TiffFile
 import numpy as np
 import bson
+import reorientate as ro
 
 client = MongoClient('localhost', 27017)
 db = client.alignment
@@ -14,7 +15,7 @@ for record in param:
     tempfolder = record['folder']
 
 
-def AutoBalance(data,threshold=0.00035,background=0):
+def AutoBalance(data,threshold=0.0035,background=0):
     bins=np.unique(data)
     binc=np.bincount(data.flat)
     histogram=binc[binc>0]
@@ -41,12 +42,31 @@ def AutoBalance(data,threshold=0.00035,background=0):
     dataA=np.round((data-m)*(255.0/(M-m)))
     return (dataA, {'min': int(m),'max': int(M)}, { str(bins[x]): int(histogram[x]) for x in range(0,np.shape(bins)[0]-1)} )
 
-
-for record in collection.find({'original_nrrd': { '$exists': False } }):
+def convRec(record):
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
+  print 'Converting ' + file
   if os.path.exists(file):
     tif = TiffFile(file)
     image = tif.asarray()
+    if tif.is_lsm:
+      metadata = tif[0].cz_lsm_scan_information
+      voxelZ = metadata['plane_spacing']
+      voxelY = metadata['line_spacing']
+      voxelX = metadata['sample_spacing']
+      header = {}
+      header['encoding'] = 'gzip'
+      header['space directions'] = [[float(voxelX),0.0,0.0],[0.0,float(voxelY),0.0],[0.0,0.0,float(voxelZ)]]
+      header['space units'] = ['"microns"', '"microns"', '"microns"']
+      # header['keyvaluepairs'] = dict(metadata)
+      # print header
+    else:
+      metadata = tif[0].image_description
+      metadata = json.loads(metadata.decode('utf-8'))
+      print(image.shape, image.dtype, metadata['microscope'])
+      print metadata
+      header = {}
+      # TBD: add voxel size data
+      # header['keyvaluepairs'] = dict(metadata)
     image = np.squeeze(image)
     sh = np.array(np.shape(image))
     ch = np.argmin(sh)
@@ -56,30 +76,58 @@ for record in collection.find({'original_nrrd': { '$exists': False } }):
     sh[ix] = 0
     iz = np.argmax(sh)
     sh = np.shape(image)
+    # move channel to last axis:
     image = np.swapaxes(image,ch,-1)
+    # move smalest (Z) axis to last axis before channel:
     image = np.swapaxes(image,iz,-2)
+    # swap X & Y to match NRRD standard order for saving:
+    image = np.swapaxes(image,0,1)
     print record['name'] + record['original_ext'] + ' - ' + str(np.shape(image))
     upd = {}
     rt = 0
     mt = 0
     sg = 0
     bg = 0
+    if 'orig_orientation' not in record.keys():
+      if sh[ch] == 2:
+        record['orig_orientation']='left-posterior-superior'
+      else:
+        record['orig_orientation']='right-posterior-inferior'
+
+    header['space'] = 'left-posterior-superior'
     for c in xrange(0,sh[ch]):
       chan, Nbound, hist = AutoBalance(np.squeeze(image[:,:,:,c]))
-      Sname = tempfolder + os.path.sep + record['name'] + '_Ch' + str(c+1) + '.nrrd'
-      nrrd.write(Sname,np.uint8(chan))
+      print 'Ch' + str(c+1) + ' - ' + str(np.shape(chan))
+      Sname = tempfolder + record['name'] + '_Ch' + str(c+1) + '.nrrd'
+      if not record['orig_orientation'] == 'left-posterior-superior':
+        chan = ro.reorientate(np.uint8(chan), curOr=record['orig_orientation'], targOr='left-posterior-superior')
+      else:
+        chan = np.uint8(chan)
+      print 'saving...'
+      nrrd.write(Sname,chan, options=header)
       upd.update({'Ch' + str(c+1) + '_file': Sname , 'Ch' + str(c+1) + '_pre_histogram': hist, 'Ch' + str(c+1) + '_new_boundary': Nbound})
-      ct = sum(chan[chan>0])
+      ct = sum(chan[chan>20])
       if ct > rt:
         rt = ct
         bg = c+1
-      if mt = 0:
+      if mt == 0:
         mt = ct
         sg = c+1
       if ct < mt:
         mt = ct
         sg = c+1
-    record.update({'original_nrrd': upd , 'background_channel': bg, 'signal_channel': sg})
+    print 'BG: ' + str(bg) + ', SG: ' + str(sg)
+    record.update({'original_nrrd': upd , 'background_channel': bg, 'signal_channel': sg, 'alignment_stage': 2})
     collection.save(record)
     tif.close()
+    print 'conversion complete.'
     del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
+
+def convert(name):
+  for record in collection.find({'alignment_stage': 1,'name': name}):
+    convRec(record)
+
+if __name__ == "__main__":
+  for record in collection.find({'alignment_stage': 1}):
+    convRec(record)
+  print 'done'
