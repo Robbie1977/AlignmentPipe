@@ -44,3 +44,4 @@ def initial(name):
 if __name__ == "__main__":
   for record in collection.find({'alignment_stage': 2}):
     initialRec(record)
+  print 'done'
