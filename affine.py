@@ -29,9 +29,9 @@ def affineRec(record):
 
 def affine(name):
   for record in collection.find({'alignment_stage': 3, 'name': name}):
-    warpRec(record)
-  
+    affineRec(record)
+
 if __name__ == "__main__":
   for record in collection.find({'alignment_stage': 3}):
-    warpRec(record)
+    affineRec(record)
   print 'done'
