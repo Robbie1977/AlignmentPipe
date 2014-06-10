@@ -1,9 +1,7 @@
 from pymongo import MongoClient
 import os, sys
+from cmtk import collection, tempfolder, active, run_stage
 
-client = MongoClient('localhost', 27017)
-db = client.alignment
-collection = db.processing
 
 def query_yes_no(question, default="yes"):
     """Ask a yes/no question via raw_input() and return their answer.
@@ -52,5 +50,8 @@ def loadFile(file, overwrite=False):
         collection.update({'name': os.path.splitext(os.path.basename(file))[0]},{'name': os.path.splitext(os.path.basename(file))[0], 'alignment_stage': 1, 'original_ext': os.path.splitext(os.path.basename(file))[1], 'original_path': dir})
 
 if __name__ == "__main__":
-  loadDir(os.getcwd())
-  print 'done'
+  if active and '1' in run_stage:
+    loadDir(os.getcwd())
+    print 'done'
+  else:
+    print 'inactive or stage 1 not selected'

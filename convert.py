@@ -4,18 +4,10 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import reorientate as ro
-
-client = MongoClient('localhost', 27017)
-db = client.alignment
-collection = db.processing
-
-param = db.param.temp.find()
-for record in param:
-  if 'folder' in record:
-    tempfolder = record['folder']
+from cmtk import collection, tempfolder, active, run_stage, adjust_thresh
 
 
-def AutoBalance(data,threshold=0.0035,background=0):
+def AutoBalance(data,threshold=adjust_thresh,background=0):
     bins=np.unique(data)
     binc=np.bincount(data.flat)
     histogram=binc[binc>0]
@@ -128,6 +120,9 @@ def convert(name):
     convRec(record)
 
 if __name__ == "__main__":
-  for record in collection.find({'alignment_stage': 1}):
-    convRec(record)
-  print 'done'
+  if active and '1' in run_stage:
+    for record in collection.find({'alignment_stage': 1}):
+      convRec(record)
+    print 'done'
+  else:
+    print 'inactive or stage 1 not selected'
