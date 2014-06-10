@@ -1,0 +1,9 @@
+[submodule "align/django"]
+	path = align/django
+	url = git@github.com:Robbie1977/django.git
+[submodule "align/djangotoolbox"]
+	path = align/djangotoolbox
+	url = git@github.com:Robbie1977/djangotoolbox.git
+[submodule "align/mongodb-engine"]
+	path = align/mongodb-engine
+	url = git@github.com:Robbie1977/mongodb-engine.git
