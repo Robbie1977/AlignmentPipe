@@ -7,3 +7,9 @@
 [submodule "align/mongodb-engine"]
 	path = align/mongodb-engine
 	url = git@github.com:Robbie1977/mongodb-engine.git
+[submodule "align/pymongo"]
+	path = align/pymongo
+	url = git@github.com:Robbie1977/mongo-python-driver.git
+[submodule "align/mongo"]
+	path = align/mongo
+	url = git@github.com:Robbie1977/mongo.git
