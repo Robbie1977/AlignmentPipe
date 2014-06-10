@@ -10,7 +10,7 @@ z
 ./Fiji/fiji-linux64
 ./cmtk/bin/
 python
-z
+./passed/
 z
 z
 z
@@ -18,10 +18,10 @@ z
 z
 z
 ./lsm2nrrd/lsm2nrrdV.ijm
-./lsm2nrrd/PrePro3ChV.py
+./lsm2nrrd/PreProcessMin3ch.py
 ./3DwarpScoring/OverlapCoeff.py
 ./3DwarpScoring/ObjPearsonCoeff.py
-z
+./AlignmentPipe/SortNG-SG.py
 z
 z
 z
@@ -30,3 +30,4 @@ z
 C3
 C1
 C2
+0.60

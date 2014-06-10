@@ -16,13 +16,13 @@ do
 	nice xvfb-run ${Ij} -macro ${lsm2nrrd} ${f} -batch
 	inl=`echo $inbox | wc -c`
 	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
-	
-	if [ -e $fr*$chn.nrrd ] 
+
+	if [ -e $fr*$chn.nrrd ]
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
-		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd ZC 10 
-        if [ -e $fr*BG.nrrd ]		
+		python $ppro $fr-PP_C1.nrrd $fr-PP_C2.nrrd ZC 10
+        if [ -e $fr*BG.nrrd ]
         then
             echo 'Cleaning...'
 		    rm $f
@@ -35,5 +35,4 @@ do
 	else
 		echo Error converting $f into NRRD files!
 	fi
-done		
-		
+done

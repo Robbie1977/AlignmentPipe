@@ -16,62 +16,61 @@ do
 	nice xvfb-run ${Ij} -macro ${lsm2nrrd} ${f} -batch
 	inl=`echo $inbox | wc -c`
 	fr=`echo $f | rev | cut -c 5- |rev | cut -c $inl-`
-	
-	if [ -e $fr*$chn.nrrd ] 
+
+	if [ -e ${fr}_Fu*${chn}.nrrd ]
 	then
 		echo Successfully converted $f to `ls $fr*.nrrd | wc -l` NRRD files
 		echo 'PreProccessing image channels:'
-		python $ppro ${fr}_Fo-PP_C1.nrrd ${fr}_Fo-PP_C2.nrrd C 10 
-        if [ -e ${fr}_Fo*BG.nrrd ]		
+		python $ppro ${fr}_Fo-PP_C1.nrrd ${fr}_Fo-PP_C2.nrrd C 10
+        if [ -e ${fr}_Fo*BG.nrrd ]
         then
             echo 'Cleaning...'
-		    rm $f
-		    mv $fr*.nrrd $proc
-            mv $fr*.log $log
+
+		    mv ${fr}_Fo*.nrrd $proc
+
 		    echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fo!
         fi
 
-        python $ppro ${fr}_Fz-PP_C1.nrrd ${fr}_Fz-PP_C2.nrrd C 10 
-        if [ -e ${fr}_Fz*BG.nrrd ]		
+        python $ppro ${fr}_Fz-PP_C1.nrrd ${fr}_Fz-PP_C2.nrrd C 10
+        if [ -e ${fr}_Fz*BG.nrrd ]
         then
             echo 'Cleaning...'
-            rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+
+            mv ${fr}_Fz*.nrrd $proc
+
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fz!
         fi
 
-        python $ppro ${fr}_Fc-PP_C1.nrrd ${fr}_Fc-PP_C2.nrrd C 10 
-        if [ -e ${fr}_Fc*BG.nrrd ]		
+        python $ppro ${fr}_Fc-PP_C1.nrrd ${fr}_Fc-PP_C2.nrrd C 10
+        if [ -e ${fr}_Fc*BG.nrrd ]
         then
             echo 'Cleaning...'
-            rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+
+            mv ${fr}_Fc*.nrrd $proc
+
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fc!
         fi
 
-        python $ppro ${fr}_Fu-PP_C1.nrrd ${fr}_Fu-PP_C2.nrrd C 10 
-        if [ -e ${fr}_Fu*BG.nrrd ]		
+        python $ppro ${fr}_Fu-PP_C1.nrrd ${fr}_Fu-PP_C2.nrrd C 10
+        if [ -e ${fr}_Fu*BG.nrrd ]
         then
             echo 'Cleaning...'
             rm $f
-            mv $fr*.nrrd $proc
-            mv $fr*.log $log
+            mv ${fr}_Fu*.nrrd $proc
+
             echo 'Pushed for processing...'
         else
             echo Error preprocessing ${fr}_Fu!
         fi
+        mv ${fr}*.log $log
 
-        
 	else
 		echo Error converting $f into NRRD files!
 	fi
-done		
-		
+done

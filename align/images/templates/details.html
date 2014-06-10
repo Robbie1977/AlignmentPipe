@@ -1,0 +1,49 @@
+{% block title %}<center><h1>Image alignment details</h1></center>{% endblock %}
+{% block content %}
+  {% load images_extras %}
+  <br /><a href="{% url 'index' %}">Home</a><hr />
+  {% if record %}
+      <table border="1" cellpadding="5" summary="Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}">
+        <CAPTION><EM>Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}</EM></CAPTION>
+          <TR><TH>Name<TH>Stage<TH>Original File<TH>Original Orientation
+          <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage }}<TH>{{ record.original_path }}{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
+      </table>
+      {% if record.alignment_stage > 1 %}
+        <img align="right" src="{% url 'histograms' record.id %}" /><br />
+        <table border="1" cellpadding="5">
+         <TR><TH>Channel 1<TH>Channel 2<TH>Channel 3 (optional)
+         <TR><TH>{% if record.signal_channel == 1 %}SIGNAL{% elif record.background_channel == 1 %}BACKGROUND{% elif record.AC1_channel == 1 %}Additional Channel{% else %}UNKNOWN{% endif %}
+             <TH>{% if record.signal_channel == 2 %}SIGNAL{% elif record.background_channel == 2 %}BACKGROUND{% elif record.AC1_channel == 2 %}Additional Channel{% else %}UNKNOWN{% endif %}
+             <TH>{% if record.signal_channel == 3 %}SIGNAL{% elif record.background_channel == 3 %}BACKGROUND{% elif record.AC1_channel == 3 %}Additional Channel{% else %}UNKNOWN{% endif %}
+         <TR><TH><img width="350" src="{% url 'nrrd' 'Ch1_file' record.id %}" />
+             <TH><img width="350" src="{% url 'nrrd' 'Ch2_file' record.id %}" />
+             <TH><img width="350" src="{% url 'nrrd' 'Ch3_file' record.id %}" />
+        </table>
+        {% if record.alignment_stage > 2 %}
+          <table border="1" cellpadding="5">
+              <TR><TH>Inital Alignment
+              <TR><TH><img src="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" />
+              <TR><TH>{{ record.temp_initial_score }}
+          </table>
+          {% if record.alignment_stage > 5 %}
+            <table border="1" cellpadding="5">
+                <TR>{% if record.alignment_stage < 7 %}<TH>Background Alignment{% else %}<TH colspan="3">Aligned Channels<TR><TH>Background<TH>Signal<TH>Additional{% endif %}
+                <TR><TH><img src="{% url 'nrrd' 'aligned_BG' record.id %}" />
+                {% if record.alignment_stage > 6 %}
+                    <TH><img src="{% url 'nrrd' 'aligned_SG' record.id %}" />
+                    <TH><img src="{% url 'nrrd' 'aligned_AC1' record.id %}" />
+                      <TR><TH colspan="3">Alignment Score
+                      <TR><TH>Weighted Average<br />Independant Slice Score<TH>Compined Slice Score<TH>Combined Final Score
+                      <TR><TH>{{ record.aligned_avgSlice_score }}
+                      <TH>{{ record.aligned_slice_score }}
+                      <TH>{{ record.aligned_score }}
+                {% endif %}
+            </table>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+  {% else %}
+      <p>No images to align.</p>
+  {% endif %}
+
+{% endblock %}

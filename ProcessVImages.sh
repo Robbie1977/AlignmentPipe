@@ -14,7 +14,8 @@ host=-${HOSTNAME//./_}
 
 for f in $proc*BG.nrrd
 do
-	inl=`echo $proc | wc -c`
+	skip=false
+    inl=`echo $proc | wc -c`
     fr=`echo $f | rev | cut -c 6- |rev | cut -c $inl-`
     fm=`echo $f | rev | cut -c 8- |rev | cut -c $inl-`
     if [ -e $f ]
@@ -25,29 +26,29 @@ do
         then
             echo Processing $f
             ok=true
-            echo 'NOTE: there should be two warning messages reported as the files should not contain orientation meta data'
+            echo 'NOTE: there should be multiple warning messages reported as the files should not contain orientation meta data'
             echo Initial aligment:
             if [[ $fr == *_F?-PP* ]]
             then
-                fr = echo ${fr/_F?-PP/_Fo-PP}
+                fr=`echo ${fr/_F?-PP/_Fo-PP}`
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fz-PP}
+                fr=`echo ${fr/_F?-PP/_Fz-PP}`
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fc-PP}
+                fr=`echo ${fr/_F?-PP/_Fc-PP}`
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fu-PP}
+                fr=`echo ${fr/_F?-PP/_Fu-PP}`
                 if [ -e ${proc}${fr}.nrrd ]
                 then
                     mv ${proc}${fr}.nrrd ${proc}${fr}${host}.nrrd
@@ -55,101 +56,105 @@ do
                 
                 echo 'Finding the best orientation...'
                 
-                fr = echo ${fr/_F?-PP/_Fo-PP}
+                fr=`echo ${fr/_F?-PP/_Fo-PP}`
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fo already exists'
             	    fi
-                    o=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    o=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     o=-1
                     echo 'Error isolating' $fr 
                     ok=false
                 fi
                 
-                fr = echo ${fr/_F?-PP/_Fz-PP}
+                fr=`echo ${fr/_F?-PP/_Fz-PP}`
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fz already exists'
                     fi
-                    z=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    z=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     z=-1
                     echo 'Error isolating' $fr 
                     ok=false
                 fi
                                 
-                fr = echo ${fr/_F?-PP/_Fc-PP}
+                fr=`echo ${fr/_F?-PP/_Fc-PP}`
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fc already exists'
                     fi
-                    c=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    c=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     c=-1
                     echo 'Error isolating' $fr 
                     ok=false
                 fi
 
-                fr = echo ${fr/_F?-PP/_Fu-PP}
+                fr=`echo ${fr/_F?-PP/_Fu-PP}`
                 if [ -e ${proc}${fr}${host}.nrrd ]    
                 then
                     if [ ! -e ${proc}${fr}-initial.nrrd ]
                     then
-                        echo 'Test aligning $fr...'
+                        echo 'Test aligning' $fr'...'
                         nice ${cmtkdir}make_initial_affine --principal-axes ${Tfile} ${proc}${fr}${host}.nrrd ${proc}${fr}-initial.xform
-                        nice ${cmtkdir}reformatx -o ${proc}${sfr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
+                        nice ${cmtkdir}reformatx -o ${proc}${fr}-initial.nrrd --floating ${proc}${fr}${host}.nrrd ${Tfile} ${proc}${fr}-initial.xform
                     else
-                        echo initial alignment already exists
+                        echo 'initial alignment for Fu already exists'
                     fi
-                    u=$(nice $py $om ${proc}${fr}${host}-initial.nrrd ${Tfile} Q)
+                    u=$(nice $py $om ${proc}${fr}-initial.nrrd ${Tfile} Q)
                 else
                     u=-1
                     echo 'Error isolating' $fr 
                     ok=false
                 fi
 
-                echo 'Results:/n$o/n$z/n$c/n$u'
+                echo 'Results:'$'\n'$o$'\n'$z$'\n'$c$'\n'$u
 
-                if [ $(echo '($o > $z) + ($o > $c) + ($o > $u)' | bc) == 3 ] 
+                if [ $(echo '('$o' > '$z') + ('$o' > '$c') + ('$o' > '$u')' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fo-PP}
+                    fr=`echo ${fr/_F?-PP/_Fo-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fo-PP}`
                 fi
 
-                if [ $(echo '($z > $o) + ($z > $c) + ($z > $u)' | bc) == 3 ] 
+                if [ $(echo '('$z' > '$o') + ('$z' > '$c') + ('$z' > '$u')' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fz-PP}
+                    fr=`echo ${fr/_F?-PP/_Fz-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fz-PP}`
                 fi
 
-                if [ $(echo '($c > $z) + ($c > $o) + ($c > $u)' | bc) == 3 ] 
+                if [ $(echo '('$c' > '$z') + ('$c' > '$o') + ('$c' > '$u')' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fc-PP}
+                    fr=`echo ${fr/_F?-PP/_Fc-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fc-PP}`
                 fi
 
-                if [ $(echo '($u > $z) + ($u > $c) + ($u > $o)' | bc) == 3 ] 
+                if [ $(echo '('$u' > '$z') + ('$u' > '$c') + ('$u' > '$o')' | bc) == 3 ] 
                 then
-                    fr = echo ${fr/_F?-PP/_Fu-PP}
+                    fr=`echo ${fr/_F?-PP/_Fu-PP}`
+                    fm=`echo ${fm/_F?-PP/_Fu-PP}`
                 fi
                 
-                echo '$fr chosen'
+                echo $fr' chosen'
                                                                     
             fi    
             
@@ -193,11 +198,11 @@ do
                             nice $py $om ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv
                             nice $py $cm ${proc}${fr}${host}-aligned.nrrd ${Tfile} ${logdir}Quality.csv 
                             echo tidying up...
-                            mv ${proc}${fm}*-aligned.nrrd ${outdir}
+                            mv ${proc}${fm}*G-aligned.nrrd ${outdir}
+                            mv ${proc}${fm}*${host}-aligned.nrrd ${outdir}
                             echo compressing:
                             tar -cvzf ${logdir}${fm}warp.tar ${proc}${fr}-warp.xform ${proc}${fm}*.nrrd --remove-files
-                            rm -R ${proc}${fm}*
-                            rm ${proc}${fr/_F?-PP/"_F?-PP"}*
+                            rm -R ${proc}${fm/_F?-PP/"_F?-PP"}*
                             mv ${outdir}${fr}${host}-aligned.nrrd ${outdir}${fr}-aligned.nrrd 
                             if [ -e ${proc}${fm}* ]
                             then
@@ -222,11 +227,28 @@ do
         fi
     else
         echo 'file no longer available for processing. (OK if processed by another machine)'
-    fi    
-    if [ -e ${proc}${fr}${host}.nrrd ]
-    then
-        mv ${proc}${fr}${host}.nrrd $f
+        skip=true
     fi
-    echo finished working with ${fm}*
+    if [ skip == fasle ] 
+    then   
+        if [ -e "${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fo-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fo-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fz-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fz-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fc-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fc-PP}.nrrd
+        fi
+        if [ -e "${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd" ]
+        then
+            mv ${proc}${fr/_F?-PP/_Fu-PP}${host}.nrrd ${proc}${fr/_F?-PP/_Fu-PP}.nrrd
+        fi
+        echo finished working with ${fm}*
+    fi    
+    
 done		
 	
