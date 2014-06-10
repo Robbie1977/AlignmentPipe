@@ -1,0 +1,14 @@
+{% block title %}Image alignments:{% endblock %}
+{% load images_extras %}
+{% if align_list %}
+    <ul>
+    {% for record in align_list %}
+      {# {% if record.id == request %}#}
+        <li><a href="{% url 'details' record.id %}">{{ record.name }}</a> - {{ record.alignment_stage|state }}</li>
+        <!-- <li>{{ record.orig_orientation }}</li> -->
+      {# {% endif %}#}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No images to align.</p>
+{% endif %}
