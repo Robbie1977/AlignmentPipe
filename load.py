@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import os, sys
-from cmtk import collection, tempfolder, active, run_stage
+from cmtk import collection, tempfolder, active, run_stage, host
 
 
 def query_yes_no(question, default="yes"):
@@ -43,11 +43,11 @@ def loadDir(folder, overwrite=False):
 def loadFile(file, folder, overwrite=False):
   if os.path.exists(file) and ('.tif' in file or '.lsm' in file):
     if collection.find({'name': str(os.path.splitext(os.path.basename(file))[0])}).count() < 1 or overwrite:
-      collection.insert({'name': str(os.path.splitext(os.path.basename(file))[0]), 'original_ext': str(os.path.splitext(os.path.basename(file))[1]), 'original_path': str(folder)})
+      collection.insert({'name': str(os.path.splitext(os.path.basename(file))[0]), 'last_host': host, 'loading_host': host, 'original_ext': str(os.path.splitext(os.path.basename(file))[1]), 'original_path': str(folder)})
     else:
       print collection.find_one({'name': os.path.splitext(os.path.basename(file))[0]})
       if query_yes_no("Image already exists in processing stack do you want to update original file details?"):
-        collection.update({'name': str(os.path.splitext(os.path.basename(file))[0])},{'name': str(os.path.splitext(os.path.basename(file))[0]), 'alignment_stage': 1, 'original_ext': str(os.path.splitext(os.path.basename(file))[1]), 'original_path': str(folder)})
+        collection.update({'name': str(os.path.splitext(os.path.basename(file))[0])},{'name': str(os.path.splitext(os.path.basename(file))[0]), 'loading_host': host, 'last_host': host, 'alignment_stage': 1, 'original_ext': str(os.path.splitext(os.path.basename(file))[1]), 'original_path': str(folder)})
 
 if __name__ == "__main__":
   if active and '1' in run_stage:

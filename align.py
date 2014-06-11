@@ -5,9 +5,10 @@ import numpy as np
 import bson
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
-from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, threshold
+from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, threshold, checkDir, host
 
 def alignRec(record):
+  record = checkDir(record)
   print 'Finalising alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   record['aligned_BG']=cmtk.align(bgfile)
@@ -25,6 +26,7 @@ def alignRec(record):
   return record
 
 def alignRem(record):
+  record = checkDir(record)
   print 'Aligning signal, etc. for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   sgfile = record['original_nrrd'][('Ch' + str(record['signal_channel']) + '_file')]

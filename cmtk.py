@@ -8,7 +8,11 @@ collection = db.images_alignment
 
 adjust_thresh = 0.0035
 setting_id=u'1'
-record = db.system_server.find_one({'host_name': gethostname()})
+host = gethostname()
+print host
+
+record = db.system_server.find_one({'host_name': host})
+
 if record:
   if 'active' in record:
     active = record['active']
@@ -23,6 +27,7 @@ if record:
   if record:
     if 'temp_dir' in record:
       tempfolder = record['temp_dir']
+      print 'Settings loaded.'
     if 'cmtk_dir' in record:
       cmtkdir = record['cmtk_dir']
     if 'template' in record:
@@ -68,5 +73,39 @@ if record:
     print 'nice %sreformatx -o %s --floating %s %s %s' % (cmtkdir, imageOUT, floatingImage, template, xform)
     subprocess.call('nice %sreformatx -o %s --floating %s %s %s' % (cmtkdir, imageOUT, floatingImage, template, xform), shell=True)
     return imageOUT
+
+
+  def checkDir(record):
+    if not 'last_host' in record:
+      record['last_host'] = 'roberts-mbp'
+    if host == str(record['last_host']):
+      return record
+    else:
+      temprec = db.system_server.find_one({'host_name': str(record['last_host'])})
+      if temprec:
+        if 'use_settings_id' in temprec:
+          tempSet_id = temprec['use_settings_id']
+          temprec2 = db.system_setting.find_one({'_id': tempSet_id})
+          if temprec2:
+            if 'temp_dir' in temprec2:
+              prevtempfolder = temprec2['temp_dir']
+              print 'Replacing ' + str(prevtempfolder) + ' with ' + str(tempfolder) + ' in:'
+              for key, value in record.items():
+                if key == 'original_nrrd':
+                  print '    Original nrrd data:'
+                  for k,v in record['original_nrrd'].items():
+                    if prevtempfolder in str(v):
+                      print '                ' + str(v)
+                      temp = str(v).replace(prevtempfolder,'test/')
+                      record['original_nrrd'][k]=temp
+                else:
+                  if prevtempfolder in str(value):
+                    print '    ' + str(value)
+                    temp = str(value).replace(prevtempfolder,'test/')
+                    record[key]=temp
+              record['last_host'] = host
+      return record
+
+
 else:
-  print 'No active records found!'
+  print 'No active records found for hostname:' + host + ' This could be due to your hostname changing check a server record exists for this machine.'
