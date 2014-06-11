@@ -15,7 +15,7 @@
 	url = git@github.com:Robbie1977/mongo.git
 [submodule "NRRDtools"]
 	path = NRRDtools
-	url = https://github.com/Robbie1977/NRRDtools
+	url = git@github.com:Robbie1977/NRRDtools.git
 [submodule "warpScoring"]
 	path = warpScoring
 	url = git@github.com:Robbie1977/3DwarpScoring.git
