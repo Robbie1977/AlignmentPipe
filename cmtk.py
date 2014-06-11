@@ -96,12 +96,12 @@ if record:
                   for k,v in record['original_nrrd'].items():
                     if prevtempfolder in str(v):
                       print '                ' + str(v)
-                      temp = str(v).replace(prevtempfolder,'test/')
+                      temp = str(v).replace(prevtempfolder,tempfolder)
                       record['original_nrrd'][k]=temp
                 else:
                   if prevtempfolder in str(value):
                     print '    ' + str(value)
-                    temp = str(value).replace(prevtempfolder,'test/')
+                    temp = str(value).replace(prevtempfolder,tempfolder)
                     record[key]=temp
               record['last_host'] = host
       return record
