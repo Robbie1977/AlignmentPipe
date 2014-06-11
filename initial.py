@@ -4,9 +4,10 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import warpScoring.CheckImages as ci
-from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, init_threshold
+from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, init_threshold, checkDir, host
 
 def initialRec(record):
+  record = checkDir(record)
   print 'Staring initial alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   record['temp_initial_nrrd']=cmtk.align(bgfile, cmtk.initial(bgfile), imageOUT=tempfolder + record['name'] + '_initial.nrrd')

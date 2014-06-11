@@ -4,7 +4,7 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import reorientate as ro
-from cmtk import collection, tempfolder, active, run_stage, adjust_thresh
+from cmtk import collection, tempfolder, active, run_stage, adjust_thresh, checkDir, host
 
 
 def AutoBalance(data,threshold=adjust_thresh,background=0):
@@ -35,11 +35,16 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     return (dataA, {'min': int(m),'max': int(M)}, { str(bins[x]): int(histogram[x]) for x in range(0,np.shape(bins)[0]-1)} )
 
 def convRec(record):
+  if not 'loading_host' in record:
+    record['loading_host'] = 'roberts-mbp'
+  if record['loading_host'] == host:
+    print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   print 'Converting ' + file
   if os.path.exists(file):
     tif = TiffFile(file)
     image = tif.asarray()
+    record = checkDir(record)
     if tif.is_lsm:
       metadata = tif[0].cz_lsm_scan_information
       voxelZ = metadata['plane_spacing']

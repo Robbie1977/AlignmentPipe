@@ -4,9 +4,10 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import warpScoring.CheckImages as ci
-from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template
+from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, checkDir, host
 
 def warpRec(record):
+  record = checkDir(record)
   print 'Staring warping alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   print cmtk.warp(bgfile)

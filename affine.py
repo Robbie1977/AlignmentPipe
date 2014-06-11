@@ -4,9 +4,10 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import warpScoring.CheckImages as ci
-from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template
+from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, checkDir, host
 
 def affineRec(record):
+  record = checkDir(record)
   print 'Staring affine alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   print cmtk.affine(bgfile)
