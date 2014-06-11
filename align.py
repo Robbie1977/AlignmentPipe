@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 import os, sys, nrrd, cmtk
-from tiffile import TiffFile
 import numpy as np
 import bson
 import warpScoring.slicescore as slicescore
