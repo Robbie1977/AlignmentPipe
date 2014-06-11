@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import os, sys, nrrd, json
-from tifffile import TiffFile
+from tiffile import TiffFile
 import numpy as np
 import bson
 import reorientate as ro
