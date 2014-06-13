@@ -12,6 +12,7 @@ def warpRec(record):
   warp, r = cmtk.warp(bgfile)
   record['alignment_stage'] = 5
   if r > 0: record['alignment_stage'] = 0
+  record['max_stage'] = 5
   return record
 
 def warp(name):

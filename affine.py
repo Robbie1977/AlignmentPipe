@@ -13,6 +13,7 @@ def affineRec(record):
   print affine
   record['alignment_stage'] = 4
   if r > 0: record['alignment_stage'] = 0
+  record['max_stage'] = 4
   return record
 
 def affine(name):

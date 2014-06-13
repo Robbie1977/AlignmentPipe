@@ -115,6 +115,7 @@ def convRec(record):
         sg = c+1
     print 'BG: ' + str(bg) + ', SG: ' + str(sg)
     record.update({'original_nrrd': upd , 'background_channel': bg, 'signal_channel': sg, 'alignment_stage': 2})
+    record['max_stage'] = 2
     collection.save(record)
     tif.close()
     print 'conversion complete.'

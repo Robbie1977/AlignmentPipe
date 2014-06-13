@@ -23,6 +23,7 @@ def alignRec(record):
     record['alignment_stage'] = 0
     print 'Failed!'
   if r > 0: record['alignment_stage'] = 0
+  record['max_stage'] = 6
   return record
 
 def alignRem(record):
@@ -43,6 +44,7 @@ def alignRem(record):
             record['aligned_AC'+str(a)]=cmtk.align(chfile, xform=bgfile.replace('.nrrd','_warp.xform'))
             record['AC'+str(a)+'_channel']=i
   record['alignment_stage'] = 7
+  record['max_stage'] = 7
   return record
 
 def align(name):

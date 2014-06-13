@@ -18,6 +18,7 @@ def initialRec(record):
   else:
     record['alignment_stage'] = 0
   if r > 0: record['alignment_stage'] = 0
+  record['max_stage'] = 3
   return record
 
 def initial(name):
