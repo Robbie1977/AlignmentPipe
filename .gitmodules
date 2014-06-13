@@ -19,3 +19,6 @@
 [submodule "warpScoring"]
 	path = warpScoring
 	url = git@github.com:Robbie1977/3DwarpScoring.git
+[submodule "align/pynrrd"]
+	path = align/pynrrd
+	url = git@github.com:Robbie1977/pynrrd.git

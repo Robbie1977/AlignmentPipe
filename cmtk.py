@@ -2,7 +2,7 @@ import sys, subprocess
 from pymongo import MongoClient
 from socket import gethostname
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('129.215.90.148', 27017)
 db = client.alignment
 collection = db.images_alignment
 
