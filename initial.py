@@ -9,7 +9,7 @@ def initialRec(record):
   record = checkDir(record)
   print 'Staring initial alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  record['temp_initial_nrrd'], r=cmtk.align(bgfile, cmtk.initial(bgfile), imageOUT=tempfolder + record['name'] + '_initial.nrrd')
+  record['temp_initial_nrrd'], r =cmtk.align(bgfile, cmtk.initial(bgfile)[0], imageOUT=tempfolder + record['name'] + '_initial.nrrd')
   record['temp_initial_score'] = str(ci.rateOne(record['temp_initial_nrrd'] ,results=None))
   #Note: np.float128 array score converted to string as mongoDB only supports float(64/32 dependant on machine).
   print 'Result: ' + record['temp_initial_score']
@@ -17,7 +17,7 @@ def initialRec(record):
     record['alignment_stage'] = 3
   else:
     record['alignment_stage'] = 0
-  if r > 0: record['alignment_stage'] = 0  
+  if r > 0: record['alignment_stage'] = 0
   return record
 
 def initial(name):
