@@ -10,7 +10,7 @@ def alignRec(record):
   record = checkDir(record)
   print 'Finalising alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  record['aligned_BG']=cmtk.align(bgfile)
+  record['aligned_BG'], r =cmtk.align(bgfile)
   record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.avgOverlapCoeff))
   record['aligned_slice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.OverlapCoeff))
   record['aligned_score'] = str(np.mean([np.float128(record['aligned_avgSlice_score']), np.float128(record['aligned_slice_score'])]))
@@ -22,6 +22,7 @@ def alignRec(record):
   else:
     record['alignment_stage'] = 0
     print 'Failed!'
+  if r > 0: record['alignment_stage'] = 0
   return record
 
 def alignRem(record):

@@ -9,8 +9,9 @@ def warpRec(record):
   record = checkDir(record)
   print 'Staring warping alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  print cmtk.warp(bgfile)
+  warp, r = cmtk.warp(bgfile)
   record['alignment_stage'] = 5
+  if r > 0: record['alignment_stage'] = 0
   return record
 
 def warp(name):

@@ -9,8 +9,10 @@ def affineRec(record):
   record = checkDir(record)
   print 'Staring affine alignment for: ' + record['name']
   bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  print cmtk.affine(bgfile)
+  affine, r = cmtk.affine(bgfile)
+  print affine
   record['alignment_stage'] = 4
+  if r > 0: record['alignment_stage'] = 0
   return record
 
 def affine(name):
