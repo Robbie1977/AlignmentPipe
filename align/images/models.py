@@ -10,6 +10,7 @@ orien = zip(orien,orien)
 class Alignment(models.Model):
     name = models.CharField(max_length=500)
     alignment_stage = models.IntegerField(choices=stage.items(), default=1)
+    max_stage = models.IntegerField(choices=stage.items(), default=0)
     original_ext = models.CharField(max_length=10)
     original_path = models.TextField(max_length=1000)
     orig_orientation = models.CharField(max_length=50, choices=orien, default='left-posterior-superior', blank=True)

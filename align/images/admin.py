@@ -3,7 +3,7 @@ from images.models import Alignment
 
 class AlignmentAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['name', 'alignment_stage']}),
+        (None,               {'fields': ['name', 'alignment_stage', 'max_stage']}),
         ('Original file details', {'fields': ['orig_orientation',
                               'original_path',
                               'original_ext',
