@@ -3,9 +3,10 @@ import fnmatch
 import os
 
 # temp=['/tmp/']
-temp=['/Volumes/Data0/tmp/']
-TAGtemplate=['/robert/GIT/DrosAdultTAGdomains/template/Neuropil_LPS.nrrd']
-cmtk=['/opt/local/lib/cmtk/bin/']
+temp=['/disk/data/VFB/aligner/tmp/']
+templatedir=['/disk/data/VFBTools/']
+TAGtemplate=['/disk/data/VFBTools/DrosAdultTAGdomains/template/Neuropil_LPS.nrrd']
+cmtk=['/disk/data/VFBTools/cmtk/bin/']
 # TAGtemplate = ['PATH/Neuropil_LPS.nrrd']
 # for root, dirnames, filenames in os.walk(os.path.sep):
 #   if not os.path.isfile(TAGtemplate[-1]):
@@ -23,10 +24,12 @@ cmtk=['/opt/local/lib/cmtk/bin/']
 
 # Create your models here.
 class Setting(models.Model):
-    name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,RobMac')
-    temp_dir = models.TextField(max_length=1000, default=temp[-1])
-    cmtk_dir = models.TextField(max_length=1000, default=cmtk[-1])
+    name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,Bocian')
     template = models.TextField(max_length=1000, default=TAGtemplate[-1])
+    cmtk_initial_var = models.CharField(max_length=100, default='--principal-axes')
+    cmtk_affine_var = models.CharField(max_length=100, default='--dofs 6,9 --auto-multi-levels 4')
+    cmtk_warp_var = models.CharField(max_length=100, default='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1')
+    cmtk_align_var  = models.CharField(max_length=100, default='', blank=True)
     initial_pass_level = models.CharField(max_length=10, default='0.30')
     final_pass_level = models.CharField(max_length=10, default='0.60')
     auto_balance_th = models.CharField(max_length=10, default='0.0035')
@@ -36,11 +39,13 @@ class Setting(models.Model):
 
 class Server(models.Model):
     from socket import gethostname
-    from system.models import Setting
+    # from system.models import Setting
+    use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
     host_name = models.CharField(max_length=50, default=gethostname())
     run_stages = models.CharField(max_length=50, default='1,2,3,4,5,6')
-    use_settings = models.ForeignKey(Setting)
-    use_DB = models.CharField(max_length=100, default='localhost')
+    temp_dir = models.TextField(max_length=1000, default=temp[-1])
+    cmtk_dir = models.TextField(max_length=1000, default=cmtk[-1])
+    template_dir = models.TextField(max_length=1000, default=templatedir[-1])
     active = models.BooleanField(default=False)
     def __str__(self):
         from images.models import stage
@@ -49,4 +54,4 @@ class Server(models.Model):
            serv = 'active'
         else:
            serv = 'inactive'
-        return str(self.host_name) + ' is currently ' + serv + ' with settings [' + str(self.use_settings) + '] to run: ' + str([stage[int(x)] for x in setStages])
+        return str(self.host_name) + ' is currently ' + serv + ' to run: ' + str([stage[int(x)] for x in setStages])

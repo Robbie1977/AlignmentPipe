@@ -1,17 +1,24 @@
 import sys, subprocess
 from pymongo import MongoClient
 from socket import gethostname
+import psycopg2
 
-client = MongoClient('129.215.90.148', 27017)
-db = client.alignment
-collection = db.images_alignment
+con = psycopg2.connect(host='bocian.inf.ed.ac.uk', database='alignment', user='aligner_admin', password='default99')
+
+# client = MongoClient('129.215.90.148', 27017)
+# db = client.alignment
+# collection = db.images_alignment
+
+cur = con.cursor()
 
 adjust_thresh = 0.0035
 setting_id=u'1'
 host = gethostname()
 print host
 
-record = db.system_server.find_one({'host_name': host})
+cur.execute('SELECT * FROM servers WHERE host_name like ' + host)
+record = cur.fetchone()
+# record = db.system_server.find_one({'host_name': host})
 
 if record:
   if 'active' in record:
@@ -67,10 +74,10 @@ if record:
     r = subprocess.call('nice %swarp -o %s %s --initial %s %s %s' % (cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
     return xformOUT, r
 
-  def align(floatingImage, xform=floatingImage.replace('.nrrd','_warp.xform'), imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd'), template=template):
+  def align(floatingImage, xform=floatingImage.replace('.nrrd','_warp.xform'), imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd'), template=template, settings=''):
     if 'default' in xform: xform=floatingImage.replace('.nrrd','_warp.xform')
     if 'default' in imageOUT: imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd')
-    print 'nice %sreformatx -o %s --floating %s %s %s' % (cmtkdir, imageOUT, floatingImage, template, xform)
+    print 'nice %sreformatx %s -o %s --floating %s %s %s' % (cmtkdir, settings, imageOUT, floatingImage, template, xform)
     r = subprocess.call('nice %sreformatx -o %s --floating %s %s %s' % (cmtkdir, imageOUT, floatingImage, template, xform), shell=True)
     return imageOUT, r
 
