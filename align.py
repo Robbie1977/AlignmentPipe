@@ -35,13 +35,13 @@ def alignRem(record):
   for i in range(1,6):
     if not i == record['background_channel']:
       if i == record['signal_channel']:
-        record['aligned_SG']=cmtk.align(sgfile, xform=bgfile.replace('.nrrd','_warp.xform'))
+        record['aligned_SG'], r=cmtk.align(sgfile, xform=bgfile.replace('.nrrd','_warp.xform'))
       else:
         if ('Ch' + str(i) + '_file') in record['original_nrrd'].keys():
           chfile = record['original_nrrd'][('Ch' + str(i) + '_file')]
           if os.path.isfile(chfile):
             a +=1
-            record['aligned_AC'+str(a)]=cmtk.align(chfile, xform=bgfile.replace('.nrrd','_warp.xform'))
+            record['aligned_AC'+str(a)], r=cmtk.align(chfile, xform=bgfile.replace('.nrrd','_warp.xform'))
             record['AC'+str(a)+'_channel']=i
   record['alignment_stage'] = 7
   record['max_stage'] = 7
