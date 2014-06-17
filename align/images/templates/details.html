@@ -27,23 +27,23 @@
          <TR><TH>{% if record.signal_channel == 1 %}SIGNAL{% elif record.background_channel == 1 %}BACKGROUND{% elif record.ac1_channel == 1 %}Additional Channel{% else %}UNKNOWN{% endif %}
              <TH>{% if record.signal_channel == 2 %}SIGNAL{% elif record.background_channel == 2 %}BACKGROUND{% elif record.ac1_channel == 2 %}Additional Channel{% else %}UNKNOWN{% endif %}
              <TH>{% if record.signal_channel == 3 %}SIGNAL{% elif record.background_channel == 3 %}BACKGROUND{% elif record.ac1_channel == 3 %}Additional Channel{% else %}UNKNOWN{% endif %}
-         <TR><TH><img width="350" src="{% url 'nrrd' 'Ch1_file' record.id %}" />
-             <TH><img width="350" src="{% url 'nrrd' 'Ch2_file' record.id %}" />
-             <TH><img width="350" src="{% url 'nrrd' 'Ch3_file' record.id %}" />
+         <TR><TH><a href="{% url 'nrrd' 'Ch1_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch1_file' record.id %}" /></a>
+             <TH><a href="{% url 'nrrd' 'Ch2_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch2_file' record.id %}" /></a>
+             <TH><a href="{% url 'nrrd' 'Ch3_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch3_file' record.id %}" /></a>
         </table>
         {% if record.max_stage > 2 %}
           <table border="1" cellpadding="5">
               <TR><TH>Inital Alignment
-              <TR><TH><img src="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" />
+              <TR><TH><a href="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" /></a>
               <TR><TH>{{ record.temp_initial_score }}
           </table>
           {% if record.max_stage > 5 %}
             <table border="1" cellpadding="5">
                 <TR>{% if record.max_stage < 7 %}<TH>Background Alignment{% else %}<TH colspan="3">Aligned Channels<TR><TH>Background<TH>Signal<TH>Additional{% endif %}
-                <TR><TH><img src="{% url 'nrrd' 'aligned_bg' record.id %}" />
+                <TR><TH><a href="{% url 'nrrd' 'aligned_bg' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'aligned_bg' record.id %}" /></a>
                 {% if record.max_stage > 6 %}
-                    <TH><img src="{% url 'nrrd' 'aligned_sg' record.id %}" />
-                    <TH><img src="{% url 'nrrd' 'aligned_ac1' record.id %}" />
+                    <TH><a href="{% url 'nrrd' 'aligned_bg' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'aligned_sg' record.id %}" /></a>
+                    <TH><a href="{% url 'nrrd' 'aligned_bg' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'aligned_ac1' record.id %}" /></a>
                       <TR><TH colspan="3">Alignment Score
                       <TR><TH>Weighted Average<br />Independant Slice Score<TH>Compined Slice Score<TH>Combined Final Score
                       <TR><TH>{{ record.aligned_avgslice_score }}

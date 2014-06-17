@@ -1,7 +1,7 @@
 from django.db import models
 import fnmatch
 import os
-from images.models import comp_orien
+from images.models import comp_orien, conv_orien
 from socket import gethostname
 
 host = gethostname()
@@ -33,7 +33,8 @@ class Template(models.Model):
     orientation = models.CharField(max_length=50, choices=comp_orien.items(), default='LPS')
     file = models.TextField(max_length=1000, default=TAGtemplate[-1])
     def __str__(self):
-        return self.name
+        parts = str(self.name).split(',')
+        return 'Template for the ' + parts[2] + ' of the ' + parts[1].lower() + ' ' + parts[0] + ' with an orientation of ' + comp_orien[parts[3]]
 
 class Setting(models.Model):
     name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,General')

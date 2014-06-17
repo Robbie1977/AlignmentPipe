@@ -81,28 +81,31 @@ def plotNrrd(request, image_id, image_type):
 
     record = checkDir(Alignment.objects.get(id=image_id))
 
+    file = 'default.png'
     subtext = ''
     orient = 'LPS'
+    fsize = 18
     if '_file' in image_type:
-      temprec = Original_nrrd.objects.get(image=image_id, channel=int(image_type.replace('Ch','').replace('_file','')))
-      file = temprec['file']
-      del temprec
-      orient = str(record.settings.template.orientation)
-      subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
+      if Original_nrrd.objects.filter(image=image_id, channel=int(image_type.replace('Ch','').replace('_file',''))).count() > 0:
+        temprec = Original_nrrd.objects.get(image=image_id, channel=int(image_type.replace('Ch','').replace('_file','')))
+        file = temprec['file']
+        del temprec
+        orient = str(record.settings.template.orientation)
+        subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'temp_initial_nrrd' in image_type:
       file = record.temp_initial_nrrd
-      orient = conv_orien[str(record.orientation)]
-      subtext = 'Orientation: ' + str(record.orientation) + ' (' + orient + ')'
+      orient = conv_orien[str(record.orig_orientation)]
+      subtext = 'Orientation: ' + str(record.orig_orientation) + ' (' + orient + ')'
     elif 'aligned_bg' in image_type:
-      file = record.aligned_BG
+      file = record.aligned_bg
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'aligned_sg' in image_type:
-      file = record.aligned_SG
+      file = record.aligned_sg
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'aligned_ac1' in image_type:
-      file = record.aligned_AC1
+      file = record.aligned_ac1
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'template' in image_type:
@@ -111,6 +114,7 @@ def plotNrrd(request, image_id, image_type):
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
       del temprec
+      fsize = 12
     else:
       file = 'default.png'
     if os.path.isfile(file):
@@ -134,7 +138,7 @@ def plotNrrd(request, image_id, image_type):
       imgplot.set_cmap('spectral')
       fig.colorbar(imgplot)
       del xdata, zdata
-      fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title(), fontsize=18)
+      fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)), fontsize=fsize)
       ax.set_title('Max proj. (Z)')
       ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
       ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
@@ -153,6 +157,7 @@ def plotNrrd(request, image_id, image_type):
       ax=fig.add_subplot(1,1,1)
       ax.set_title('No Image')
       ax.set_xlabel(file, fontsize=8)
+      fig.text(0.3,0.5,'No Data Found!', fontsize=32)
       response = HttpResponse(content_type='image/png')
       canvas.print_png(response)
       return response
