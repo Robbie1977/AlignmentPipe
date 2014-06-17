@@ -4,7 +4,7 @@
     <ul>
     {% for record in align_list %}
       {# {% if record.id == request %}#}
-        <li><a href="{% url 'details' record.id %}">{{ record.name }}</a> - {{ record.alignment_stage|state }}</li>
+        <li><a href="{% url 'details' record.id %}">{{ record.name }}</a> - {% if record.alignment_stage == 0 %}{{ record.alignment_stage|state }}{% else %}{{ record.max_stage|fini }}, queued for {{ record.alignment_stage|state }}{% endif %}</li>
         <!-- <li>{{ record.orig_orientation }}</li> -->
       {# {% endif %}#}
     {% endfor %}

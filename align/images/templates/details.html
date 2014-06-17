@@ -4,17 +4,29 @@
   <br /><a href="{% url 'index' %}">Home</a><hr />
   {% if record %}
       <table border="1" cellpadding="5" summary="Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}">
-        <CAPTION><EM>Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}</EM></CAPTION>
+        <CAPTION><EM>Details for alignment of {{ record.name }}{% if not record.complete %}{% if record.alignment_stage == 0 %}, failed after {{ record.max_stage|fini }}{% else %}, {{ record.max_stage|fini }} awaiting {{ record.alignment_stage|state }}{% endif %}{% endif %}</EM></CAPTION>
           <TR><TH>Name<TH>Stage<TH>Max stage reached<TH>Original File<TH>Original Orientation
-          <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage }}<TH>{{ record.max_stage }}<TH>{{ record.original_path }}{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
+          <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage|state }}<TH>{{ record.max_stage|fini }}<TH>{{ record.original_path }}{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
       </table>
+      {% if record.max_stage < 2 %}
+        <table border="1" cellpadding="5" summary="settings being used">
+          <TR><TH>Settings used (template image)
+          <TR><TH>{{ record.settings }}
+          <TR><TH><img width="350" src="{% url 'nrrd' 'template' record.id %}" />
+        </table>
+      {% endif %}
       {% if record.max_stage > 1 %}
-        <img align="right" src="{% url 'histograms' record.id %}" /><br />
+        <table border="1" cellpadding="5" summary="settings being used">
+          <TR><TH>Settings used (template image)<TH rowspan="2">Preprocessing contrast stretching<br />(original image histogram with new contrast range maked in grey)
+          <TR><TH>{{ record.settings }}
+          <TR><TH><a href="{% url 'nrrd' 'template' record.id %}" target="_new"><img width="500" src="{% url 'nrrd' 'template' record.id %}" /></a><TH><a href="{% url 'histograms' record.id %}" target="_new"><img width="500" src="{% url 'histograms' record.id %}" /></a>
+        </table>
+
         <table border="1" cellpadding="5">
          <TR><TH>Channel 1<TH>Channel 2<TH>Channel 3 (optional)
-         <TR><TH>{% if record.signal_channel == 1 %}SIGNAL{% elif record.background_channel == 1 %}BACKGROUND{% elif record.AC1_channel == 1 %}Additional Channel{% else %}UNKNOWN{% endif %}
-             <TH>{% if record.signal_channel == 2 %}SIGNAL{% elif record.background_channel == 2 %}BACKGROUND{% elif record.AC1_channel == 2 %}Additional Channel{% else %}UNKNOWN{% endif %}
-             <TH>{% if record.signal_channel == 3 %}SIGNAL{% elif record.background_channel == 3 %}BACKGROUND{% elif record.AC1_channel == 3 %}Additional Channel{% else %}UNKNOWN{% endif %}
+         <TR><TH>{% if record.signal_channel == 1 %}SIGNAL{% elif record.background_channel == 1 %}BACKGROUND{% elif record.ac1_channel == 1 %}Additional Channel{% else %}UNKNOWN{% endif %}
+             <TH>{% if record.signal_channel == 2 %}SIGNAL{% elif record.background_channel == 2 %}BACKGROUND{% elif record.ac1_channel == 2 %}Additional Channel{% else %}UNKNOWN{% endif %}
+             <TH>{% if record.signal_channel == 3 %}SIGNAL{% elif record.background_channel == 3 %}BACKGROUND{% elif record.ac1_channel == 3 %}Additional Channel{% else %}UNKNOWN{% endif %}
          <TR><TH><img width="350" src="{% url 'nrrd' 'Ch1_file' record.id %}" />
              <TH><img width="350" src="{% url 'nrrd' 'Ch2_file' record.id %}" />
              <TH><img width="350" src="{% url 'nrrd' 'Ch3_file' record.id %}" />
@@ -28,13 +40,13 @@
           {% if record.max_stage > 5 %}
             <table border="1" cellpadding="5">
                 <TR>{% if record.max_stage < 7 %}<TH>Background Alignment{% else %}<TH colspan="3">Aligned Channels<TR><TH>Background<TH>Signal<TH>Additional{% endif %}
-                <TR><TH><img src="{% url 'nrrd' 'aligned_BG' record.id %}" />
+                <TR><TH><img src="{% url 'nrrd' 'aligned_bg' record.id %}" />
                 {% if record.max_stage > 6 %}
-                    <TH><img src="{% url 'nrrd' 'aligned_SG' record.id %}" />
-                    <TH><img src="{% url 'nrrd' 'aligned_AC1' record.id %}" />
+                    <TH><img src="{% url 'nrrd' 'aligned_sg' record.id %}" />
+                    <TH><img src="{% url 'nrrd' 'aligned_ac1' record.id %}" />
                       <TR><TH colspan="3">Alignment Score
                       <TR><TH>Weighted Average<br />Independant Slice Score<TH>Compined Slice Score<TH>Combined Final Score
-                      <TR><TH>{{ record.aligned_avgSlice_score }}
+                      <TR><TH>{{ record.aligned_avgslice_score }}
                       <TH>{{ record.aligned_slice_score }}
                       <TH>{{ record.aligned_score }}
                 {% endif %}

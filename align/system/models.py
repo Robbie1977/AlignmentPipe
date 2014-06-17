@@ -1,11 +1,15 @@
 from django.db import models
 import fnmatch
 import os
+from images.models import comp_orien
+from socket import gethostname
+
+host = gethostname()
 
 # temp=['/tmp/']
 temp=['/disk/data/VFB/aligner/tmp/']
 templatedir=['/disk/data/VFBTools/']
-TAGtemplate=['/disk/data/VFBTools/DrosAdultTAGdomains/template/Neuropil_LPS.nrrd']
+TAGtemplate=['DrosAdultTAGdomains/template/Neuropil_LPS.nrrd']
 cmtk=['/disk/data/VFBTools/cmtk/bin/']
 # TAGtemplate = ['PATH/Neuropil_LPS.nrrd']
 # for root, dirnames, filenames in os.walk(os.path.sep):
@@ -23,9 +27,17 @@ cmtk=['/disk/data/VFBTools/cmtk/bin/']
 #         break
 
 # Create your models here.
+
+class Template(models.Model):
+    name = models.CharField(max_length=50, default='Drosophila,Adult,TAG,LPS')
+    orientation = models.CharField(max_length=50, choices=comp_orien.items(), default='LPS')
+    file = models.TextField(max_length=1000, default=TAGtemplate[-1])
+    def __str__(self):
+        return self.name
+
 class Setting(models.Model):
-    name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,Bocian')
-    template = models.TextField(max_length=1000, default=TAGtemplate[-1])
+    name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,General')
+    template = models.ForeignKey(Template, default=1)
     cmtk_initial_var = models.CharField(max_length=100, default='--principal-axes')
     cmtk_affine_var = models.CharField(max_length=100, default='--dofs 6,9 --auto-multi-levels 4')
     cmtk_warp_var = models.CharField(max_length=100, default='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1')
@@ -38,20 +50,42 @@ class Setting(models.Model):
         return str(desc[3]) + ' settings for alignment of ' + str(desc[1]) + ' ' + str(desc[0]) + ' ' + str(desc[2])
 
 class Server(models.Model):
-    from socket import gethostname
-    # from system.models import Setting
-    use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
-    host_name = models.CharField(max_length=50, default=gethostname())
-    run_stages = models.CharField(max_length=50, default='1,2,3,4,5,6')
+    host_name = models.CharField(max_length=50, default=host, unique=True)
+    active = models.BooleanField(default=False)
+    run_stages = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[1,2,3,4,5,6])
     temp_dir = models.TextField(max_length=1000, default=temp[-1])
     cmtk_dir = models.TextField(max_length=1000, default=cmtk[-1])
     template_dir = models.TextField(max_length=1000, default=templatedir[-1])
-    active = models.BooleanField(default=False)
+    use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
     def __str__(self):
         from images.models import stage
-        setStages = str.split(str(self.run_stages),',')
+        setStages = str(self.run_stages).split(',')
         if self.active:
            serv = 'active'
         else:
            serv = 'inactive'
-        return str(self.host_name) + ' is currently ' + serv + ' to run: ' + str([stage[int(x)] for x in setStages])
+        if setStages == ['None']:
+          return str(self.host_name) + ' is currently ' + serv + ' to run: [Nothing!]'
+        else:
+          return str(self.host_name) + ' is currently ' + serv + ' to run: ' + str([stage[int(x)] for x in setStages])
+
+
+
+def checkDir(record):
+  if record.last_host == '':
+    record.last_host = 'roberts-mbp'
+  if host == str(record.last_host):
+    return record
+  else:
+    oldSerRec = Server.objects.get(host_name=record.last_host)
+    if oldSerRec:
+      curSetRec = Setting.objects.get(id=record.settings.id)
+      if curSetRec:
+        curSerRec = Server.objects.get(host_name=host)
+        if curSerRec:
+          record.temp_initial_nrrd = str(record.temp_initial_nrrd).replace(oldSerRec.temp_dir,curSerRec.temp_dir)
+          record.aligned_bg = str(record.aligned_bg).replace(oldSerRec.temp_dir,curSerRec.temp_dir)
+          record.aligned_sg = str(record.aligned_sg).replace(oldSerRec.temp_dir,curSerRec.temp_dir)
+          record.aligned_ac1 = str(record.aligned_ac1).replace(oldSerRec.temp_dir,curSerRec.temp_dir)
+          record.last_host = host
+    return record
