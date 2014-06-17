@@ -57,7 +57,7 @@ class Server(models.Model):
     temp_dir = models.TextField(max_length=1000, default=temp[-1])
     cmtk_dir = models.TextField(max_length=1000, default=cmtk[-1])
     template_dir = models.TextField(max_length=1000, default=templatedir[-1])
-    use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
+    # use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
     def __str__(self):
         from images.models import stage
         setStages = str(self.run_stages).split(',')
