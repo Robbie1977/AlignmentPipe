@@ -7,7 +7,15 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'polls.views', name='views'),
-    url(r'^$', include('images.urls')),
+    url(r'^$', 'users.views.home'),
+    url(r'^email-sent/', 'users.views.validation_sent'),
+    url(r'^login/$', 'users.views.home'),
+    url(r'^logout/$', 'users.views.logout'),
+    url(r'^done/$', 'users.views.done', name='done'),
+    url(r'^ajax-auth/(?P<backend>[^/]+)/$', 'users.views.ajax_auth', name='ajax-auth'),
+    url(r'^email/$', 'users.views.require_email', name='require_email'),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
+    # url(r'^$', include('images.urls')),
     url(r'^images/', include('images.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

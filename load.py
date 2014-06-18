@@ -113,17 +113,17 @@ def loadFile(file, folder, settings_id=1, orientation=comp_orien['LPS'], overwri
     cur.execute("SELECT count(*) FROM images_alignment WHERE name like %s", [name])
     r = int(cur.fetchone()[0])
     if r < 1:
-      cur.execute("INSERT INTO images_alignment (settings_id, name, max_stage, alignment_stage, last_host, loading_host, original_ext, original_path, orig_orientation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", [str(settings_id), name, str(1), str(1), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), orientation])
+      cur.execute("INSERT INTO images_alignment (settings_id, name, max_stage, alignment_stage, last_host, loading_host, original_ext, original_path, orig_orientation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", [str(settings_id), name, str(0), str(1), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), orientation])
       cur.connection.commit()
     else:
       cur.execute("SELECT * FROM images_alignment WHERE name like '" + str(os.path.splitext(os.path.basename(file))[0]) + "'")
       print cur.fetchone()
       if overwrite:
-        cur.execute("UPDATE images_alignment SET orig_orientation = %s, settings_id = %s, max_stage = 1, alignment_stage = 1, last_host = %s, loading_host = %s, original_ext = %s, original_path = %s WHERE name = %s", [orientation, str(settings_id), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), name])
+        cur.execute("UPDATE images_alignment SET orig_orientation = %s, settings_id = %s, max_stage = 0, alignment_stage = 1, last_host = %s, loading_host = %s, original_ext = %s, original_path = %s WHERE name = %s", [orientation, str(settings_id), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), name])
         cur.connection.commit()
       else:
         if query_yes_no("Image already exists in processing stack do you want to update original file details?"):
-          cur.execute("UPDATE images_alignment SET orig_orientation = %s, settings_id = %s, max_stage = 1, alignment_stage = 1, last_host = %s, loading_host = %s, original_ext = %s, original_path = %s WHERE name = %s", [orientation, str(settings_id), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), name])
+          cur.execute("UPDATE images_alignment SET orig_orientation = %s, settings_id = %s, max_stage = 0, alignment_stage = 1, last_host = %s, loading_host = %s, original_ext = %s, original_path = %s WHERE name = %s", [orientation, str(settings_id), host, host, str(os.path.splitext(os.path.basename(file))[1]), str(folder), name])
           cur.connection.commit()
     cur.execute("SELECT count(*) FROM images_alignment WHERE name like %s", [name])
     r = int(cur.fetchone()[0])
