@@ -7,3 +7,6 @@
 [submodule "align/pynrrd"]
 	path = align/pynrrd
 	url = git@github.com:Robbie1977/pynrrd.git
+[submodule "align/python-social-auth"]
+	path = align/python-social-auth
+	url = git@github.com:Robbie1977/python-social-auth.git
