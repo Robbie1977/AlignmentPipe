@@ -15,9 +15,9 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
         i = where(bins==background)
         v = bins[i][0]
         c = histogram[i][0]
-        th=np.int(((np.sum(histogram)-histogram[i][0])/np.shape(data)[2])*threshold)
+        th=long(((np.sum(histogram)-histogram[i][0])/np.shape(data)[2])*threshold)
     else:
-        th=np.int((np.sum(histogram)/np.shape(data)[2])*threshold)
+        th=long((np.sum(histogram)/np.shape(data)[2])*threshold)
     m=np.min(bins)
     M=np.max(bins)
     for x in range(1,np.shape(bins)[0]-1):
@@ -31,7 +31,7 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     data[data>M]=M
     data[data<m]=m
     dataA=np.round((data-m)*(255.0/(M-m)))
-    hist=np.zeros(255)
+    hist=np.zeros(255, dtype=long)
     for i in range(0,np.shape(bins)[0]-1):
         hist[bins[i]]=histogram[i]
     return (dataA, {'min': int(m),'max': int(M)}, hist)
@@ -107,9 +107,15 @@ def convRec(record):
         chan = np.uint8(chan)
       print 'saving...'
       nrrd.write(Sname,chan, options=header)
-      upd.update({'image_id': record['id'], 'channel': + int(c+1), 'file': str(Sname), 'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
-      cur.execute("INSERT INTO images_original_nrrd (image_id, channel, file, pre_histogram, new_min, new_max) VALUES (%(image_id)s, %(channel)s, %(file)s, %(pre_histogram)s, %(new_min)s, %(new_max)s)", upd)
-      cur.connection.commit()
+      upd.update({'image_id': record['id'], 'channel': + int(c+1), 'file': str(Sname).replace(tempfolder,''), 'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
+      cur.execute("SELECT count(*) FROM images_original_nrrd WHERE image_id = %(image_id)s AND channel = %(channel)s", upd)
+      r = cur.fetchone()[0]
+      if r > 0:
+        cur.execute("UPDATE images_original_nrrd SET file = %(file)s, pre_hist = %(pre_histogram)s, new_min = %(new_min)s, new_max = %(new_max)s, is_index = False WHERE image_id = %(image_id)s AND channel = %(channel)s", upd)
+        cur.connection.commit()
+      else:
+        cur.execute("INSERT INTO images_original_nrrd (image_id, channel, file, pre_hist, new_min, new_max, is_index) VALUES (%(image_id)s, %(channel)s, %(file)s, %(pre_histogram)s, %(new_min)s, %(new_max)s, False)", upd)
+        cur.connection.commit()
       ct = sum(chan[chan>20])
       if ct > rt:
         rt = ct
@@ -142,22 +148,27 @@ def convert(name):
       record = dict(zip(key,line))
       r = convRec(record)
       u = ''
-      for k, v in record:
-        if not k == 'id':
-          if not k == key[0]:
+      for k, v in record.items():
+        if not (k == 'id' or v == None or v == 'None'):
+          if not u == '':
             u = u + ', '
           if type(v) == type(''):
             u = u + str(k) + " = '" + str(v) + "'"
           else:
             u = u + str(k) + " = " + str(v)
-      cur.execute("UPDATE alignment_stage SET (%s) WHERE id = %s ", [u, str(record['id'])])
+      print u
+      cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
 
 if __name__ == "__main__":
   if active and '1' in run_stage:
     cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 1")
     records = cur.fetchall()
+    total = len(records)
+    count = 0
     for line in records:
+      count +=1
+      print 'Converting: ' + str(count) + ' of ' + str(total)
       convert(line[0])
     print 'done'
   else:

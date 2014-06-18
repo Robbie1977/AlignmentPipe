@@ -1,14 +1,23 @@
-{% block title %}Image alignments:{% endblock %}
+{% load bootstrap3 %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+{% block title %}<h1 align="center">VFB Image Alignment Queue</h1>{% endblock %}
 {% load images_extras %}
+
 {% if align_list %}
-    <ul>
+  <table class="table" align="center">
     {% for record in align_list %}
       {# {% if record.id == request %}#}
-        <li><a href="{% url 'details' record.id %}">{{ record.name }}</a> - {% if record.alignment_stage == 0 %}{{ record.alignment_stage|state }}{% else %}{{ record.max_stage|fini }}, queued for {{ record.alignment_stage|state }}{% endif %}</li>
+        <TR><TH align="center" >{% if record.complete %}<img src="http://localhost:8000/static/admin/img/icon-yes.gif" />{% else %}<img src="http://localhost:8000/static/admin/img/icon-no.gif" />{% endif %}<TH><a href="{% url 'details' record.id %}">{{ record.name }}</a><TH>{% if record.alignment_stage == 0 %}{{ record.alignment_stage|state }}{% else %}{{ record.max_stage|fini }}<TH> queued for {{ record.alignment_stage|state }}{% endif %}
         <!-- <li>{{ record.orig_orientation }}</li> -->
       {# {% endif %}#}
     {% endfor %}
-    </ul>
+  </table>
 {% else %}
     <p>No images to align.</p>
 {% endif %}

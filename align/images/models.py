@@ -27,9 +27,9 @@ class Alignment(models.Model):
     original_path = models.TextField(max_length=1000)
     temp_initial_nrrd = models.TextField(max_length=1000, blank=True)
     temp_initial_score = models.CharField(max_length=20, blank=True)
-    background_channel = models.IntegerField(choices=chan.items(), default=0, blank=True)
-    signal_channel = models.IntegerField(choices=chan.items(), default=0, blank=True)
-    ac1_channel = models.IntegerField(choices=chan.items(), default=0, blank=True)
+    background_channel = models.IntegerField(choices=chan.items(), default=0)
+    signal_channel = models.IntegerField(choices=chan.items(), default=0)
+    ac1_channel = models.IntegerField(choices=chan.items(), default=0)
     aligned_bg = models.TextField(max_length=1000, blank=True)
     aligned_sg = models.TextField(max_length=1000, blank=True)
     aligned_ac1 = models.TextField(max_length=1000, blank=True)
@@ -48,12 +48,12 @@ class Alignment(models.Model):
 
 class Original_nrrd(models.Model):
     image = models.ForeignKey(Alignment)
-    channel = models.IntegerField(blank=True)
-    new_min = models.IntegerField(blank=True)
-    new_max = models.IntegerField(blank=True)
+    channel = models.IntegerField(default=0)
+    new_min = models.IntegerField(default=0)
+    new_max = models.IntegerField(default=255)
     file = models.TextField(max_length=1000, blank=True)
     is_index = models.BooleanField(default=False)
-    pre_hist = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    pre_hist = models.CommaSeparatedIntegerField(max_length=255, default=range(0,255))
     def __str__(self):
         return self.Alignment.name + ' channel ' + str(channel)
 
