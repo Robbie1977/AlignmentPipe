@@ -4,11 +4,9 @@ from django import template
 
 from social.backends.oauth import OAuthAuth
 
-
 register = template.Library()
 
 name_re = re.compile(r'([^O])Auth')
-
 
 @register.filter
 def backend_name(backend):

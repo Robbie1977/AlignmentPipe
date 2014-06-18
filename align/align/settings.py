@@ -95,15 +95,15 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -137,19 +137,28 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# AUTHENTICATION_BACKENDS = (
+#       'social.backends.open_id.OpenIdAuth',
+#       'social.backends.google.GoogleOpenId',
+#       'social.backends.google.GoogleOAuth2',
+#       'social.backends.google.GoogleOAuth',
+#       'social.backends.twitter.TwitterOAuth',
+#       'social.backends.yahoo.YahooOpenId',
+#       'django.contrib.auth.backends.ModelBackend',
+# )
+
 AUTHENTICATION_BACKENDS = (
-      'social.backends.open_id.OpenIdAuth',
-      'social.backends.google.GoogleOpenId',
-      'social.backends.google.GoogleOAuth2',
-      'social.backends.google.GoogleOAuth',
-      'social.backends.twitter.TwitterOAuth',
-      'social.backends.yahoo.YahooOpenId',
-      'django.contrib.auth.backends.ModelBackend',
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.google.GoogleOAuth2',
+   'social.backends.twitter.TwitterOAuth',
+   'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_USER_MODEL = 'users.User'
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+
+LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
