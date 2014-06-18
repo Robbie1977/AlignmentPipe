@@ -1,44 +1,53 @@
-{% block title %}<center><h1>Image alignment details</h1></center>{% endblock %}
+{% load bootstrap3 %}
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+{% block title %}<center><h1>Image Alignment Details</h1></center>{% endblock %}
 {% block content %}
   {% load images_extras %}
-  <br /><a href="{% url 'index' %}">Home</a><hr />
+  <a href="{% url 'index' %}">&lt;- Back</a><hr />
   {% if record %}
-      <table border="1" cellpadding="5" summary="Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}">
+    <center>
+      <table class="table" border="1" cellpadding="5" summary="Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}">
         <CAPTION><EM>Details for alignment of {{ record.name }}{% if not record.complete %}{% if record.alignment_stage == 0 %}, failed after {{ record.max_stage|fini }}{% else %}, {{ record.max_stage|fini }} awaiting {{ record.alignment_stage|state }}{% endif %}{% endif %}</EM></CAPTION>
           <TR><TH>Name<TH>Stage<TH>Max stage reached<TH>Original File<TH>Original Orientation
-          <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage|state }}<TH>{{ record.max_stage|fini }}<TH>{{ record.original_path }}{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
+          <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage|state }}<TH>{{ record.max_stage|fini }}<TH>{{ record.original_path }}/{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
       </table>
       {% if record.max_stage < 2 %}
-        <table border="1" cellpadding="5" summary="settings being used">
+        <table class="table table-hover" border="1" cellpadding="5" summary="settings being used">
           <TR><TH>Settings used (template image)
           <TR><TH>{{ record.settings }}
           <TR><TH><img width="350" src="{% url 'nrrd' 'template' record.id %}" />
         </table>
       {% endif %}
       {% if record.max_stage > 1 %}
-        <table border="1" cellpadding="5" summary="settings being used">
-          <TR><TH>Settings used (template image)<TH rowspan="2">Preprocessing contrast stretching<br />(original image histogram with new contrast range maked in grey)
+        <table class="table table-hover" border="1" cellpadding="5" summary="settings being used">
+          <TR><TH>Settings used (template image)<TH rowspan="2">Preprocessing contrast stretching<br />(original image histogram with new contrast range maked in cyan)
           <TR><TH>{{ record.settings }}
-          <TR><TH><a href="{% url 'nrrd' 'template' record.id %}" target="_new"><img width="500" src="{% url 'nrrd' 'template' record.id %}" /></a><TH><a href="{% url 'histograms' record.id %}" target="_new"><img width="500" src="{% url 'histograms' record.id %}" /></a>
+          <TR><TH><a href="{% url 'nrrd' 'template' record.id %}" target="_new"><img style="max-width:100%;" src="{% url 'nrrd' 'template' record.id %}" /></a><TH><a href="{% url 'histograms' record.id %}" target="_new"><img style="max-width:100%;" src="{% url 'histograms' record.id %}" /></a>
         </table>
 
-        <table border="1" cellpadding="5">
+        <table class="table table-hover" border="1" cellpadding="5">
          <TR><TH>Channel 1<TH>Channel 2<TH>Channel 3 (optional)
          <TR><TH>{% if record.signal_channel == 1 %}SIGNAL{% elif record.background_channel == 1 %}BACKGROUND{% elif record.ac1_channel == 1 %}Additional Channel{% else %}UNKNOWN{% endif %}
              <TH>{% if record.signal_channel == 2 %}SIGNAL{% elif record.background_channel == 2 %}BACKGROUND{% elif record.ac1_channel == 2 %}Additional Channel{% else %}UNKNOWN{% endif %}
              <TH>{% if record.signal_channel == 3 %}SIGNAL{% elif record.background_channel == 3 %}BACKGROUND{% elif record.ac1_channel == 3 %}Additional Channel{% else %}UNKNOWN{% endif %}
-         <TR><TH><a href="{% url 'nrrd' 'Ch1_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch1_file' record.id %}" /></a>
-             <TH><a href="{% url 'nrrd' 'Ch2_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch2_file' record.id %}" /></a>
-             <TH><a href="{% url 'nrrd' 'Ch3_file' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'Ch3_file' record.id %}" /></a>
+         <TR><TH><a href="{% url 'nrrd' 'Ch1_file' record.id %}" target="_new"><img style="max-width:100%;" src="{% url 'nrrd' 'Ch1_file' record.id %}" /></a>
+             <TH><a href="{% url 'nrrd' 'Ch2_file' record.id %}" target="_new"><img style="max-width:100%;" src="{% url 'nrrd' 'Ch2_file' record.id %}" /></a>
+             <TH><a href="{% url 'nrrd' 'Ch3_file' record.id %}" target="_new"><img style="max-width:100%;" src="{% url 'nrrd' 'Ch3_file' record.id %}" /></a>
         </table>
         {% if record.max_stage > 2 %}
-          <table border="1" cellpadding="5">
+          <table class="table table-hover" border="1" cellpadding="5">
               <TR><TH>Inital Alignment
-              <TR><TH><a href="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" /></a>
+              <TR><TH><a href="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" target="_new"><img style="max-width:50%;" src="{% url 'nrrd' 'temp_initial_nrrd' record.id %}" /></a>
               <TR><TH>{{ record.temp_initial_score }}
           </table>
           {% if record.max_stage > 5 %}
-            <table border="1" cellpadding="5">
+            <table class="table table-hover" border="1" cellpadding="5">
                 <TR>{% if record.max_stage < 7 %}<TH>Background Alignment{% else %}<TH colspan="3">Aligned Channels<TR><TH>Background<TH>Signal<TH>Additional{% endif %}
                 <TR><TH><a href="{% url 'nrrd' 'aligned_bg' record.id %}" target="_new"><img width="350" src="{% url 'nrrd' 'aligned_bg' record.id %}" /></a>
                 {% if record.max_stage > 6 %}
@@ -54,6 +63,7 @@
           {% endif %}
         {% endif %}
       {% endif %}
+    </center>
   {% else %}
       <p>No images to align.</p>
   {% endif %}

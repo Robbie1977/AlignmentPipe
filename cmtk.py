@@ -42,28 +42,28 @@ if record:
   def initial(floatingImage, xformOUT=floatingImage.replace('.nrrd','_initial.xform'), template=template, mode='--principal-axes'):
     if 'default' in xformOUT: xformOUT=floatingImage.replace('.nrrd','_initial.xform')
     print 'nice %smake_initial_affine %s %s %s %s' % (cmtkdir, mode, template, floatingImage, xformOUT)
-    r = subprocess.call('nice %smake_initial_affine %s %s %s %s' % (cmtkdir, mode, template, floatingImage, xformOUT), shell=True)
+    r = subprocess.call("nice %smake_initial_affine %s '%s' '%s' '%s'" % (cmtkdir, mode, template, floatingImage, xformOUT), shell=True)
     return xformOUT, r
 
   def affine(floatingImage, xformOUT=floatingImage.replace('.nrrd','_affine.xform'), xformIN=floatingImage.replace('.nrrd','_initial.xform'), template=template, scale='--dofs 6,9 --auto-multi-levels 4'):
     if 'default' in xformOUT: xformOUT=floatingImage.replace('.nrrd','_affine.xform')
     if 'default' in xformIN: xformIN=floatingImage.replace('.nrrd','_initial.xform')
     print 'nice %sregistration --initial %s %s -o %s %s %s' % (cmtkdir, xformIN, scale, xformOUT, template, floatingImage)
-    r = subprocess.call('nice %sregistration --initial %s %s -o %s %s %s' % (cmtkdir, xformIN, scale, xformOUT, template, floatingImage), shell=True)
+    r = subprocess.call("nice %sregistration --initial '%s' %s -o '%s' '%s' '%s'" % (cmtkdir, xformIN, scale, xformOUT, template, floatingImage), shell=True)
     return xformOUT, r
 
   def warp(floatingImage, xformOUT=floatingImage.replace('.nrrd','_warp.xform'), xformIN=floatingImage.replace('.nrrd','_affine.xform'), template=template, settings='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1'):
     if 'default' in xformOUT: xformOUT=floatingImage.replace('.nrrd','_warp.xform')
     if 'default' in xformIN: xformIN=floatingImage.replace('.nrrd','_affine.xform')
     print 'nice %swarp -o %s %s --initial %s %s %s' % (cmtkdir, xformOUT, settings, xformIN, template, floatingImage)
-    r = subprocess.call('nice %swarp -o %s %s --initial %s %s %s' % (cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
+    r = subprocess.call("nice %swarp -o '%s' %s --initial '%s' '%s' '%s'" % (cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
     return xformOUT, r
 
   def align(floatingImage, xform=floatingImage.replace('.nrrd','_warp.xform'), imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd'), template=template, settings=''):
     if 'default' in xform: xform=floatingImage.replace('.nrrd','_warp.xform')
     if 'default' in imageOUT: imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd')
     print 'nice %sreformatx %s -o %s --floating %s %s %s' % (cmtkdir, settings, imageOUT, floatingImage, template, xform)
-    r = subprocess.call('nice %sreformatx -o %s --floating %s %s %s' % (cmtkdir, imageOUT, floatingImage, template, xform), shell=True)
+    r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
     return imageOUT, r
 
   def checkDir(record):

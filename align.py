@@ -4,17 +4,18 @@ import numpy as np
 import bson
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
-from cmtk import collection, tempfolder, active, run_stage, cmtkdir, template, threshold, checkDir, host
+from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host
 
-def alignRec(record):
+def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', threshold=0.6):
   record = checkDir(record)
   print 'Finalising alignment for: ' + record['name']
-  bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  record['aligned_BG'], r =cmtk.align(bgfile)
-  record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.avgOverlapCoeff))
-  record['aligned_slice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.OverlapCoeff))
+  # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
+  record['aligned_BG'], r =cmtk.align(bgfile, template=template, settings=alignSet)
+  record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.avgOverlapCoeff, template=template))
+  record['aligned_slice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.OverlapCoeff, template=template))
   record['aligned_score'] = str(np.mean([np.float128(record['aligned_avgSlice_score']), np.float128(record['aligned_slice_score'])]))
   #Note: np.float128 array score converted to string as mongoDB only supports float(64/32 dependant on machine).
+  record['aligned_BG'] = str(record['aligned_BG']).replace(tempfolder,'')
   print 'Result: ' + record['aligned_score']
   if record['aligned_score'] > threshold:
     record['alignment_stage'] = 6
@@ -26,50 +27,98 @@ def alignRec(record):
   record['max_stage'] = 6
   return record
 
-def alignRem(record):
+def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   record = checkDir(record)
   print 'Aligning signal, etc. for: ' + record['name']
-  bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  sgfile = record['original_nrrd'][('Ch' + str(record['signal_channel']) + '_file')]
-  a=0
-  for i in range(1,6):
-    if not i == record['background_channel']:
-      if i == record['signal_channel']:
-        record['aligned_SG'], r=cmtk.align(sgfile, xform=bgfile.replace('.nrrd','_warp.xform'))
-      else:
-        if ('Ch' + str(i) + '_file') in record['original_nrrd'].keys():
-          chfile = record['original_nrrd'][('Ch' + str(i) + '_file')]
-          if os.path.isfile(chfile):
-            a +=1
-            record['aligned_AC'+str(a)], r=cmtk.align(chfile, xform=bgfile.replace('.nrrd','_warp.xform'))
-            record['AC'+str(a)+'_channel']=i
-  record['alignment_stage'] = 7
-  record['max_stage'] = 7
+  # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
+  # sgfile = record['original_nrrd'][('Ch' + str(record['signal_channel']) + '_file')]
+  # a=0
+  # for i in range(1,6):
+    # if not i == record['background_channel']:
+    #   if i == record['signal_channel']:
+  sgchan = '_Ch' + str(record['signal_channel'])
+  bgchan = '_Ch' + str(record['background_channel'])
+  acchan = '_Ch' + str(record['ac1_channel'])
+  r=5
+  if sgchan in chfile:
+    record['aligned_sg'], r=cmtk.align(chfile, xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+    record['alignment_stage'] = 7
+    record['max_stage'] = 7
+  elif acchan in chfile:
+    record['aligned_ac1'], r=cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+    record['max_stage'] = 7
+  if r>0:
+    record['alignment_stage'] = 0
   return record
 
-def align(name):
-  for record in collection.find({'alignment_stage': 5, 'name': name}):
-    collection.save(alignRec(record))
-  for record in collection.find({'alignment_stage': 6, 'name': name}):
-    collection.save(alignRem(record))
+def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLevel=0.6):
+  cur.execute("SELECT * FROM images_alignment WHERE alignment_stage = 5 AND name like %s", [name])
+  records = cur.fetchall()
+  key = []
+  for desc in cur.description:
+      key.append(desc[0])
+  for line in records:
+      record = dict(zip(key,line))
+      record = alignRec(record, template, bgfile, alignSet, passLevel)
+      u = ''
+      for k, v in record.items():
+        if not (k == 'id' or v == None or v == 'None'):
+          if not u == '':
+            u = u + ', '
+          if type(v) == type(''):
+            u = u + str(k) + " = '" + str(v) + "'"
+          else:
+            u = u + str(k) + " = " + str(v)
+      print u
+      cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
+
+  cur.execute("SELECT * FROM images_alignment WHERE alignment_stage > 5 AND name like %s", [name])
+  records = cur.fetchall()
+  key = []
+  for desc in cur.description:
+      key.append(desc[0])
+  for line in records:
+      record = dict(zip(key,line))
+      record = alignRem(record, template, bgfile, alignSet)
+      u = ''
+      for k, v in record.items():
+        if not (k == 'id' or v == None or v == 'None'):
+          if not u == '':
+            u = u + ', '
+          if type(v) == type(''):
+            u = u + str(k) + " = '" + str(v) + "'"
+          else:
+            u = u + str(k) + " = " + str(v)
+      print u
+      cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
 
 if __name__ == "__main__":
   if active and '5' in run_stage:
-    total = collection.find({'alignment_stage': 5}).count()
+    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var, system_setting.final_pass_level FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 5 AND images_original_nrrd.channel = images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id")
+    records = cur.fetchall()
+    total = len(records)
     count = 0
-    for record in collection.find({'alignment_stage': 5}):
+    print records
+    for line in records:
       count +=1
-      print 'Processing: ' + str(count) + ' of ' + str(total)
-      collection.save(alignRec(record))
-    total = collection.find({'alignment_stage': 6}).count()
-    count = 0
+      print 'Warp alignment: ' + str(count) + ' of ' + str(total)
+      align(line[0], template=(templatedir + line[1]), bgfile=(tempfolder + line[2]), alignSet=line[3], passLevel=line[4])
+    print 'done'
   else:
     print 'inactive or stage 5 not selected'
+
   if active and '6' in run_stage:
-    for record in collection.find({'alignment_stage': 6}):
+    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 6 AND images_original_nrrd.channel != images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id")
+    records = cur.fetchall()
+    total = len(records)
+    count = 0
+    print records
+    for line in records:
       count +=1
-      print 'Processing: ' + str(count) + ' of ' + str(total)
-      collection.save(alignRem(record))
+      print 'Warp alignment: ' + str(count) + ' of ' + str(total)
+      align(line[0], template=(templatedir + line[1]), bgfile=(tempfolder + line[2]), alignSet=line[3])
     print 'done'
   else:
     print 'inactive or stage 6 not selected'

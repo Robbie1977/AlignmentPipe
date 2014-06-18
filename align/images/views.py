@@ -8,8 +8,10 @@ from socket import gethostname
 
 host = gethostname()
 
+tempfolder = str(Server.objects.filter(host_name=host).values('temp_dir')[0]['temp_dir'])
+
 def index(request):
-    align_list = Alignment.objects.all().order_by('name')
+    align_list = Alignment.objects.all().order_by('alignment_stage', 'name')
     context = {'align_list': align_list}
     return render(request, 'index.html', context)
 
@@ -33,22 +35,29 @@ def plotResults(request, image_id):
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
     from matplotlib.dates import DateFormatter
+    import numpy as np
     fig = Figure()
     ax=fig.add_subplot(3,1,1)
     if Original_nrrd.objects.filter(image=image_id).count() > 0:
-      records = Original_nrrd.objects.get(image=image_id)
+      records = Original_nrrd.objects.filter(image=image_id).values()
       chanCol = ['red','green','blue']
       for record in records:
         i = int(record['channel'])
         ax=fig.add_subplot(3,1,i)
         hist = list(record['pre_hist'])
-        k = range(1,len(hist))
-        v = [int(y) for y in hist]
-        m = record['new_min']
-        M = record['new_max']
-        ax.broken_barh([(m, (M-m))] , (min(v), (max(v)-min(v))), facecolors='grey')
-        ax.bar(k, v, color=chanCol[i-1], log=True)
+        k = range(0,len(hist))
+        v = [long(y) for y in hist]
+        m = int(record['new_min'])
+        M = int(record['new_max'])
+        ax.fill([m,M,M,m], [np.min(v),np.min(v),np.max(v),np.max(v)], 'cyan', fill=True, hatch='/', edgecolor="grey")
+        # ax.broken_barh([(m, (M-m))] , (ax.yaxis, (np.max(v)-np.min(v))), facecolors='grey')
+        ax.bar(k, v, color=chanCol[i-1])#, log=True
+
         ax.set_xlim(0,260)
+        ax.set_ylim(0,np.max(v))
+        ax.set_yscale('symlog', linthreshx=np.average(v))
+        ax.grid(True)
+
         ax.set_title('Ch' + str(i) + ' histogram', fontsize=14, color=chanCol[i-1])
     else:
       fig.text(0.3,0.5,'No Data Found!', fontsize=32)
@@ -88,24 +97,24 @@ def plotNrrd(request, image_id, image_type):
     if '_file' in image_type:
       if Original_nrrd.objects.filter(image=image_id, channel=int(image_type.replace('Ch','').replace('_file',''))).count() > 0:
         temprec = Original_nrrd.objects.get(image=image_id, channel=int(image_type.replace('Ch','').replace('_file','')))
-        file = temprec['file']
+        file = tempfolder + str(temprec.file)
         del temprec
         orient = str(record.settings.template.orientation)
         subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'temp_initial_nrrd' in image_type:
-      file = record.temp_initial_nrrd
-      orient = conv_orien[str(record.orig_orientation)]
+      file = tempfolder + str(record.temp_initial_nrrd)
+      orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(record.orig_orientation) + ' (' + orient + ')'
     elif 'aligned_bg' in image_type:
-      file = record.aligned_bg
+      file = tempfolder + str(record.aligned_bg)
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'aligned_sg' in image_type:
-      file = record.aligned_sg
+      file = tempfolder + str(record.aligned_sg)
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'aligned_ac1' in image_type:
-      file = record.aligned_ac1
+      file = tempfolder + str(record.aligned_ac1)
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[str(record.settings.template.orientation)]) + ' (' + orient + ')'
     elif 'template' in image_type:
@@ -136,7 +145,7 @@ def plotNrrd(request, image_id, image_type):
       ax=fig.add_subplot(1,2,2)
       imgplot = ax.imshow(zdata)
       imgplot.set_cmap('spectral')
-      fig.colorbar(imgplot)
+      fig.colorbar(imgplot, ax=ax, aspect=7.5)
       del xdata, zdata
       fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)), fontsize=fsize)
       ax.set_title('Max proj. (Z)')

@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'system',
     'images',
     'users',
+    'bootstrap3',
     'images.templatetags.images_extras',
     'users.templatetags.backend_utils',
     # Uncomment the next line to enable the admin:
