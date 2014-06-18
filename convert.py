@@ -4,8 +4,7 @@ from tiffile import TiffFile
 import numpy as np
 import bson
 import reorientate as ro
-from cmtk import collection, tempfolder, active, run_stage, adjust_thresh, checkDir, host
-
+from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
 
 def AutoBalance(data,threshold=adjust_thresh,background=0):
     bins=np.unique(data)
@@ -32,12 +31,15 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     data[data>M]=M
     data[data<m]=m
     dataA=np.round((data-m)*(255.0/(M-m)))
-    return (dataA, {'min': int(m),'max': int(M)}, { str(bins[x]): int(histogram[x]) for x in range(0,np.shape(bins)[0]-1)} )
+    hist=np.zeros(255)
+    for i in range(0,np.shape(bins)[0]-1):
+        hist[bins[i]]=histogram[i]
+    return (dataA, {'min': int(m),'max': int(M)}, hist)
 
 def convRec(record):
   if not 'loading_host' in record:
     record['loading_host'] = 'roberts-mbp'
-  if record['loading_host'] == host:
+  if not record['loading_host'] == host:
     print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   print 'Converting ' + file
@@ -80,29 +82,34 @@ def convRec(record):
     # swap X & Y to match NRRD standard order for saving:
     image = np.swapaxes(image,0,1)
     print record['name'] + record['original_ext'] + ' - ' + str(np.shape(image))
-    upd = {}
     rt = 0
     mt = 0
     sg = 0
     bg = 0
+    cur.execute("SELECT system_template.orientation FROM system_template, images_alignment WHERE images_alignment.id = %s", [record['id']])
+    tempOrien = cur.fetchone()[0]
     if 'orig_orientation' not in record.keys():
       if sh[ch] == 2:
-        record['orig_orientation']='left-posterior-superior'
+        record['orig_orientation']=comp_orien[tempOrien]
       else:
-        record['orig_orientation']='right-posterior-inferior'
+        record['orig_orientation']='right-posterior-inferior' # needs to be set at load
 
-    header['space'] = 'left-posterior-superior'
+    header['space'] = comp_orien[tempOrien]
     for c in xrange(0,sh[ch]):
+      upd = {}
       chan, Nbound, hist = AutoBalance(np.squeeze(image[:,:,:,c]))
       print 'Ch' + str(c+1) + ' - ' + str(np.shape(chan))
       Sname = tempfolder + record['name'] + '_Ch' + str(c+1) + '.nrrd'
-      if not record['orig_orientation'] == 'left-posterior-superior':
-        chan = ro.reorientate(np.uint8(chan), curOr=record['orig_orientation'], targOr='left-posterior-superior')
+
+      if not record['orig_orientation'] == comp_orien[tempOrien]:
+        chan = ro.reorientate(np.uint8(chan), curOr=record['orig_orientation'], targOr=comp_orien[tempOrien])
       else:
         chan = np.uint8(chan)
       print 'saving...'
       nrrd.write(Sname,chan, options=header)
-      upd.update({'Ch' + str(c+1) + '_file': Sname , 'Ch' + str(c+1) + '_pre_histogram': hist, 'Ch' + str(c+1) + '_new_boundary': Nbound})
+      upd.update({'image_id': record['id'], 'channel': + int(c+1), 'file': str(Sname), 'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
+      cur.execute("INSERT INTO images_original_nrrd (image_id, channel, file, pre_histogram, new_min, new_max) VALUES (%(image_id)s, %(channel)s, %(file)s, %(pre_histogram)s, %(new_min)s, %(new_max)s)", upd)
+      cur.connection.commit()
       ct = sum(chan[chan>20])
       if ct > rt:
         rt = ct
@@ -114,21 +121,44 @@ def convRec(record):
         mt = ct
         sg = c+1
     print 'BG: ' + str(bg) + ', SG: ' + str(sg)
-    record.update({'original_nrrd': upd , 'background_channel': bg, 'signal_channel': sg, 'alignment_stage': 2})
+    record['background_channel'] = bg
+    record['signal_channel'] = sg
+    record['alignment_stage'] = 2
+    # record.update({'original_nrrd': upd})
     record['max_stage'] = 2
-    collection.save(record)
+    # collection.save(record)
     tif.close()
     print 'conversion complete.'
     del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
+    return record
 
 def convert(name):
-  for record in collection.find({'alignment_stage': 1,'name': name}):
-    convRec(record)
+  cur.execute("SELECT * FROM images_alignment WHERE alignment_stage = 1 AND name like %s", [name])
+  records = cur.fetchall()
+  key = []
+  for desc in cur.description:
+      key.append(desc[0])
+  for line in records:
+      record = dict(zip(key,line))
+      r = convRec(record)
+      u = ''
+      for k, v in record:
+        if not k == 'id':
+          if not k == key[0]:
+            u = u + ', '
+          if type(v) == type(''):
+            u = u + str(k) + " = '" + str(v) + "'"
+          else:
+            u = u + str(k) + " = " + str(v)
+      cur.execute("UPDATE alignment_stage SET (%s) WHERE id = %s ", [u, str(record['id'])])
+      cur.connection.commit()
 
 if __name__ == "__main__":
   if active and '1' in run_stage:
-    for record in collection.find({'alignment_stage': 1}):
-      convRec(record)
+    cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 1")
+    records = cur.fetchall()
+    for line in records:
+      convert(line[0])
     print 'done'
   else:
     print 'inactive or stage 1 not selected'

@@ -5,9 +5,10 @@ import psycopg2
 
 con = psycopg2.connect(host='bocian.inf.ed.ac.uk', database='alignment', user='aligner_admin', password='default99')
 
-# client = MongoClient('129.215.90.148', 27017)
-# db = client.alignment
-# collection = db.images_alignment
+
+ori = ['LPS','RPI','RAS','LAI','PLI','PRS','ALS','ARI'] #X(>),Y(\/),Z(X).
+orien = [str(x).replace('R','right-').replace('L','left-').replace('P','posterior-').replace('A','anterior-').replace('S','superior').replace('I','inferior') for x in ori]
+comp_orien = dict(zip(ori,orien))
 
 cur = con.cursor()
 
@@ -16,43 +17,27 @@ setting_id=u'1'
 host = gethostname()
 print host
 
-cur.execute('SELECT * FROM servers WHERE host_name like ' + host)
+cur.execute("SELECT active, run_stages, temp_dir, cmtk_dir, template_dir FROM system_server WHERE host_name like '" + host + "'")
 record = cur.fetchone()
+print record
+template = 'template.nrrd'
+floatingImage = 'default.nrrd'
 # record = db.system_server.find_one({'host_name': host})
 
 if record:
-  if 'active' in record:
-    active = record['active']
-  if 'use_settings_id' in record:
-    setting_id = record['use_settings_id']
-  if 'use_DB' in record:
-    useDB = record['use_DB']
-  if 'run_stages' in record:
-    run_stage = str.split(str(record['run_stages']),',')
+  active = record[0]
+  run_stage = record[1]
+  tempfolder = str(record[2])
+  cmtkdir = str(record[3])
+  templatedir = str(record[4])
 
-  record = db.system_setting.find_one({'_id': setting_id})
+  cur.execute('SELECT file FROM system_template')
+  record = cur.fetchone()
+  print record
   if record:
-    if 'temp_dir' in record:
-      tempfolder = record['temp_dir']
-      print 'Settings loaded.'
-    if 'cmtk_dir' in record:
-      cmtkdir = record['cmtk_dir']
-    if 'template' in record:
-      template = record['template']
-    if 'auto_balance_th' in record:
-      adjust_thresh = float(record['auto_balance_th'])
-    if 'initial_pass_level' in record:
-      init_threshold = record['initial_pass_level']
-    if 'final_pass_level' in record:
-      threshold = record['final_pass_level']
+    template = templatedir + str(record[0])
 
-  if not str(useDB) == 'localhost':
-    client = MongoClient(str(useDB), 27017)
-    db = client.alignment
-    collection = db.processing
-
-
-  floatingImage = 'default.nrrd'
+  print 'Settings loaded.'
 
   def initial(floatingImage, xformOUT=floatingImage.replace('.nrrd','_initial.xform'), template=template, mode='--principal-axes'):
     if 'default' in xformOUT: xformOUT=floatingImage.replace('.nrrd','_initial.xform')
