@@ -94,6 +94,9 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '884257168498-3gec80pdfpullsaeavbg2nqra3aflru5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pvsqhFUx1kmBiGlVWERy_Q-b'
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
