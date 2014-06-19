@@ -4,18 +4,18 @@ import numpy as np
 import bson
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
-from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host
+from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
 
 def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', threshold=0.6):
   record = checkDir(record)
   print 'Finalising alignment for: ' + record['name']
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
-  record['aligned_BG'], r =cmtk.align(bgfile, template=template, settings=alignSet)
-  record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.avgOverlapCoeff, template=template))
-  record['aligned_slice_score'] = str(ci.rateOne(record['aligned_BG'] ,results=None, methord=slicescore.OverlapCoeff, template=template))
+  record['aligned_bg'], r =cmtk.align(bgfile, template=template, settings=alignSet)
+  record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_bg'] ,results=None, methord=slicescore.avgOverlapCoeff, template=template))
+  record['aligned_slice_score'] = str(ci.rateOne(record['aligned_bg'] ,results=None, methord=slicescore.OverlapCoeff, template=template))
   record['aligned_score'] = str(np.mean([np.float128(record['aligned_avgSlice_score']), np.float128(record['aligned_slice_score'])]))
   #Note: np.float128 array score converted to string as mongoDB only supports float(64/32 dependant on machine).
-  record['aligned_BG'] = str(record['aligned_BG']).replace(tempfolder,'')
+  record['aligned_bg'] = str(record['aligned_bg']).replace(tempfolder,'')
   print 'Result: ' + record['aligned_score']
   if record['aligned_score'] > threshold:
     record['alignment_stage'] = 6
@@ -23,7 +23,9 @@ def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', th
   else:
     record['alignment_stage'] = 0
     print 'Failed!'
-  if r > 0: record['alignment_stage'] = 0
+  if r > 0:
+    print 'Error Code:' + str(r)
+    record['alignment_stage'] = 0
   record['max_stage'] = 6
   return record
 
@@ -36,6 +38,10 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   # for i in range(1,6):
     # if not i == record['background_channel']:
     #   if i == record['signal_channel']:
+  if record['ac1_channel'] == 0:
+    for i in range(1,4):
+      if not (i == str(record['signal_channel']) or i == record['background_channel']):
+        record['ac1_channel'] = i
   sgchan = '_Ch' + str(record['signal_channel'])
   bgchan = '_Ch' + str(record['background_channel'])
   acchan = '_Ch' + str(record['ac1_channel'])
@@ -48,6 +54,7 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
     record['aligned_ac1'], r=cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['max_stage'] = 7
   if r>0:
+    print 'Error code:' + str(r)
     record['alignment_stage'] = 0
   return record
 

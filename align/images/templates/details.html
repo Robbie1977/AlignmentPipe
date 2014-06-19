@@ -13,7 +13,7 @@
   {% if record %}
     <center>
       <table class="table" border="1" cellpadding="5" summary="Details for alignment of {{ record.name }} which is currently {% if not record.complete %} undergoing {% endif %}{{ record.alignment_stage|state }}">
-        <CAPTION><EM>Details for alignment of {{ record.name }}{% if not record.complete %}{% if record.alignment_stage == 0 %}, failed after {{ record.max_stage|fini }}{% else %}, {{ record.max_stage|fini }} awaiting {{ record.alignment_stage|state }}{% endif %}{% endif %}</EM></CAPTION>
+        <CAPTION><EM><h2>Details for alignment of {{ record.name }}{% if not record.complete %}{% if record.alignment_stage == 0 %}, failed after {{ record.max_stage|fini }}{% else %}, {{ record.max_stage|fini }}, awaiting {{ record.alignment_stage|state }}{% endif %}{% endif %}</h2></EM></CAPTION>
           <TR><TH>Name<TH>Stage<TH>Max stage reached<TH>Original File<TH>Original Orientation
           <TR><TH><a href="/admin/images/alignment/{{ record.id }}/">{{ record.name }}</a><TH>{{ record.alignment_stage|state }}<TH>{{ record.max_stage|fini }}<TH>{{ record.original_path }}/{{ record.name }}{{ record.original_ext }}<TH>{{ record.orig_orientation }}
       </table>
