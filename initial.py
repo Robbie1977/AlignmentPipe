@@ -1,6 +1,6 @@
 import os, sys, nrrd, cmtk
 import numpy as np
-import bson
+# import bson
 import warpScoring.CheckImages as ci
 from cmtk import tempfolder, active, run_stage, cmtkdir, checkDir, host, template, cur, templatedir
 
