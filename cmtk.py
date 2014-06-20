@@ -1,5 +1,4 @@
 import sys, subprocess
-from pymongo import MongoClient
 from socket import gethostname
 import psycopg2
 
