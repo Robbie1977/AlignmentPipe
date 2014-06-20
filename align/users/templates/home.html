@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
-
+{% load backend_utils %}
 {% block main %}
  <div>
- <h1>Third-party authentication demo</h1>
+ <h1>VFB Brain Alignment</h1>
 
  <p>
    <ul>
    {% if user and not user.is_anonymous %}
      <li>
-       <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+       Hello {{ user.username|getfirstname }}</a>
+     </li>
+     <li>
+       <a href="/images">Your current alignments are located here.</a>
+     </li>
+     <li>
+       <a href"/upload">You can upload new image stacks here.</a>
      </li>
      <li>
        <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>

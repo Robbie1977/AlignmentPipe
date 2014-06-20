@@ -1,5 +1,4 @@
 from django.conf.urls import url
-
 from images import views
 
 urlpatterns = [
@@ -11,5 +10,4 @@ urlpatterns = [
     # url(r'^$', views.index, name='details')
     # url(r'^/staticImage.png$', 'images.views.showStaticImage'),
     # url(r'^hist/$', views.index, name='index'),
-
 ]

@@ -1,13 +1,13 @@
 from django.db import models
 import fnmatch
 import os
-from images.models import comp_orien, conv_orien
 from socket import gethostname
 
 host = gethostname()
 
 # temp=['/tmp/']
 temp=['/disk/data/VFB/aligner/tmp/']
+updir=['/disk/data/VFB/aligner/uploads/']
 templatedir=['/disk/data/VFBTools/']
 TAGtemplate=['DrosAdultTAGdomains/template/Neuropil_LPS.nrrd']
 cmtk=['/disk/data/VFBTools/cmtk/bin/']
@@ -29,10 +29,12 @@ cmtk=['/disk/data/VFBTools/cmtk/bin/']
 # Create your models here.
 
 class Template(models.Model):
+    from images.models import comp_orien, conv_orien
     name = models.CharField(max_length=50, default='Drosophila,Adult,TAG,LPS')
     orientation = models.CharField(max_length=50, choices=comp_orien.items(), default='LPS')
     file = models.TextField(max_length=1000, default=TAGtemplate[-1])
     def __str__(self):
+        from images.models import comp_orien, conv_orien
         parts = str(self.name).split(',')
         return 'Template for the ' + parts[2] + ' of the ' + parts[1].lower() + ' ' + parts[0] + ' with an orientation of ' + comp_orien[parts[3]]
 
@@ -57,6 +59,7 @@ class Server(models.Model):
     temp_dir = models.TextField(max_length=1000, default=temp[-1])
     cmtk_dir = models.TextField(max_length=1000, default=cmtk[-1])
     template_dir = models.TextField(max_length=1000, default=templatedir[-1])
+    upload_dir = models.TextField(max_length=1000, default=updir[-1])
     # use_db = models.CharField(max_length=100, default='bocian.inf.ed.ac.uk')
     def __str__(self):
         from images.models import stage
@@ -90,3 +93,6 @@ def checkDir(record):
           record.aligned_ac1 = str(record.aligned_ac1).replace(oldSerRec.temp_dir,curSerRec.temp_dir)
           record.last_host = host
     return record
+
+
+tempfolder = str(Server.objects.filter(host_name=host).values('temp_dir')[0]['temp_dir'])

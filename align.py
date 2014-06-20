@@ -11,9 +11,9 @@ def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', th
   print 'Finalising alignment for: ' + record['name']
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   record['aligned_bg'], r =cmtk.align(bgfile, template=template, settings=alignSet)
-  record['aligned_avgSlice_score'] = str(ci.rateOne(record['aligned_bg'] ,results=None, methord=slicescore.avgOverlapCoeff, template=template))
+  record['aligned_avgslice_score'] = str(ci.rateOne(record['aligned_bg'] ,results=None, methord=slicescore.avgOverlapCoeff, template=template))
   record['aligned_slice_score'] = str(ci.rateOne(record['aligned_bg'] ,results=None, methord=slicescore.OverlapCoeff, template=template))
-  record['aligned_score'] = str(np.mean([np.float128(record['aligned_avgSlice_score']), np.float128(record['aligned_slice_score'])]))
+  record['aligned_score'] = str(np.mean([np.float128(record['aligned_avgslice_score']), np.float128(record['aligned_slice_score'])]))
   #Note: np.float128 array score converted to string as mongoDB only supports float(64/32 dependant on machine).
   record['aligned_bg'] = str(record['aligned_bg']).replace(tempfolder,'')
   print 'Result: ' + record['aligned_score']
@@ -45,15 +45,19 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   sgchan = '_Ch' + str(record['signal_channel'])
   bgchan = '_Ch' + str(record['background_channel'])
   acchan = '_Ch' + str(record['ac1_channel'])
-  r=5
   if sgchan in chfile:
-    record['aligned_sg'], r=cmtk.align(chfile, xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+    record['aligned_sg'], r =cmtk.align(chfile, xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['alignment_stage'] = 7
     record['max_stage'] = 7
+    record['aligned_sg'] = str(record['aligned_sg']).replace(tempfolder,'')
   elif acchan in chfile:
-    record['aligned_ac1'], r=cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+    record['aligned_ac1'], r =cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['max_stage'] = 7
-  if r>0:
+    record['aligned_ac1'] = str(record['aligned_ac1']).replace(tempfolder,'')
+  else:
+    print chfile + ' not identified'
+    r = 5
+  if r > 0:
     print 'Error code:' + str(r)
     record['alignment_stage'] = 0
   return record

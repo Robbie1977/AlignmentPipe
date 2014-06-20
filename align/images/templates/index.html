@@ -18,6 +18,20 @@
       {# {% endif %}#}
     {% endfor %}
   </table>
+  <!-- Upload form. Note enctype attribute! -->
+        <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.file.label_tag }} {{ form.file }}{{ form.file.errors }}
+            </p>
+            <p>{{ form.file.help_text }}{{ form.non_orientation_errors }}</p>
+            <p>{{ form.orientation.label_tag }} {{ form.orientation.help_text }}<br />{{ form.orientation }}{{ form.orientation.errors }}
+            </p>
+            <p>{{ form.non_settings_errors }}</p>
+            <p>{{ form.settings.label_tag }} {{ form.settings.help_text }}<br />{{ form.settings }}{{ form.settings.errors }}
+            </p>
+            <p><input type="submit" value="Upload" /></p>
+        </form>
 {% else %}
     <p>No images to align.</p>
 {% endif %}

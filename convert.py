@@ -93,7 +93,11 @@ def convRec(record):
         record['orig_orientation']=comp_orien[tempOrien]
       else:
         record['orig_orientation']='right-posterior-inferior' # needs to be set at load
-
+    if record['orig_orientation'] == '':
+      if sh[ch] == 2:
+        record['orig_orientation']=comp_orien[tempOrien]
+      else:
+        record['orig_orientation']='right-posterior-inferior' # needs to be set at load
     header['space'] = comp_orien[tempOrien]
     for c in xrange(0,sh[ch]):
       upd = {}

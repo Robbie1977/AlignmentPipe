@@ -9,6 +9,24 @@ register = template.Library()
 name_re = re.compile(r'([^O])Auth')
 
 @register.filter
+def getfullname(user):
+    from users.models import User
+    fn = User.objects.filter(username=user).values('first_name', 'last_name')[0]
+    return fn['first_name'] + ' ' + fn['last_name']
+
+@register.filter
+def getfirstname(user):
+    from users.models import User
+    fn = User.objects.filter(username=user).values('first_name', 'last_name')[0]
+    return fn['first_name']
+
+@register.filter
+def getlastname(user):
+    from users.models import User
+    fn = User.objects.filter(username=user).values('first_name', 'last_name')[0]
+    return fn['last_name']
+
+@register.filter
 def backend_name(backend):
     name = backend.__class__.__name__
     name = name.replace('OAuth', ' OAuth')

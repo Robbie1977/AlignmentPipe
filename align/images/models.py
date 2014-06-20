@@ -1,6 +1,8 @@
 from django.db import models
 from socket import gethostname
 
+import os
+
 host = gethostname()
 
 stage = {0: 'failed (check settings and restart)',1:'preprocessing', 2:'initial alignment', 3:'affine alignment', 4:'final warp alignment', 5:'checking alignment', 6: 'aligning other channels', 7: 'alignment done'}
@@ -14,6 +16,7 @@ conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
 # Create your models here.
 
 class Alignment(models.Model):
+    from users.models import User
     from system.models import Setting
     name = models.CharField(max_length=500)
     settings = models.ForeignKey(Setting, default=1)
@@ -35,6 +38,7 @@ class Alignment(models.Model):
     aligned_ac1 = models.TextField(max_length=1000, blank=True)
     aligned_slice_score = models.CharField(max_length=20, blank=True)
     aligned_avgslice_score = models.CharField(max_length=20, blank=True)
+    user = models.ForeignKey(User, blank=True)
     def __str__(self):
         return self.name
     def complete(self):
@@ -57,7 +61,11 @@ class Original_nrrd(models.Model):
     def __str__(self):
         return self.Alignment.name + ' channel ' + str(channel)
 
-# class Choice(models.Model):
-    # question = models.ForeignKey(Question)
-    # choice_text = models.CharField(max_length=200)
-    # votes = models.IntegerField(default=0)
+class Upload(models.Model):
+    from users.models import User
+    from system.models import Server, Setting, tempfolder
+    file = models.FileField(upload_to='web' + os.path.sep)
+    settings = models.ForeignKey(Setting, default=1)
+    orientation = models.CharField(max_length=50, choices=orien, default='left-posterior-superior', blank=True)
+    def curStage(self):
+        return self.file

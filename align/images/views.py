@@ -1,24 +1,84 @@
 # Create your views here.
-from django.http import HttpResponse
-from django.shortcuts import render
-from images.models import Alignment, Original_nrrd, comp_orien, conv_orien
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from images.models import Alignment, Original_nrrd, comp_orien, conv_orien, Upload
 from system.models import Setting, Server, Template
 from django.views import generic
 from socket import gethostname
+from django.db.models import Q
+
+from images.forms import UploadForm
 
 host = gethostname()
 
 tempfolder = str(Server.objects.filter(host_name=host).values('temp_dir')[0]['temp_dir'])
+uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['upload_dir'])
 
 def index(request):
-    align_list = Alignment.objects.all().order_by('alignment_stage', 'name')
-    context = {'align_list': align_list}
-    return render(request, 'index.html', context)
+    from users.models import User
+    if not request.user == '':
+      cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
+      align_list = Alignment.objects.filter(Q(user=cu) | Q(user=None)).order_by('alignment_stage', 'name')
+      context = {'align_list': align_list}
+      return render(request, 'index.html', context)
+    else:
+      return HttpResponseRedirect('/')
 
 def detail(request, image_id):
-    align_list = Alignment.objects.get(id=image_id)
-    context = {'record': align_list}
-    return render(request, 'details.html', context)
+    if not request.user == '':
+      align_list = Alignment.objects.get(id=image_id)
+      context = {'record': align_list}
+      return render(request, 'details.html', context)
+    else:
+      return HttpResponseRedirect('/')
+
+def handle_uploaded_file(ufile, dest):
+    from django.core.files.storage import default_storage
+    from django.core.files.base import ContentFile
+    path = default_storage.save(dest, ContentFile(ufile.read()))
+    return path
+    #
+    # dest = open(dest, 'wb+')
+    # dest.write(ufile)
+    # dest.close()
+
+
+def upload(request):
+    from django.contrib import messages
+    from django.conf import settings as st
+    from users.models import User
+    import os
+    # Handle file upload
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = str(request.user) + '-' + str(request.FILES['file'])
+            setting = Setting.objects.get(id=int(request.POST['settings']))
+            if '.tif' in file or '.lsm' in file:
+              # file = str(st.MEDIA_URL) + file
+              file = handle_uploaded_file(request.FILES['file'], dest=file)
+              name = str(os.path.splitext(os.path.basename(file))[0])
+              ext = str(os.path.splitext(os.path.basename(file))[1])
+              folder = str(st.MEDIA_ROOT)
+              ori = str(request.POST['orientation'])
+              cu = User.objects.get(username=request.user)
+              newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
+              newimage.save()
+              return HttpResponseRedirect('/images')
+            else:
+              messages.error(request, 'Not a LSM or tif file')
+              return HttpResponseRedirect('/images')
+        # else:
+        # messages.error(request, 'Invalid data')
+    else:
+        form = UploadForm() # A empty, unbound form
+
+    # Render list page with the documents and the form
+    align_list = Alignment.objects.all().order_by('alignment_stage', 'name')
+    context = {'align_list': align_list, 'form': form}
+    return render_to_response('index.html', context, context_instance=RequestContext(request))
+
 
 # def showStaticImage(request):
 #     """ Simply return a static image as a png """
@@ -147,7 +207,7 @@ def plotNrrd(request, image_id, image_type):
       imgplot.set_cmap('spectral')
       fig.colorbar(imgplot, ax=ax, aspect=7.5)
       del xdata, zdata
-      fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)), fontsize=fsize)
+      fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
       ax.set_title('Max proj. (Z)')
       ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
       ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
