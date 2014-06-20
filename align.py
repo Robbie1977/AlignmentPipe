@@ -1,6 +1,5 @@
 import os, sys, nrrd, cmtk
 import numpy as np
-import bson
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
