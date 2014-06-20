@@ -1,4 +1,3 @@
-# from pymongo import MongoClient
 import os, sys
 from cmtk import tempfolder, active, run_stage, host, templatedir, cur, comp_orien, ori, orien
 

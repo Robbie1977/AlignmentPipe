@@ -1,4 +1,3 @@
-from pymongo import MongoClient
 import os, sys, nrrd, cmtk
 import numpy as np
 import bson

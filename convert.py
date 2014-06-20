@@ -1,4 +1,3 @@
-from pymongo import MongoClient
 import os, sys, nrrd, json
 from tiffile import TiffFile
 import numpy as np
