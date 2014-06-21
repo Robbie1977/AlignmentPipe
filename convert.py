@@ -59,10 +59,18 @@ def convRec(record):
       # print header
     else:
       metadata = tif[0].image_description
-      metadata = json.loads(metadata.decode('utf-8'))
-      print(image.shape, image.dtype, metadata['microscope'])
-      print metadata
+      # metadata = json.loads(metadata.decode('utf-8'))
+      # voxel = metadata['Voxel size']
+      # TBD: resolve zoxel size!
+      voxelZ = 0.5
+      voxelY = 0.5
+      voxelX = 0.5
       header = {}
+      header['encoding'] = 'gzip'
+      header['space directions'] = [[float(voxelX),0.0,0.0],[0.0,float(voxelY),0.0],[0.0,0.0,float(voxelZ)]]
+      header['space units'] = ['"px"', '"px"', '"px"']
+      print(image.shape, image.dtype)
+      print metadata
       # TBD: add voxel size data
       # header['keyvaluepairs'] = dict(metadata)
     image = np.squeeze(image)
