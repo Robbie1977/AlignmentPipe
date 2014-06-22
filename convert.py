@@ -11,7 +11,7 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     histogram=binc[binc>0]
     del binc
     if background in bins:
-        i = where(bins==background)
+        i = np.where(bins==background)
         v = bins[i][0]
         c = histogram[i][0]
         th=long(((np.sum(histogram)-histogram[i][0])/np.shape(data)[2])*threshold)
