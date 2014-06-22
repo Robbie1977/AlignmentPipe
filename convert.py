@@ -6,7 +6,7 @@ import reorientate as ro
 from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
 
 def AutoBalance(data,threshold=adjust_thresh,background=0):
-    data = uint8(255*double(data)/np.max(data)) #scale to 8 bit
+    data = np.uint8(255*double(data)/np.max(data)) #scale to 8 bit
     bins=np.unique(data)
     binc=np.bincount(data.flat)
     histogram=binc[binc>0]
