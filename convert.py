@@ -58,7 +58,7 @@ def convRec(record):
       header['space units'] = ['"microns"', '"microns"', '"microns"']
       # header['keyvaluepairs'] = dict(metadata)
       # print header
-    else:
+    elif tif.is_tif:
       metadata = tif[0].image_description
       # metadata = json.loads(metadata.decode('utf-8'))
       # voxel = metadata['Voxel size']
@@ -71,9 +71,14 @@ def convRec(record):
       header['space directions'] = [[float(voxelX),0.0,0.0],[0.0,float(voxelY),0.0],[0.0,0.0,float(voxelZ)]]
       header['space units'] = ['"px"', '"px"', '"px"']
       print(image.shape, image.dtype)
+      image = np.max(image,axis=4)
       print metadata
       # TBD: add voxel size data
       # header['keyvaluepairs'] = dict(metadata)
+    else:
+      print 'UNKNOWN FORMAT!'
+      record['alignment_stage'] = 0
+      return record
     image = np.squeeze(image)
     sh = np.array(np.shape(image))
     ch = np.argmin(sh)
