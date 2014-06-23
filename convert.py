@@ -71,10 +71,11 @@ def convRec(record):
       header['space units'] = ['"px"', '"px"', '"px"']
       print(image.shape, image.dtype)
       if image.ndim > 4:
-        image = np.max(image,axis=4)
+        rmdim = np.argmin(image.shape)
+        image = np.max(image,axis=rmdim)
         print 'slimed down to:'
         print(image.shape, image.dtype)
-        
+
       print metadata
       # TBD: add voxel size data
       # header['keyvaluepairs'] = dict(metadata)
