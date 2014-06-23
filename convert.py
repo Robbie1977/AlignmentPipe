@@ -71,7 +71,7 @@ def convRec(record):
       header['space units'] = ['"px"', '"px"', '"px"']
       print(image.shape, image.dtype)
       if image.ndim > 4:
-        sh = image.shape
+        sh = np.array(image.shape)
         rmdim = np.argmin(sh)
         if sh[rmdim] > 1:
           sh[rmdim]=np.max(sh)
