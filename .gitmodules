@@ -13,3 +13,6 @@
 [submodule "pynrrd"]
 	path = pynrrd
 	url = git@github.com:Robbie1977/pynrrd.git
+[submodule "align/align/openid-git"]
+	path = align/align/openid-git
+	url = git@github.com:openid/python-openid.git
