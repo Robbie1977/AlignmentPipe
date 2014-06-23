@@ -1,7 +1,6 @@
 import os, sys, nrrd, json
 from tiffile import TiffFile
 import numpy as np
-import bson
 import reorientate as ro
 from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
 
