@@ -71,7 +71,11 @@ def convRec(record):
       header['space units'] = ['"px"', '"px"', '"px"']
       print(image.shape, image.dtype)
       if image.ndim > 4:
-        rmdim = np.argmin(image.shape)
+        sh = image.shape
+        rmdim = np.argmin(sh)
+        if sh[rmdim] > 1:
+          sh[rmdim]=np.max(sh)
+          rmdim = np.argmin(sh)
         image = np.max(image,axis=rmdim)
         print 'slimed down to:'
         print(image.shape, image.dtype)
