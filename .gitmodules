@@ -19,3 +19,6 @@
 [submodule "align/align/requests-oauthlib-git"]
 	path = align/align/requests-oauthlib-git
 	url = git@github.com:requests/requests-oauthlib.git
+[submodule "align/django-bootstrap3"]
+	path = align/django-bootstrap3
+	url = git@github.com:dyve/django-bootstrap3.git
