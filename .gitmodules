@@ -16,3 +16,6 @@
 [submodule "align/align/openid-git"]
 	path = align/align/openid-git
 	url = git@github.com:openid/python-openid.git
+[submodule "align/align/requests-oauthlib-git"]
+	path = align/align/requests-oauthlib-git
+	url = git@github.com:requests/requests-oauthlib.git
