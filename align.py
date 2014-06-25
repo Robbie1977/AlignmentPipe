@@ -36,7 +36,7 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   # for i in range(1,6):
     # if not i == record['background_channel']:
     #   if i == record['signal_channel']:
-  if record['ac1_channel'] == 0:
+  if record['ac1_channel'] < 1:
     for i in range(1,4):
       print 'Checking for AC1 in channel ' + str(i)
       if not (i == int(record['signal_channel']) or i == int(record['background_channel'])):
