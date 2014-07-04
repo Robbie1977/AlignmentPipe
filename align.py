@@ -42,6 +42,7 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
       if not (i == int(record['signal_channel']) or i == int(record['background_channel'])):
         record['ac1_channel'] = i
         print 'Set AC1 Channel to ' + str(i)
+  r = 0
   sgchan = '_Ch' + str(record['signal_channel'])
   bgchan = '_Ch' + str(record['background_channel'])
   acchan = '_Ch' + str(record['ac1_channel'])
