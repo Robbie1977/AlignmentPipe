@@ -6,7 +6,7 @@ con = psycopg2.connect(host='bocian.inf.ed.ac.uk', database='alignment', user='a
 cur = con.cursor()
 cur.execute("SELECT upload_dir FROM system_server WHERE host_name like '" + host + "'")
 record = cur.fetchone()
-if record = None:
+if record == None:
   print 'Missing server settings for ' + str(host)
   cur.execute("SELECT upload_dir, host_name FROM system_server")
   record = cur.fetchone()
