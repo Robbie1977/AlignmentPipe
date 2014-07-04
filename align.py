@@ -54,6 +54,8 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
     record['aligned_ac1'], r =cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['max_stage'] = 7
     record['aligned_ac1'] = str(record['aligned_ac1']).replace(tempfolder,'')
+  elif bgchan in chfile:
+    print chfile + ' background channel'
   else:
     print chfile + ' not identified'
     r = 5
