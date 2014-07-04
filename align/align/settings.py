@@ -8,10 +8,8 @@ cur.execute("SELECT upload_dir FROM system_server WHERE host_name like '" + host
 record = cur.fetchone()
 if record == None:
   print 'Missing server settings for ' + str(host)
-  cur.execute("SELECT upload_dir, host_name FROM system_server")
+  cur.execute("SELECT upload_dir FROM system_server")
   record = cur.fetchone()
-  print 'Having to use settings for ' + str(record[1])
-  host = str(record[1])
 uploadfolder = str(record[0])
 cur.close()
 con.close()
