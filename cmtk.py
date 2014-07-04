@@ -71,29 +71,31 @@ if record:
     if host == str(record['last_host']):
       return record
     else:
-      temprec = db.system_server.find_one({'host_name': str(record['last_host'])})
+      cur.execute("SELECT active, run_stages, temp_dir, cmtk_dir, template_dir FROM system_server WHERE host_name like '" + host + "'")
+      temprec = cur.fetchone()
+      # temprec = db.system_server.find_one({'host_name': str(record['last_host'])})
       if temprec:
-        if 'use_settings_id' in temprec:
-          tempSet_id = temprec['use_settings_id']
-          temprec2 = db.system_setting.find_one({'_id': tempSet_id})
-          if temprec2:
-            if 'temp_dir' in temprec2:
-              prevtempfolder = temprec2['temp_dir']
-              print 'Replacing ' + str(prevtempfolder) + ' with ' + str(tempfolder) + ' in:'
-              for key, value in record.items():
-                if key == 'original_nrrd':
-                  print '    Original nrrd data:'
-                  for k,v in record['original_nrrd'].items():
-                    if prevtempfolder in str(v):
-                      print '                ' + str(v)
-                      temp = str(v).replace(prevtempfolder,tempfolder)
-                      record['original_nrrd'][k]=temp
-                else:
-                  if prevtempfolder in str(value):
-                    print '    ' + str(value)
-                    temp = str(value).replace(prevtempfolder,tempfolder)
-                    record[key]=temp
-              record['last_host'] = host
+        # if 'use_settings_id' in temprec:
+        #   tempSet_id = temprec['use_settings_id']
+        #   temprec2 = db.system_setting.find_one({'_id': tempSet_id})
+        #   if temprec2:
+            # if 'temp_dir' in temprec2:
+        prevtempfolder = temprec[2]
+        print 'Replacing ' + str(prevtempfolder) + ' with ' + str(tempfolder) + ' in:'
+        for key, value in record.items():
+          # if key == 'original_nrrd':
+          #   print '    Original nrrd data:'
+          #   for k,v in record['original_nrrd'].items():
+          #     if prevtempfolder in str(v):
+          #       print '                ' + str(v)
+          #       temp = str(v).replace(prevtempfolder,tempfolder)
+          #       record['original_nrrd'][k]=temp
+          # else:
+          if prevtempfolder in str(value):
+            print '    ' + str(value)
+            temp = str(value).replace(prevtempfolder,tempfolder)
+            record[key]=temp
+        record['last_host'] = host
       return record
 
 else:
