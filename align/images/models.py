@@ -5,8 +5,8 @@ import os
 
 host = gethostname()
 
-stage = {0: 'failed (check settings and restart)',1:'preprocessing', 2:'initial alignment', 3:'affine alignment', 4:'final warp alignment', 5:'checking alignment', 6: 'aligning other channels', 7: 'alignment done'}
-comp = {0: 'awaiting processing',1:'convertion complete', 2:'preprocessing complete', 3:'initial alignment complete', 4:'affine alignment complete', 5:'final warp complete', 6: 'background alignment complete', 7: 'all channels aligned'}
+stage = {0: 'failed (check settings and restart)',1:'preprocessing', 2:'initial alignment', 3:'affine alignment', 4:'final warp alignment', 5:'checking alignment', 6: 'aligning other channels', 7: 'alignment done', 10: 'request merged tif', 20: 'merged tif created'}
+comp = {0: 'awaiting processing',1:'convertion complete', 2:'preprocessing complete', 3:'initial alignment complete', 4:'affine alignment complete', 5:'final warp complete', 6: 'background alignment complete', 7: 'all channels aligned', 10: 'merged tif requested', 20: 'merged tif created'}
 chan = {0: 'to be calculated', 1:'Channel 1', 2:'Channel 2', 3:'Channel 3'}
 ori = ['LPS','RPI','RAS','LAI','PLI','PRS','ALS','ARI'] #X(>),Y(\/),Z(X).
 orien = [str(x).replace('R','right-').replace('L','left-').replace('P','posterior-').replace('A','anterior-').replace('S','superior').replace('I','inferior') for x in ori]
@@ -38,6 +38,7 @@ class Alignment(models.Model):
     aligned_ac1 = models.TextField(max_length=1000, blank=True)
     aligned_slice_score = models.CharField(max_length=20, blank=True)
     aligned_avgslice_score = models.CharField(max_length=20, blank=True)
+    aligned_tif = models.TextField(max_length=1000, blank=True)
     user = models.ForeignKey(User, blank=True)
     def __str__(self):
         return self.name
