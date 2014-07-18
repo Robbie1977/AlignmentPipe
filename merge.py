@@ -1,7 +1,7 @@
 import os, sys, nrrd, json
 from tiffile import TiffFile, imsave
 import numpy as np
-# from cmtk import tempfolder, active, run_stage, host, templatedir, cur, comp_orien, ori, orien
+from cmtk import tempfolder, active, run_stage, host, templatedir, cur, comp_orien, ori, orien
 
 
 def createTiff(RedCh=None, GreenCh=None, BlueCh=None, Output='merged.tif'):
