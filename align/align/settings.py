@@ -18,8 +18,8 @@ con.close()
 del cur, con, record
 # Django settings for align project.
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+# DEBUG = True
+# TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Robert Court', 'r.court@ed.ac.uk'),
