@@ -4,7 +4,7 @@ from system.models import Setting, Server, Template
 from images.models import stage
 import system.forms
 
-STAGE_CHOICES = stage.items()[1:-1]
+STAGE_CHOICES = stage.items()
 
 class ServerForm(forms.ModelForm):
     run_stages = system.forms.CSIMultipleChoiceField(choices=STAGE_CHOICES)
