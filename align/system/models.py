@@ -5,6 +5,12 @@ from socket import gethostname
 
 host = gethostname()
 
+ori = ['LPS','RPI','RAS','LAI','PLI','PRS','ALS','ARI'] #X(>),Y(\/),Z(X).
+orien = [str(x).replace('R','right-').replace('L','left-').replace('P','posterior-').replace('A','anterior-').replace('S','superior').replace('I','inferior') for x in ori]
+comp_orien = dict(zip(ori,orien))
+orien = zip(orien,orien)
+conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
+
 # temp=['/tmp/']
 temp=['/disk/data/VFB/aligner/tmp/']
 updir=['/disk/data/VFB/aligner/uploads/']
@@ -29,7 +35,6 @@ cmtk=['/disk/data/VFBTools/cmtk/bin/']
 # Create your models here.
 
 class Template(models.Model):
-    from images.models import comp_orien, conv_orien
     name = models.CharField(max_length=50, default='Drosophila,Adult,TAG,LPS')
     orientation = models.CharField(max_length=50, choices=comp_orien.items(), default='LPS')
     file = models.TextField(max_length=1000, default=TAGtemplate[-1])
