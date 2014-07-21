@@ -19,7 +19,7 @@ class Alignment(models.Model):
     #from users.models import User
     #from system.models import Setting
     name = models.CharField(max_length=500)
-    settings = models.ForeignKey('Setting', default=1)
+    settings = models.ForeignKey('system.Setting', default=1)
     max_stage = models.IntegerField(choices=comp.items(), default=0)
     last_host = models.CharField(max_length=100, blank=True, default=host)
     aligned_score = models.CharField(max_length=20, blank=True)
@@ -39,7 +39,7 @@ class Alignment(models.Model):
     aligned_slice_score = models.CharField(max_length=20, blank=True)
     aligned_avgslice_score = models.CharField(max_length=20, blank=True)
     aligned_tif = models.TextField(max_length=1000, blank=True)
-    user = models.ForeignKey('User', blank=True)
+    user = models.ForeignKey('user.User', blank=True)
     def __str__(self):
         return self.name
     def complete(self):
