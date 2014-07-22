@@ -65,10 +65,11 @@ class Original_nrrd(models.Model):
         return self.Alignment.name + ' channel ' + str(channel)
 
 class Upload(models.Model):
+    import system.models
     #from users.models import User
     #from system.models import Server, Setting, tempfolder
     file = models.FileField(upload_to='web' + os.path.sep)
-    settings = models.ForeignKey('Setting', default=1)
+    settings = models.ForeignKey('system.Setting', default=1)
     orientation = models.CharField(max_length=50, choices=orien, default='left-posterior-superior', blank=True)
     def curStage(self):
         return self.file
