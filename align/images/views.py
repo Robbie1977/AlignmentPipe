@@ -91,6 +91,9 @@ def upload(request):
 #     return response
 
 def plotResults(request, image_id):
+    import os
+    import tempfile
+    os.environ['MPLCONFIGDIR'] = tempfile.mkdtemp()
     import matplotlib
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
