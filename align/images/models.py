@@ -17,7 +17,7 @@ conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
 
 class Alignment(models.Model):
     import users.models
-    import system.models
+    import systems.models
     #from users.models import User
     #from system.models import Setting
     name = models.CharField(max_length=500)
