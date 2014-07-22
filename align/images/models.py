@@ -17,11 +17,11 @@ conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
 
 class Alignment(models.Model):
     import users.models
-    import systems.models
+    import system.models
     #from users.models import User
     #from system.models import Setting
     name = models.CharField(max_length=500)
-    settings = models.ForeignKey('systems.Setting', default=1)
+    settings = models.ForeignKey('system.Setting', default=1)
     max_stage = models.IntegerField(choices=comp.items(), default=0)
     last_host = models.CharField(max_length=100, blank=True, default=host)
     aligned_score = models.CharField(max_length=20, blank=True)
