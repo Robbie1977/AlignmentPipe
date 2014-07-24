@@ -13,7 +13,7 @@
   <table class="table" align="center">
     {% for record in align_list %}
       {# {% if record.id == request %}#}
-        <TR><TH align="center" >{% if record.complete %}<img src="http://localhost:8000/static/admin/img/icon-yes.gif" />{% else %}<img src="http://localhost:8000/static/admin/img/icon-no.gif" />{% endif %}<TH><a href="{% url 'details' record.id %}">{{ record.name }}</a><TH>{% if record.alignment_stage == 0 %}{{ record.alignment_stage|state }}{% else %}{{ record.max_stage|fini }}<TH> queued for {{ record.alignment_stage|state }}{% endif %}
+        <TR><TH align="center" >{% if record.complete %}<img src="/static/admin/img/icon-yes.gif" />{% else %}<img src="/static/admin/img/icon-no.gif" />{% endif %}<TH><a href="{% url 'details' record.id %}">{{ record.name }}</a><TH>{% if record.alignment_stage == 0 %}{{ record.alignment_stage|state }}{% else %}{{ record.max_stage|fini }}<TH> queued for {{ record.alignment_stage|state }}{% endif %}
         <!-- <li>{{ record.orig_orientation }}</li> -->
       {# {% endif %}#}
     {% endfor %}
