@@ -15,6 +15,7 @@ framework.
 """
 import os
 import sys
+import align
 
 sys.path.append('/disk/data/VFBTools/AlignmentPipe/align')
 sys.path.append('/disk/data/VFBTools/AlignmentPipe/align/align')
