@@ -16,10 +16,10 @@ framework.
 import os
 import sys
 
-sys.path.append('/disk/data/VFBTools/AlignmentPipe/align')
+sys.path.append('/disk/data/VFB/aligner/AlignmentPipe/align')
 
-os.environ['PYTHON_EGG_CACHE'] = '/disk/data/VFBTools/AlignmentPipe/align/.python-egg'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'admin.settings'
+os.environ['PYTHON_EGG_CACHE'] = '/disk/data/VFB/aligner/AlignmentPipe/align/.python-egg'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
