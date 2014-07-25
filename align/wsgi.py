@@ -15,13 +15,12 @@ framework.
 """
 import os
 import sys
-import align
 
 sys.path.append('/disk/data/VFBTools/AlignmentPipe/align')
-sys.path.append('/disk/data/VFBTools/AlignmentPipe/align/align')
+sys.path.append('/disk/data/VFBTools/AlignmentPipe/align/alignSet')
 
 os.environ['PYTHON_EGG_CACHE'] = '/disk/data/VFBTools/AlignmentPipe/align/.python-egg'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'align.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'alignSet.settings'
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
