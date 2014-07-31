@@ -14,7 +14,7 @@ class User(models.Model):
         user.save()
         return True
     def is_authenticated(self):
-        if self.is_active = True:
+        if self.is_active == True:
           return True
         else:
           return False
