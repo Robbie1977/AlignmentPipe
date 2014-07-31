@@ -114,8 +114,18 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '884257168498-3gec80pdfpullsaeavbg2nqra3aflru5.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pvsqhFUx1kmBiGlVWERy_Q-b'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '884257168498-3gec80pdfpullsaeavbg2nqra3aflru5.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'pvsqhFUx1kmBiGlVWERy_Q-b'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY',
+    '884257168498-3gec80pdfpullsaeavbg2nqra3aflru5.apps.googleusercontent.com'
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET',
+    'pvsqhFUx1kmBiGlVWERy_Q-b'
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -129,16 +139,27 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social.apps.django_app.context_processors.login_redirect',
 )
 
+
+# MIDDLEWARE_CLASSES = (
+#     'django.middleware.common.CommonMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     # 'permission_backend_nonrel.backends.NonrelPermissionBackend'
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     # Uncomment the next line for simple clickjacking protection:
+#     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+# )
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'permission_backend_nonrel.backends.NonrelPermissionBackend'
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -155,10 +176,11 @@ TEMPLATE_DIRS = (
 # AUTHENTICATION_BACKENDS = (
 #     'permission_backend_nonrel.backends.NonrelPermissionBackend',
 # )
-AUTHENTICATION_BACKENDS = (
-    'permission_backend_nonrel.backends.NonrelPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'social.backends.google.GoogleOAuth2',
+#     'social.backends.google.GooglePlusAuth',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
 # AUTHENTICATION_BACKENDS = (
 #       'social.backends.open_id.OpenIdAuth',
@@ -173,6 +195,7 @@ AUTHENTICATION_BACKENDS = (
 AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
    'social.backends.google.GoogleOAuth2',
+   'social.backends.google.GooglePlusAuth',
    'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
 )
@@ -188,6 +211,7 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOpenId',
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
+    'social.backends.google.GooglePlusAuth',
     'social.backends.twitter.TwitterOAuth',
     'social.backends.yahoo.YahooOpenId',
 )
