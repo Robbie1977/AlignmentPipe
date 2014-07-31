@@ -7,7 +7,7 @@ class User(models.Model):
     email = models.CharField(max_length=100)
     is_authenticated = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
-    last_login = DateTimeField(blank=True)
+    last_login = models.DateTimeField(blank=True)
 
     def create_user(cls, username, email=None):
         user = User.objects(username, email, cls)
