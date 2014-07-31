@@ -7,5 +7,11 @@ class User(models.Model):
     email = models.CharField(max_length=100)
     is_authenticated = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
+
+    def create_user(cls, username, email=None):
+        user = User.objects.create_user(username, email, cls)
+        user.save()
+        return True
+
     def __str__(self):
       return self.first_name + ' ' + self.last_name
