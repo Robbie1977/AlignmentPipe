@@ -3,7 +3,7 @@ from django.template.context import RequestContext
 
 def home(request):
   if not request.user == '':
-    from users.models import User
+    # from users.models import User
     try:
       fn = User.objects.filter(username=request.user).values('first_name', 'last_name')[0]
     except:
