@@ -21,9 +21,9 @@ def warp(name, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-spaci
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      record = warpRec(record, template, bgfile, warpSet)
       cur.execute("UPDATE images_alignment SET alignment_stage = 1004 WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
+      record = warpRec(record, template, bgfile, warpSet)
       u = ''
       for k, v in record.items():
         if not (k == 'id' or v == None or v == 'None'):
