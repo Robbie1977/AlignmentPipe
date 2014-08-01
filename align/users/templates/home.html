@@ -20,15 +20,15 @@
        <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
      </li>
    {% else %}
-     <li>
+     <!-- <li>
        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
-     </li>
+     </li> -->
      <li>
        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
      </li>
-     <li>
+     <!-- <li>
        <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
-     </li>
+     </li> -->
    {% endif %}
    </ul>
  </p>
