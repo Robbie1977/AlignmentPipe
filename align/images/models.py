@@ -45,7 +45,7 @@ class Alignment(models.Model):
     def __str__(self):
         return self.name
     def complete(self):
-        return self.alignment_stage > 6
+        return 1000 > self.alignment_stage > 6
     complete.admin_order_field = 'name'
     complete.boolean = True
     complete.short_description = 'Alignment complete?'
