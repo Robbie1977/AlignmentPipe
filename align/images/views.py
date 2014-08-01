@@ -7,6 +7,7 @@ from system.models import Setting, Server, Template
 from django.views import generic
 from socket import gethostname
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 from images.forms import UploadForm
 
@@ -46,7 +47,6 @@ def handle_uploaded_file(ufile, dest):
 def upload(request):
     from django.contrib import messages
     from django.conf import settings as st
-    from users.models import User
     import os
     # Handle file upload
     if request.method == 'POST':
