@@ -1,9 +1,9 @@
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from django.contrib.auth.models import User
 
 def home(request):
   if not request.user == '':
-    # from users.models import User
     try:
       fn = User.objects.filter(username=request.user).values('first_name', 'last_name')[0]
     except:
