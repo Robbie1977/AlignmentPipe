@@ -16,7 +16,6 @@ tempfolder = str(Server.objects.filter(host_name=host).values('temp_dir')[0]['te
 uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['upload_dir'])
 
 def index(request):
-    from users.models import User
     if not request.user == '':
       cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
       align_list = Alignment.objects.filter(Q(user=cu) | Q(user=None)).order_by('alignment_stage', 'name')
