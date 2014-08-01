@@ -16,7 +16,6 @@ conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
 # Create your models here.
 
 class Alignment(models.Model):
-    import users.models
     import system.models
     #from users.models import User
     #from system.models import Setting
