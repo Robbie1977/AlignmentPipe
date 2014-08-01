@@ -19,8 +19,11 @@ uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['u
 def index(request):
     if not request.user == '':
       cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
-      align_list = Alignment.objects.filter(Q(user=cu) | Q(user=0)).order_by('alignment_stage', 'name')
-      context = {'align_list': align_list}
+      if Alignment.objects.filter(Q(user=cu) | Q(user=0)).count > 0:
+        align_list = Alignment.objects.filter(Q(user=cu) | Q(user=0)).order_by('alignment_stage', 'name')
+        context = {'align_list': align_list}
+      else
+        context = {}
       return render(request, 'index.html', context)
     else:
       return HttpResponseRedirect('/')
