@@ -25,7 +25,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'aligned_score'],
     #                           'classes': ['collapse']}),
     # ]
-    list_display = ('name', 'complete', 'curStage')
-    list_filter = ['alignment_stage']
+    list_display = ('name', 'user', 'complete', 'curStage')
+    list_filter = ['alignment_stage', 'user']
 
 admin.site.register(Alignment, AlignmentAdmin)
