@@ -167,6 +167,8 @@ def convert(name):
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1001 WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
       r = convRec(record)
       u = ''
       for k, v in record.items():

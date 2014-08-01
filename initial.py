@@ -30,6 +30,8 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1002 WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
       record = initialRec(record, template, init_threshold, bgfile, alignSet, initialSet)
       u = ''
       for k, v in record.items():

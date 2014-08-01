@@ -73,6 +73,8 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1005 WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
       record = alignRec(record, template, bgfile, alignSet, passLevel)
       u = ''
       for k, v in record.items():
