@@ -22,7 +22,7 @@ def index(request):
       if Alignment.objects.filter(Q(user=cu) | Q(user=0)).count > 0:
         align_list = Alignment.objects.filter(Q(user=cu) | Q(user=0)).order_by('alignment_stage', 'name')
         context = {'align_list': align_list}
-      else
+      else:
         context = {}
       return render(request, 'index.html', context)
     else:
