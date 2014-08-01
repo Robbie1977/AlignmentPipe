@@ -40,7 +40,7 @@ class Alignment(models.Model):
     aligned_slice_score = models.CharField(max_length=20, blank=True)
     aligned_avgslice_score = models.CharField(max_length=20, blank=True)
     aligned_tif = models.TextField(max_length=1000, blank=True)
-    user = models.ForeignKey('users.User', blank=True)
+    user = models.ForeignKey('auth_user', blank=True)
     def __str__(self):
         return self.name
     def complete(self):
