@@ -20,7 +20,7 @@ def index(request):
     if not request.user == '':
       cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
       if cu == 1:
-        align_list = Alignment.objects.all()
+        align_list = Alignment.objects.order_by('alignment_stage', 'name')
         context = {'align_list': align_list}
       else:
         if Alignment.objects.filter(Q(user=cu) | Q(user=0)).count() > 0:
