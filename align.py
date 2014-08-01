@@ -89,13 +89,15 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
 
-  cur.execute("SELECT * FROM images_alignment WHERE alignment_stage > 5 AND name like %s", [name])
+  cur.execute("SELECT * FROM images_alignment WHERE alignment_stage = 6 AND name like %s", [name])
   records = cur.fetchall()
   key = []
   for desc in cur.description:
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1006 WHERE id = %s ", [str(record['id'])])
+      cur.connection.commit()
       record = alignRem(record, template, bgfile, alignSet)
       u = ''
       for k, v in record.items():

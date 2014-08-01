@@ -6,7 +6,7 @@ import os
 
 host = gethostname()
 
-stage = {0: 'failed (check settings and restart)',1:'preprocessing', 1001:'preprocessing image stack', 2:'initial alignment', 1002:'calculating initial alignment', 3:'affine alignment', 1003:'processing affine alignment', 4:'final warp alignment', 1004:'processing warp alignment', 5:'checking alignment', 1005:'aligning BG channel', 6: 'aligning other channels', 1005:'aligning all channel using BG warp', 7: 'alignment done', 10: 'request merged tif',  1010: 'creating merged tif', 20: 'merged tif created'}
+stage = {0: 'failed (check settings and restart)',1:'preprocessing', 1001:'preprocessing image stack', 2:'initial alignment', 1002:'calculating initial alignment', 3:'affine alignment', 1003:'processing affine alignment', 4:'final warp alignment', 1004:'processing warp alignment', 5:'checking alignment', 1005:'aligning BG channel', 6: 'aligning other channels', 1006:'aligning all channel using BG warp', 7: 'alignment done', 10:'request merged tif',  1010:'creating merged tif', 20:'merged tif created'}
 comp = {0: 'awaiting processing',1:'convertion complete', 2:'preprocessing complete', 3:'initial alignment complete', 4:'affine alignment complete', 5:'final warp complete', 6: 'background alignment complete', 7: 'all channels aligned', 10: 'merged tif requested', 20: 'merged tif created'}
 chan = {0: 'to be calculated', 1:'Channel 1', 2:'Channel 2', 3:'Channel 3'}
 ori = ['LPS','RPI','RAS','LAI','PLI','PRS','ALS','ARI'] #X(>),Y(\/),Z(X).
