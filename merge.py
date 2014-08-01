@@ -68,6 +68,7 @@ def mergeRec(record):
     out = tempfolder + file
     record['aligned_tif'] = file
   r = createTiff(RedCh=red, GreenCh=green, BlueCh=blue, Output=out)
+  record['last_host'] = host
   record['alignment_stage'] = 20
 
 def merge(name):
@@ -78,6 +79,8 @@ def merge(name):
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1010, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
+      cur.connection.commit()
       r = mergeRec(record)
       u = ''
       for k, v in record.items():

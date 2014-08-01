@@ -6,6 +6,7 @@ from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir
 
 def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', threshold=0.6):
   record = checkDir(record)
+  record['last_host'] = host
   print 'Finalising alignment for: ' + record['name']
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   record['aligned_bg'], r =cmtk.align(bgfile, template=template, settings=alignSet)
@@ -30,6 +31,7 @@ def alignRec(record, template=template, bgfile='image_Ch1.nrrd', alignSet='', th
 def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   record = checkDir(record)
   print 'Aligning signal, etc. for: ' + record['name']
+  record['last_host'] = host
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   # sgfile = record['original_nrrd'][('Ch' + str(record['signal_channel']) + '_file')]
   # a=0
@@ -73,7 +75,7 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1005 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1005, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = alignRec(record, template, bgfile, alignSet, passLevel)
       u = ''
@@ -96,7 +98,7 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1006 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1006, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = alignRem(record, template, bgfile, alignSet)
       u = ''

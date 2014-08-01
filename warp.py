@@ -11,6 +11,7 @@ def warpRec(record, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-
   record['alignment_stage'] = 5
   if r > 0: record['alignment_stage'] = 0
   record['max_stage'] = 5
+  record['last_host'] = host
   return record
 
 def warp(name, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1'):
@@ -21,7 +22,7 @@ def warp(name, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-spaci
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1004 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1004, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = warpRec(record, template, bgfile, warpSet)
       u = ''

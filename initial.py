@@ -7,6 +7,7 @@ from cmtk import tempfolder, active, run_stage, cmtkdir, checkDir, host, templat
 
 def initialRec(record, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd', alignSet='', initialSet='--principal-axes'):
   record = checkDir(record)
+  record['last_host'] = host
   print 'Staring initial alignment for: ' + record['name']
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   record['temp_initial_nrrd'], r =cmtk.align(bgfile, cmtk.initial(bgfile, template=template, mode=initialSet)[0], imageOUT=tempfolder + record['name'] + '_initial.nrrd', template=template, settings=alignSet)
@@ -30,7 +31,7 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1002 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1002, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = initialRec(record, template, init_threshold, bgfile, alignSet, initialSet)
       u = ''

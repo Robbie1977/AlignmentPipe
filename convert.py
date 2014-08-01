@@ -43,6 +43,7 @@ def convRec(record):
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   print 'Converting ' + file
   if os.path.exists(file):
+    record['last_host'] = host
     tif = TiffFile(file)
     image = tif.asarray()
     record = checkDir(record)
@@ -167,7 +168,7 @@ def convert(name):
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1001 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1001, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       r = convRec(record)
       u = ''

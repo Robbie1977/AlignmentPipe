@@ -12,6 +12,7 @@ def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--d
   record['alignment_stage'] = 4
   if r > 0: record['alignment_stage'] = 0
   record['max_stage'] = 4
+  record['last_host'] = host
   return record
 
 def affine(name, template=template, bgfile='image_Ch1.nrrd', affineSet='--dofs 6,9 --auto-multi-levels 4'):
@@ -22,7 +23,7 @@ def affine(name, template=template, bgfile='image_Ch1.nrrd', affineSet='--dofs 6
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1003 WHERE id = %s ", [str(record['id'])])
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1003, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = affineRec(record, template, bgfile, affineSet)
       u = ''
