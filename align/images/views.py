@@ -19,7 +19,7 @@ uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['u
 def index(request):
     if not request.user == '':
       if request.user == 'robertcourt':
-        align_list = Alignment.objects.get()
+        align_list = Alignment.objects.filter(Q(user>-1)).order_by('alignment_stage', 'name')
         context = {'align_list': align_list}
       else:
         cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
