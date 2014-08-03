@@ -30,7 +30,7 @@ class Alignment(models.Model):
     loading_host = models.CharField(max_length=100, blank=True)
     original_ext = models.CharField(max_length=10)
     original_path = models.TextField(max_length=1000)
-    cut_xyz = models.CommaSeparatedIntegerField(max_length=6, default=[0,0,0,0,0,0])
+    crop_xyz = models.CommaSeparatedIntegerField(max_length=6, default=[0,0,0,0,0,0])
     temp_initial_nrrd = models.TextField(max_length=1000, blank=True)
     temp_initial_score = models.CharField(max_length=20, blank=True)
     background_channel = models.IntegerField(choices=chan.items(), default=0)
