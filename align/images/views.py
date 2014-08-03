@@ -40,14 +40,6 @@ def detail(request, image_id):
     else:
       return HttpResponseRedirect('/')
 
-# def resume(request, image_id):
-#     from django.contrib import messages
-#     from django.conf import settings as st
-#     import os
-#     ca = Alignment.objects.get(id=image_id)
-#
-
-
 def handle_uploaded_file(ufile, dest):
     from django.core.files.storage import default_storage
     from django.core.files.base import ContentFile

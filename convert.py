@@ -119,9 +119,7 @@ def convRec(record):
     header['space'] = comp_orien[tempOrien]
     for c in xrange(0,sh[ch]):
       upd = {}
-
       chan, Nbound, hist = AutoBalance(np.squeeze(image[:,:,:,c]))
-
       print 'Ch' + str(c+1) + ' - ' + str(np.shape(chan))
       Sname = tempfolder + record['name'] + '_Ch' + str(c+1) + '.nrrd'
 
@@ -129,12 +127,6 @@ def convRec(record):
         chan = ro.reorientate(np.uint8(chan), curOr=record['orig_orientation'], targOr=comp_orien[tempOrien])
       else:
         chan = np.uint8(chan)
-      if not record['crop_xyz'] is None:
-        cut = np.array(record['cut_xyz'])
-        if np.sum(cut) > 0:
-          print 'cutting: (' + str(cut) + ')...'
-          chan = chan[cut[0],-cut[1],cut[2],-cut[3],cut[4],-cut[5]]
-
       print 'saving...'
       nrrd.write(Sname,chan, options=header)
       upd.update({'image_id': record['id'], 'channel': + int(c+1), 'file': str(Sname).replace(tempfolder,''), 'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
