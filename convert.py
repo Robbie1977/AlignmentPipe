@@ -129,11 +129,12 @@ def convRec(record):
         chan = np.uint8(chan)
 
       if not record['crop_xyz'] is None:
-        cut = np.array(record['crop_xyz'])
+        cut = map(int, str(record['crop_xyz']).replace('[','').replace(']','').split(','))
+        cut = np.array(cut)
         if np.sum(cut) > 0:
           print 'cropping: (' + str(cut) + ')...'
           chan = chan[cut[0],-cut[1],cut[2],-cut[3],cut[4],-cut[5]]
-      
+
       print 'saving...'
       nrrd.write(Sname,chan, options=header)
       upd.update({'image_id': record['id'], 'channel': + int(c+1), 'file': str(Sname).replace(tempfolder,''), 'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
