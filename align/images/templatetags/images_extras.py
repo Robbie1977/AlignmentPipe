@@ -17,5 +17,7 @@ def channel(value):
 
 @register.filter(name='joinby')
 def joinby(value, arg):
-    return arg.join(value)
-    
+    if value == {}:
+      return [0,0,0,0,0,0]
+    else:
+      return arg.join(value)
