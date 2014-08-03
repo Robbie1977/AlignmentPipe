@@ -133,8 +133,9 @@ def convRec(record):
         cut = np.array(cut)
         if np.sum(cut) > 0:
           print 'cropping: (' + str(cut) + ')...'
-          print np.shape(chan)
-          chan = chan[cut[0]:-cut[1],cut[2]:-cut[3],cut[4]:-cut[5]]
+          sh = np.shape(chan)
+          print sh
+          chan = chan[cut[0]:sh[0]-cut[1],cut[2]:sh[1]-cut[3],cut[4]:sh[2]-cut[5]]
           print np.shape(chan)
 
       print 'saving...'
