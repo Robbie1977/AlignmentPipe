@@ -128,8 +128,8 @@ def convRec(record):
       else:
         chan = np.uint8(chan)
 
-      if not record['cut_xyz'] is None:
-        cut = np.array(record['cut_xyz'])
+      if not record['crop_xyz'] is None:
+        cut = np.array(record['crop_xyz'])
         if np.sum(cut) > 0:
           print 'cropping: (' + str(cut) + ')...'
           chan = chan[cut[0],-cut[1],cut[2],-cut[3],cut[4],-cut[5]]
