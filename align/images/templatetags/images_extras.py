@@ -18,6 +18,6 @@ def channel(value):
 @register.filter(name='joinby')
 def joinby(value, arg):
     if value is None:
-      return [0,0,0,0,0,0]
+      return '[0,0,0,0,0,0]'
     else:
       return arg.join(value)
