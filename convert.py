@@ -133,7 +133,7 @@ def convRec(record):
         cut = np.array(cut)
         if np.sum(cut) > 0:
           print 'cropping: (' + str(cut) + ')...'
-          chan = chan[cut[0],-cut[1],cut[2],-cut[3],cut[4],-cut[5]]
+          chan = chan[cut[0]:-cut[1],cut[2]:-cut[3],cut[4]:-cut[5]]
 
       print 'saving...'
       nrrd.write(Sname,chan, options=header)
