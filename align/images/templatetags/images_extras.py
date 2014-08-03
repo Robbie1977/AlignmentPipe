@@ -15,10 +15,10 @@ def fini(value):
 def channel(value):
     return chan[value]
 
-@register.filter(name='joinby')
-def joinby(value, arg):
-    # if value is None:
-    #   return 'None'
-    # else:
-    #   return arg.join(value)
-    return 'Test'
+# @register.filter(name='joinby')
+# def joinby(value, arg):
+#     # if value is None:
+#     #   return 'None'
+#     # else:
+#     #   return arg.join(value)
+#     return 'Test'
