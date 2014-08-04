@@ -50,7 +50,7 @@ def convRec(record):
     if '.gz' in file:
       check_call(['gzip -d', file])
       file = str(file).replace('.gz','')
-      if record['original_ext'] = '.gz':
+      if str(record['original_ext']) == '.gz':
         record['name'] = str(os.path.splitext(os.path.basename(file))[0])
         record['original_ext'] = str(os.path.splitext(os.path.basename(file))[1])
     tif = TiffFile(file)
