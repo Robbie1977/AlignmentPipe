@@ -47,7 +47,7 @@ def convRec(record):
     record['last_host'] = host
     if os.path.exists(file + '.gz'):
       check_call(['gzip -d', file + '.gz'])
-    if '.gz' is in file:
+    if '.gz' in file:
       check_call(['gzip -d', file])
       file = str(file).replace('.gz','')
       if record['original_ext'] = '.gz':
