@@ -1,4 +1,4 @@
-import os, sys, nrrd, json
+import os, sys, nrrd, json, gc
 from tiffile import TiffFile
 import numpy as np
 import reorientate as ro
