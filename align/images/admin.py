@@ -43,9 +43,6 @@ class CompleteStage(admin.SimpleListFilter):
             return queryset.filter(alignment_stage__gte=1,
                                     alignment_stage__lte=6)
         if self.value() == 'processing':
-            return queryset.filter(alignment_stage__gte=1,
-                                    alignment_stage__lte=6)
-        if self.value() == 'processing':
             return queryset.filter(alignment_stage__gte=1001,
                                     alignment_stage__lte=1999)
         if self.value() == 'failed':
