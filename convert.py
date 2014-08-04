@@ -128,7 +128,7 @@ def convRec(record):
       else:
         chan = np.uint8(chan)
 
-      if not record['crop_xyz'] is None:
+      if not ((record['crop_xyz'] is None) or (record['crop_xyz'] is '')):
         cut = map(int, str(record['crop_xyz']).replace('[','').replace(']','').split(','))
         cut = np.array(cut)
         if np.sum(cut) > 0:
