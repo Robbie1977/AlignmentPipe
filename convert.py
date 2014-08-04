@@ -204,6 +204,7 @@ def convert(name):
       print u
       cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
+      gc.collect()
 
 if __name__ == "__main__":
   if active and '1' in run_stage:
