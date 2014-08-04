@@ -3,6 +3,54 @@ from images.models import Alignment, Original_nrrd
 from system.models import Setting
 from django.contrib.auth.models import User
 
+
+class CompleteStage(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = _('Complete')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'complete'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        return (
+            ('complete', _('alignment complete')),
+            ('awaiting', _('awaiting an alignment stage')),
+            ('processing', _('alignment stage in progress')),
+            ('failed', _('awaiting user action')),
+        )
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+        if self.value() == 'complete':
+            return queryset.filter(alignment_stage__gte=7,
+                                    alignment_stage__lte=999)
+        if self.value() == 'awaiting':
+            return queryset.filter(alignment_stage__gte=0,
+                                    alignment_stage__lte=6)
+        if self.value() == 'processing':
+            return queryset.filter(alignment_stage__gte=1,
+                                    alignment_stage__lte=6)
+        if self.value() == 'processing':
+            return queryset.filter(alignment_stage__gte=1001,
+                                    alignment_stage__lte=1999)
+        if self.value() == 'failed':
+            return queryset.filter(alignment_stage__lte=0)
+
+
 class AlignmentAdmin(admin.ModelAdmin):
     # fieldsets = [
     #     (None,               {'fields': ['name', 'settings', 'alignment_stage', 'max_stage']}),
@@ -26,6 +74,6 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'classes': ['collapse']}),
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'last_host')
-    list_filter = ['alignment_stage', 'user', 'last_host', 'complete']
+    list_filter = ['alignment_stage', 'user', 'last_host', CompleteStage]
 
 admin.site.register(Alignment, AlignmentAdmin)
