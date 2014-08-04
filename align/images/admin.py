@@ -28,4 +28,4 @@ class AlignmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'complete', 'curStage', 'last_host')
     list_filter = ['alignment_stage', 'user', 'last_host']
 
-admin.site.register(Alignment, AlignmentAdmin)
+admin.site.register(Alignment, AlignmentAdmin, complete)
