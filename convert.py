@@ -3,6 +3,7 @@ from tiffile import TiffFile
 import numpy as np
 import reorientate as ro
 from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
+from subprocess import check_call
 
 def AutoBalance(data,threshold=adjust_thresh,background=0):
     data = np.uint8(255*np.double(data)/np.max(data)) #scale to 8 bit
@@ -42,8 +43,10 @@ def convRec(record):
     print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
   file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
   print 'Converting ' + file
-  if os.path.exists(file):
+  if os.path.exists(file) or os.path.exists(file + '.gz'):
     record['last_host'] = host
+    if os.path.exists(file + '.gz'):
+      check_call(['gzip -d', file + '.gz'])
     tif = TiffFile(file)
     image = tif.asarray()
     record = checkDir(record)
@@ -167,6 +170,7 @@ def convRec(record):
     record['max_stage'] = 2
     # collection.save(record)
     tif.close()
+    check_call(['gzip', file])
     print 'conversion complete.'
     del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
     return record
