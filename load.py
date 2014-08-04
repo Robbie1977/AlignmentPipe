@@ -60,7 +60,7 @@ def query_settings(question, default=1):
         if default is not None and choice == '':
             if default in valid:
               return int(default)
-        elif choice in valid:
+        elif int(choice) in valid:
             return int(choice)
         else:
             sys.stdout.write("Please respond with the number of the reqired settings " + str(ids) + "\n")
