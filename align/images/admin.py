@@ -40,7 +40,7 @@ class CompleteStage(admin.SimpleListFilter):
             return queryset.filter(alignment_stage__gte=7,
                                     alignment_stage__lte=999)
         if self.value() == 'awaiting':
-            return queryset.filter(alignment_stage__gte=0,
+            return queryset.filter(alignment_stage__gte=1,
                                     alignment_stage__lte=6)
         if self.value() == 'processing':
             return queryset.filter(alignment_stage__gte=1,
