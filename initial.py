@@ -31,6 +31,10 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      # clear old failed alignments:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 2 WHERE last_host = %s AND alignment_stage = 1002", [str(host)])
+      cur.connection.commit()
+      # remove image from stack before processing:
       cur.execute("UPDATE images_alignment SET alignment_stage = 1002, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = initialRec(record, template, init_threshold, bgfile, alignSet, initialSet)

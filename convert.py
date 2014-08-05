@@ -189,6 +189,11 @@ def convert(name):
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      # clear old failed alignments:
+      if not (('karenin' in host) or ('blanik' in host)):
+        cur.execute("UPDATE images_alignment SET alignment_stage = 1 WHERE last_host = %s AND alignment_stage = 1001", [str(host)])
+        cur.connection.commit()
+      # remove image from stack before processing:
       cur.execute("UPDATE images_alignment SET alignment_stage = 1001, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       r = convRec(record)

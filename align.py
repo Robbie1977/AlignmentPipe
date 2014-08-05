@@ -75,6 +75,10 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      # clear old failed alignments:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 5 WHERE last_host = %s AND alignment_stage = 1005", [str(host)])
+      cur.connection.commit()
+      # remove image from stack before processing:
       cur.execute("UPDATE images_alignment SET alignment_stage = 1005, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = alignRec(record, template, bgfile, alignSet, passLevel)
@@ -99,6 +103,10 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      # clear old failed alignments:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 6 WHERE last_host = %s AND alignment_stage = 1006", [str(host)])
+      cur.connection.commit()
+      # remove image from stack before processing:
       cur.execute("UPDATE images_alignment SET alignment_stage = 1006, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = alignRem(record, template, bgfile, alignSet)

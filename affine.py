@@ -23,6 +23,10 @@ def affine(name, template=template, bgfile='image_Ch1.nrrd', affineSet='--dofs 6
       key.append(desc[0])
   for line in records:
       record = dict(zip(key,line))
+      # clear old failed alignments:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 3 WHERE last_host = %s AND alignment_stage = 1003", [str(host)])
+      cur.connection.commit()
+      # remove image from stack before processing:
       cur.execute("UPDATE images_alignment SET alignment_stage = 1003, last_host = %s WHERE id = %s ", [str(host), str(record['id'])])
       cur.connection.commit()
       record = affineRec(record, template, bgfile, affineSet)
