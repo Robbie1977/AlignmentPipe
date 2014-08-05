@@ -1,4 +1,4 @@
-import os, sys, nrrd, cmtk
+import os, sys, nrrd, cmtk, gc
 import numpy as np
 import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
@@ -37,6 +37,7 @@ def warp(name, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-spaci
       print u
       cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
+      gc.collect()
 
 if __name__ == "__main__":
   if active and '4' in run_stage:

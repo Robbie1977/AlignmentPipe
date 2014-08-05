@@ -1,4 +1,4 @@
-import os, sys, nrrd, cmtk
+import os, sys, nrrd, cmtk, gc
 import numpy as np
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
@@ -90,6 +90,7 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       print u
       cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
+      gc.collect()
 
   cur.execute("SELECT * FROM images_alignment WHERE alignment_stage = 6 AND name like %s", [name])
   records = cur.fetchall()
@@ -113,6 +114,7 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
       print u
       cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
       cur.connection.commit()
+      gc.collect()
 
 if __name__ == "__main__":
   if active and '5' in run_stage:

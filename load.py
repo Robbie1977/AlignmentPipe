@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, gc
 from cmtk import tempfolder, active, run_stage, host, templatedir, cur, comp_orien, ori, orien
 
 
@@ -126,6 +126,7 @@ def loadFile(file, folder, settings_id=1, orientation=comp_orien['LPS'], overwri
           cur.connection.commit()
     cur.execute("SELECT count(*) FROM images_alignment WHERE name like %s", [name])
     r = int(cur.fetchone()[0])
+  gc.collect()
   if r > 0:
     return True
   else:
