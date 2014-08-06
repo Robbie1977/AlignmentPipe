@@ -32,9 +32,6 @@ def index(request):
     else:
       return HttpResponseRedirect('/')
 
-def index2(request):
-    return render(request, 'index2.html')
-
 def detail(request, image_id):
     if not request.user == '':
       align_list = Alignment.objects.get(id=image_id)
