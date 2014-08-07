@@ -49,9 +49,12 @@
   <div class="submit-row">
     <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
   </div>
+  <div class="form-row">
+    Alternatively: <a href="{% url 'social:begin' 'google-oauth2' %}">login via Google</a>
+  </div>
 </form>
 <br />
-Alternatively: <a href="{% url 'social:begin' 'google-oauth2' %}">login via Google</a>
+
 
 <script type="text/javascript">
 document.getElementById('id_username').focus()
