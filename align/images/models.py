@@ -41,7 +41,8 @@ class Alignment(models.Model):
     aligned_ac1 = models.TextField(max_length=1000, blank=True)
     aligned_slice_score = models.CharField(max_length=20, blank=True)
     aligned_avgslice_score = models.CharField(max_length=20, blank=True)
-    aligned_tif = models.TextField(max_length=1000, blank=True)
+    notes = models.TextField(max_length=10000, blank=True)
+    reference = models.TextField(max_length=5000, blank=True)
     user = models.ForeignKey(User, blank=False, default=0)
     def __str__(self):
         return self.name
