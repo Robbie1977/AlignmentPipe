@@ -11,10 +11,29 @@ from django.contrib.auth.models import User
 
 from images.forms import UploadForm
 
+from django.contrib.admin.models import LogEntry, User, ADDITION, CHANGE
+from django.contrib.contenttypes.models import ContentType
+
 host = gethostname()
 
 tempfolder = str(Server.objects.filter(host_name=host).values('temp_dir')[0]['temp_dir'])
 uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['upload_dir'])
+
+def upload_admin_log(name, orientat, sett):
+    """Log changes to Admin log."""
+    change_message = "Uploaded image %s with orientation %s using %s" % (name, orientat, sett)
+    action_flag == ADDITION
+    try:
+      LogEntry.objects.log_action(
+        user_id = request.user.id,
+        content_type_id = ContentType.objects.get_for_model(Alignment).pk,
+        object_id = Alignment.objects.get(name=name).pk,
+        object_repr = unicode('uploaded image'),
+        change_message = change_message,
+        action_flag = action_flag,
+        )
+    except:
+        print "Failed to log action."
 
 def index(request):
     if not request.user == '':
@@ -72,6 +91,7 @@ def upload(request):
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
               newimage.save()
               os.chmod(folder + os.path.sep + file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+              upload_admin_log(name, ori, setting)
               return HttpResponseRedirect('/admin')
             else:
               messages.error(request, 'Not a LSM or tif file')
