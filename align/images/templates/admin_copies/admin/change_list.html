@@ -60,7 +60,8 @@
             </li>
           {% endblock %}
         </ul>
-      {% else %}
+      {% endif %}
+      {% if not has_add_permission %}
         <ul class="object-tools">
           {% block object-tools-items %}
             <li>
