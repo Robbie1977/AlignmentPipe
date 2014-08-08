@@ -1,5 +1,5 @@
 import psycopg2, os
-import subprocess
+# import subprocess
 from socket import gethostname
 host = gethostname()
 
@@ -18,13 +18,16 @@ cur.close()
 con.close()
 del cur, con, record
 
-for file in os.listdir(uploadfolder):
-  try:
-    # os.chmod(file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-    subprocess.call(['chmod', '0777', uploadfolder + file])
-    print 'OK: ' + file
-  except:
-    print 'Error: ' + file
+# Use to reset file permission only if error occurs
+# for file in os.listdir(uploadfolder):
+#   try:
+#     # os.chmod(uploadfolder + file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+#     subprocess.call(['chmod', '0777', uploadfolder + file])
+#     print 'OK: ' + file
+#   except:
+#     print 'Error: ' + file
+#
+
 # Django settings for align project.
 
 # DEBUG = True
