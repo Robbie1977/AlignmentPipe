@@ -54,7 +54,7 @@ def handle_uploaded_file(ufile, dest):
 def upload(request):
     from django.contrib import messages
     from django.conf import settings as st
-    import os
+    import os, stat, sys
     # Handle file upload
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
@@ -71,6 +71,7 @@ def upload(request):
               cu = User.objects.get(username=request.user)
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
               newimage.save()
+              os.chmod(file, stat.S_IRWXO)
               return HttpResponseRedirect('/admin')
             else:
               messages.error(request, 'Not a LSM or tif file')
