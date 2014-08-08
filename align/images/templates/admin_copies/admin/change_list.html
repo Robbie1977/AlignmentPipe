@@ -60,6 +60,16 @@
             </li>
           {% endblock %}
         </ul>
+      {% else %}
+        <ul class="object-tools">
+          {% block object-tools-items %}
+            <li>
+              <a href="{% url 'upload' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+                Upload new image stack{% endblocktrans %}
+              </a>
+            </li>
+          {% endblock %}
+        </ul>
       {% endif %}
     {% endblock %}
     {% if cl.formset.errors %}
