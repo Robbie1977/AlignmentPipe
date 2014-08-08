@@ -38,9 +38,9 @@
 {% if not is_popup %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo;<a href="{% url 'admin:app_list' app_label='images' %}">{{ app_label|capfirst|escape }}</a>
-&rsaquo;<a href="{% url 'admin:app_list' app_label='alignment' %}">{{ app_label|capfirst|escape }}</a>
+<a href="/admin/">Home</a>
+&rsaquo;<a href="/admin/images/">Images</a>
+&rsaquo;<a href="/admin/images/alignment/">Alignments</a>
 &rsaquo; Upload
 </div>
 {% endblock %}
