@@ -90,4 +90,5 @@ class AlignmentAdmin(admin.ModelAdmin):
         return Alignment.objects.all()
       return Alignment.objects.filter(Q(user=request.user) | Q(user=0))
 
+AlignmentAdmin.allow_tags = True
 admin.site.register(Alignment, AlignmentAdmin)

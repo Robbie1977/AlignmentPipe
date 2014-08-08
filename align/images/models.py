@@ -55,30 +55,39 @@ class Alignment(models.Model):
     curStage.short_description = 'Current stage?'
     def ch1_image(self):
         return '<a href="/images/nrrd/Ch1_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch1_file/%s" /></a>' % str(self.id), str(self.id)
+    ch1_image.short_description = 'original image ch1'
     ch1_image.allow_tags = True
     def ch2_image(self):
         return '<a href="/images/nrrd/Ch2_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch2_file/%s" /></a>' % str(self.id), str(self.id)
+    ch2_image.short_description = 'original image ch2'
     ch2_image.allow_tags = True
     def ch3_image(self):
         return '<a href="/images/nrrd/Ch3_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch3_file/%s" /></a>' % str(self.id), str(self.id)
+    ch3_image.short_description = 'original image ch3'
     ch3_image.allow_tags = True
     def bg_image(self):
         return '<a href="/images/nrrd/aligned_bg/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_bg/%s" /></a>' % str(self.id), str(self.id)
+    bg_image.short_description = 'aligned BG image'
     bg_image.allow_tags = True
     def sg_image(self):
         return '<a href="/images/nrrd/aligned_sg/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_sg/%s" /></a>' % str(self.id), str(self.id)
+    sg_image.short_description = 'aligned SG image'
     sg_image.allow_tags = True
     def ac1_image(self):
         return '<a href="/images/nrrd/aligned_ac1/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_ac1/%s" /></a>' % str(self.id), str(self.id)
+    ac1_image.short_description = 'aligned AC1 image'
     ac1_image.allow_tags = True
     def hist_image(self):
         return '<a href="/images/hist/%s" target="_new"><img style="max-width:50%;" src="/images/hist/%s" /></a>' % str(self.id), str(self.id)
+    hist_image.short_description = 'original image histogram with new contrast range maked in cyan'
     hist_image.allow_tags = True
     def init_image(self):
         return '<a href="/images/nrrd/temp_initial_nrrd/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/temp_initial_nrrd/%s" /></a>' % str(self.id), str(self.id)
+    init_image.short_description = 'initial BG alignment'
     init_image.allow_tags = True
     def temp_image(self):
         return '<a href="/images/nrrd/template/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/template/%s" /></a>' % str(self.id), str(self.id)
+    temp_image.short_description = 'template image for reference'
     temp_image.allow_tags = True
 
 class Original_nrrd(models.Model):
