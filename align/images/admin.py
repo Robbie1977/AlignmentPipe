@@ -52,7 +52,10 @@ class CompleteStage(admin.SimpleListFilter):
 
 class AlignmentAdmin(admin.ModelAdmin):
     exclude = ('aligned_tif')
-    readonly_fields = ('aligned_score',
+
+    readonly_fields = ('max_stage',
+                  'aligned_score',
+                  'temp_initial_score',
                   'hist_image',
                   'ch1_image',
                   'ch2_image',
