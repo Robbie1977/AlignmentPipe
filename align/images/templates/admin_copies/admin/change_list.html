@@ -63,10 +63,10 @@
       {% endif %}
       {% if not has_add_permission %}
         <ul class="object-tools">
-          {% block object-tools-items %}
+          {% block object-tools-subitems %}
             <li>
               <a href="{% url 'upload' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
-                Upload new image stack{% endblocktrans %}
+                Upload new image stack
               </a>
             </li>
           {% endblock %}
