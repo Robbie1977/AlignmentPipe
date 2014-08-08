@@ -54,7 +54,7 @@ class Alignment(models.Model):
         return stage[self.alignment_stage]
     curStage.short_description = 'Current stage?'
     def ch1_image(self):
-        return mark_safe('<a href="/images/nrrd/Ch1_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch1_file/%s" /></a>') % str(self.id), str(self.id)
+        return mark_safe('<img style="max-width:50%;" src="/images/nrrd/Ch1_file/%s" />') % str(self.id), str(self.id)
     ch1_image.short_description = 'original image ch1'
     ch1_image.allow_tags = True
     def ch2_image(self):
