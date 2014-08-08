@@ -97,7 +97,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'aligned_score'],
     #                           'classes': ['collapse']}),
     # ]
-    list_display = ('name', 'user', 'complete', 'curStage') #, 'last_host'
+    list_display = ('name', 'user', 'complete', 'curStage', 'temp_initial_score', 'aligned_score') #, 'last_host'
     list_filter = ['alignment_stage', 'user', CompleteStage] #'last_host',
 
     def queryset(self, request):
