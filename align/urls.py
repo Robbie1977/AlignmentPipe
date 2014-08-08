@@ -9,8 +9,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'polls.views', name='views'),
-    url(r'^$', include(admin.site.urls)),
-    # url(r'^$', 'users.views.home', name='home'),
+    # url(r'^$', include(admin.site.urls)),
+    url(r'^$', 'users.views.home', name='home'),
     url(r'^', include('social.apps.django_app.urls', namespace='social')),
     # url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
