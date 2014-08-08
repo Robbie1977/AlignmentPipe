@@ -58,7 +58,7 @@ class Alignment(models.Model):
     ch1_image.short_description = 'original image ch1'
     ch1_image.allow_tags = True
     def ch2_image(self):
-        return '<a href="/images/nrrd/Ch2_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch2_file/%s" /></a>' % str(self.id), str(self.id)
+        return '<img style="max-width:50%;" src="/images/nrrd/Ch2_file/%s" />' % str(self.id), str(self.id)
     ch2_image.short_description = 'original image ch2'
     ch2_image.allow_tags = True
     def ch3_image(self):
@@ -66,7 +66,7 @@ class Alignment(models.Model):
     ch3_image.short_description = 'original image ch3'
     ch3_image.allow_tags = True
     def bg_image(self):
-        return '<a href="/images/nrrd/aligned_bg/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_bg/%s" /></a>' % str(self.id), str(self.id)
+        return '<img src="/images/nrrd/aligned_bg/%s"/>' % str(self.id), str(self.id)
     bg_image.short_description = 'aligned BG image'
     bg_image.allow_tags = True
     def sg_image(self):
