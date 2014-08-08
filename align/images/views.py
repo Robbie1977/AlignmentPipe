@@ -30,7 +30,7 @@ def index(request):
           context = {}
       return render(request, 'index.html', context)
     else:
-      return HttpResponseRedirect('/')
+      return HttpResponseRedirect('/admin')
 
 def detail(request, image_id):
     if not request.user == '':
@@ -38,7 +38,7 @@ def detail(request, image_id):
       context = {'record': align_list}
       return render(request, 'details.html', context)
     else:
-      return HttpResponseRedirect('/')
+      return HttpResponseRedirect('/admin')
 
 def handle_uploaded_file(ufile, dest):
     from django.core.files.storage import default_storage
