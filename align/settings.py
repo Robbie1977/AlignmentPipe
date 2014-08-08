@@ -21,7 +21,7 @@ del cur, con, record
 for file in os.listdir(uploadfolder):
   try:
     # os.chmod(file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-    subprocess.call(['chmod', '0777', file])
+    subprocess.call(['chmod', '0777', uploadfolder + file])
     print 'OK: ' + file
   except:
     print 'Error: ' + file
