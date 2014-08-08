@@ -61,7 +61,7 @@
           {% endblock %}
         </ul>
       {% endif %}
-      {% if not has_add_permission %}
+      {% if cl.opts.verbose_name == 'alignment' %}
         <ul class="object-tools">
           {% block object-tools-subitems %}
             <li>
