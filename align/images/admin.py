@@ -85,7 +85,7 @@ class AlignmentAdmin(admin.ModelAdmin):
 
     def queryset(self, request):
       if request.user.is_superuser:
-        return Entry.objects.all()
-      return Entry.objects.filter(user=request.user)
+        return Alignment.objects.all()
+      return Alignment.objects.filter(user=request.user)
 
 admin.site.register(Alignment, AlignmentAdmin)
