@@ -52,20 +52,86 @@
   <div id="content-main">
     {% block object-tools %}
 
+<div class="results">
+
 <!-- Upload form. Note enctype attribute! -->
       <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <p>{{ form.non_field_errors }}</p>
-          <p>{{ form.file.label_tag }} {{ form.file }}{{ form.file.errors }}
-          </p>
-          <p>{{ form.file.help_text }}{{ form.non_orientation_errors }}</p>
-          <p>{{ form.orientation.label_tag }} {{ form.orientation.help_text }}<br />{{ form.orientation }}{{ form.orientation.errors }}
-          </p>
-          <p>{{ form.non_settings_errors }}</p>
-          <p>{{ form.settings.label_tag }} {{ form.settings.help_text }}<br />{{ form.settings }}{{ form.settings.errors }}
-          </p>
-          <p><input type="submit" value="Upload" /></p>
-      </form>
+        {% csrf_token %}
+        <table id="result_list">
+        <thead>
+        <tr>
+          <td colspan=3>
+            {{ form.non_field_errors }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ form.file.label_tag }}
+          </td>
+          <td>
+            {{ form.file }}
+          </td>
+          <td>
+            {{ form.file.errors }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=3>
+            {{ form.file.help_text }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=3>
+            {{ form.non_orientation_errors }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ form.orientation.label_tag }}
+          </td>
+          <td>
+            {{ form.orientation }}
+          </td>
+          <td>
+            {{ form.orientation.errors }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=3>
+            {{ form.orientation.help_text }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=3>
+            {{ form.non_settings_errors }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ form.settings.label_tag }}
+          </td>
+          <td>
+            {{ form.settings }}
+          </td>
+          <td>
+            {{ form.settings.errors }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=3>
+            {{ form.settings.help_text }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan=2>
+
+          </td>
+          <td>
+            <input type="submit" value="Upload" /></p>
+          </td>
+        </tr>
+      </table>
+    </form>
       <hr />
 
         <table border="2" cellpadding="5" align=center>

@@ -22,7 +22,7 @@ uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['u
 def upload_admin_log(name, orientat, sett):
     """Log changes to Admin log."""
     change_message = "Uploaded image %s with orientation %s using %s" % (name, orientat, sett)
-    action_flag == ADDITION
+    action_flag = ADDITION
     try:
       LogEntry.objects.log_action(
         user_id = request.user.id,
@@ -92,10 +92,10 @@ def upload(request):
               newimage.save()
               os.chmod(folder + os.path.sep + file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
               upload_admin_log(name, ori, setting)
-              return HttpResponseRedirect('/admin')
+              return HttpResponseRedirect('/admin/images/alignment/')
             else:
               messages.error(request, 'Not a LSM or tif file')
-              return HttpResponseRedirect('/admin')
+              return HttpResponseRedirect('/admin/images/alignment/')
         # else:
         # messages.error(request, 'Invalid data')
     else:
