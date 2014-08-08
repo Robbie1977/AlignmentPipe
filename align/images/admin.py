@@ -3,6 +3,7 @@ from images.models import Alignment, Original_nrrd
 from system.models import Setting
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Q
 
 
 class CompleteStage(admin.SimpleListFilter):
@@ -86,6 +87,6 @@ class AlignmentAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Alignment.objects.all()
-      return Alignment.objects.filter(user=request.user | user=0)
+      return Alignment.objects.filter(Q(user=request.user) | Q(user=0))
 
 admin.site.register(Alignment, AlignmentAdmin)
