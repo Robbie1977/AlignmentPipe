@@ -51,7 +51,7 @@ class CompleteStage(admin.SimpleListFilter):
 
 
 class AlignmentAdmin(admin.ModelAdmin):
-    exclude = ('aligned_tif',)
+    exclude = ('aligned_tif')
     readonly_fields = ('aligned_score',
                   'hist_image',
                   'ch1_image',
@@ -70,9 +70,9 @@ class AlignmentAdmin(admin.ModelAdmin):
                   'aligned_sg',
                   'aligned_ac1',
                   'aligned_slice_score',
-                  'aligned_avgSlice_score',
+                  'aligned_avgslice_score',
                   'last_host',
-                  'loading_host')
+                  'loading_host', )
     # fieldsets = [
     #     (None,               {'fields': ['name', 'settings', 'alignment_stage', 'max_stage']}),
     #     ('Original file details', {'fields': ['orig_orientation',
