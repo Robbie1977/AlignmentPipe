@@ -20,7 +20,9 @@ del cur, con, record
 try:
   for file in uploadfolder + '*':
     os.chmod(file, stat.S_IRWXO)
-  
+    print file
+except:
+    print 'Error on file clean'
 # Django settings for align project.
 
 # DEBUG = True
