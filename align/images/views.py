@@ -71,10 +71,10 @@ def upload(request):
               cu = User.objects.get(username=request.user)
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
               newimage.save()
-              return HttpResponseRedirect('/images')
+              return HttpResponseRedirect('/admin')
             else:
               messages.error(request, 'Not a LSM or tif file')
-              return HttpResponseRedirect('/images')
+              return HttpResponseRedirect('/admin')
         # else:
         # messages.error(request, 'Invalid data')
     else:

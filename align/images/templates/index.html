@@ -6,7 +6,7 @@
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
 
-{% block title %}<h1 align="center">VFB Image Alignment Queue</h1>{% endblock %}
+{% block title %}<h1 align="center">VFB Aligner Upload</h1>{% endblock %}
 {% load images_extras %}
 <!-- Upload form. Note enctype attribute! -->
       <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
@@ -22,16 +22,11 @@
           </p>
           <p><input type="submit" value="Upload" /></p>
       </form>
-{% if align_list %}
-  <table class="table" align="center">
-    {% for record in align_list %}
-      {# {% if record.id == request %}#}
-        <TR><TH align="center" >{% if record.complete %}<img src="/static/admin/img/icon-yes.gif" />{% else %}<img src="/static/admin/img/icon-no.gif" />{% endif %}<TH><a href="{% url 'details' record.id %}">{{ record.name }}</a><TH>{% if record.alignment_stage == 0 %}failed checks - awaiting user evaluation{% else %}{{ record.alignment_stage|state }}{% endif %}<TH>{{ record.user }}
-        <!-- <li>{{ record.orig_orientation }}</li> -->
-      {# {% endif %}#}
-    {% endfor %}
-  </table>
-
-{% else %}
-    <p>No images to align.</p>
-{% endif %}
+      <hr />
+      <center>
+        <table class="table table-hover" border="1" cellpadding="5">
+          <TR><TH colspan="3">Please take note of the orientation of the target template below and ensure yours is set correct in relation. (axis markers indicate: L-left/R-right, A-anterior/P-posterior, I-inferior(ventral)/S-superior(dorsal)) Note: for technical reasons you'll notice the head is treated as tiped/facing down (ventral/inferior)
+          <TR><TH>Laval Brain<TH>Adult Brain<TH>Adult Ventral Nerve Complex
+          <TR><TH>-<TH><img src="/static/BRAIN.png"/><TH><img src="/static/TAG.png"/>
+        </table>
+      </center>
