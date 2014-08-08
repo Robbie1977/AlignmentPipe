@@ -19,7 +19,7 @@ del cur, con, record
 
 try:
   for file in os.listdir(uploadfolder):
-    os.chmod(file, (7,7,7))
+    os.chmod(file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
     print file
 except:
     print 'Error on file clean'
