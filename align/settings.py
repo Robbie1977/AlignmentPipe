@@ -18,7 +18,7 @@ con.close()
 del cur, con, record
 
 try:
-  for file in /disk/data/VFB/aligner/uploads/*:
+  for file in os.listdir(uploadfolder):
     os.chmod(file, stat.S_IRWXO)
     print file
 except:
