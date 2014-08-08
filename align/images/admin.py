@@ -50,6 +50,15 @@ class CompleteStage(admin.SimpleListFilter):
 
 
 class AlignmentAdmin(admin.ModelAdmin):
+    exclude = ('original_path',
+                  'original_ext',
+                  'aligned_bg',
+                  'aligned_sg',
+                  'name',
+                  'last_host',
+                  'loading_host',
+                  'temp_initial_nrrd',
+                  'aligned_tif',)
     # fieldsets = [
     #     (None,               {'fields': ['name', 'settings', 'alignment_stage', 'max_stage']}),
     #     ('Original file details', {'fields': ['orig_orientation',
@@ -73,5 +82,10 @@ class AlignmentAdmin(admin.ModelAdmin):
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'last_host')
     list_filter = ['alignment_stage', 'user', 'last_host', CompleteStage]
+
+    def queryset(self, request):
+      if request.user.is_superuser:
+        return Entry.objects.all()
+      return Entry.objects.filter(user=request.user)
 
 admin.site.register(Alignment, AlignmentAdmin)
