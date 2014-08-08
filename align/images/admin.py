@@ -51,17 +51,9 @@ class CompleteStage(admin.SimpleListFilter):
 
 
 class AlignmentAdmin(admin.ModelAdmin):
-    exclude = ('original_path',
-                  'original_ext',
-                  'aligned_bg',
-                  'aligned_sg',
-                  'aligned_ac1',
-                  'name',
-                  'last_host',
-                  'loading_host',
-                  'temp_initial_nrrd',
-                  'aligned_tif',)
-    readonly_fields = ('hist_image',
+    exclude = ('aligned_tif',)
+    readonly_fields = ('aligned_score',
+                  'hist_image',
                   'ch1_image',
                   'ch2_image',
                   'ch3_image',
@@ -77,6 +69,8 @@ class AlignmentAdmin(admin.ModelAdmin):
                   'aligned_bg',
                   'aligned_sg',
                   'aligned_ac1',
+                  'aligned_slice_score',
+                  'aligned_avgSlice_score',
                   'last_host',
                   'loading_host')
     # fieldsets = [
