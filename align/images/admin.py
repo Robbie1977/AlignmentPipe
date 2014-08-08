@@ -98,7 +98,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'classes': ['collapse']}),
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
-    list_filter = ['alignment_stage', 'user', CompleteStage] #'last_host',
+    list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
 
     def queryset(self, request):
       if request.user.is_superuser:
