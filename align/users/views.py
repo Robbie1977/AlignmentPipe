@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseRedirect
 
 def home(request):
   return HttpResponseRedirect('/admin')
