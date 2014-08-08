@@ -17,12 +17,12 @@ cur.close()
 con.close()
 del cur, con, record
 
-try:
-  for file in os.listdir(uploadfolder):
+for file in os.listdir(uploadfolder):
+  try:
     os.chmod(file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-    print file
-except:
-    print 'Error on file clean'
+    print 'OK: ' + file
+  except:
+    print 'Error: ' + file
 # Django settings for align project.
 
 # DEBUG = True
