@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from images.forms import UploadForm
 
-from django.contrib.admin.models import LogEntry, User, ADDITION, CHANGE
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
 
 host = gethostname()
