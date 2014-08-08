@@ -16,6 +16,11 @@ uploadfolder = str(record[0])
 cur.close()
 con.close()
 del cur, con, record
+
+try:
+  for file in uploadfolder + '*':
+    os.chmod(file, stat.S_IRWXO)
+  
 # Django settings for align project.
 
 # DEBUG = True
