@@ -53,6 +53,33 @@ class Alignment(models.Model):
     def curStage(self):
         return stage[self.alignment_stage]
     curStage.short_description = 'Current stage?'
+    def ch1_image(self):
+        return '<a href="/images/nrrd/Ch1_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch1_file/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def ch2_image(self):
+        return '<a href="/images/nrrd/Ch2_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch2_file/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def ch3_image(self):
+        return '<a href="/images/nrrd/Ch3_file/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/Ch3_file/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def bg_image(self):
+        return '<a href="/images/nrrd/aligned_bg/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_bg/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def sg_image(self):
+        return '<a href="/images/nrrd/aligned_sg/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_sg/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def ac1_image(self):
+        return '<a href="/images/nrrd/aligned_ac1/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/aligned_ac1/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def hist_image(self):
+        return '<a href="/images/hist/%s" target="_new"><img style="max-width:50%;" src="/images/hist/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def init_image(self):
+        return '<a href="/images/nrrd/temp_initial_nrrd/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/temp_initial_nrrd/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
+    def temp_image(self):
+        return '<a href="/images/nrrd/template/%s" target="_new"><img style="max-width:50%;" src="/images/nrrd/template/%s" /></a>' % str(self.id), str(self.id)
+    admin_image.allow_tags = True
 
 class Original_nrrd(models.Model):
     image = models.ForeignKey(Alignment)

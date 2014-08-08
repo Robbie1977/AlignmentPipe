@@ -60,6 +60,7 @@ class AlignmentAdmin(admin.ModelAdmin):
                   'loading_host',
                   'temp_initial_nrrd',
                   'aligned_tif',)
+    readonly_fields = ('ch1_image', 'ch2_image', 'ch3_image', 'hist_image', 'init_image', 'temp_image', 'bg_image', 'sg_image', 'ac1_image')
     # fieldsets = [
     #     (None,               {'fields': ['name', 'settings', 'alignment_stage', 'max_stage']}),
     #     ('Original file details', {'fields': ['orig_orientation',
