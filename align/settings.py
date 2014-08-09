@@ -237,6 +237,7 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
 )
 
 INSTALLED_APPS = (
+    'adminactions', 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

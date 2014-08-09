@@ -6,6 +6,12 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
+from django.contrib.admin import site
+import adminactions.actions as actions
+
+# register all adminactions
+actions.add_to_site(site)
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'polls.views', name='views'),
@@ -28,4 +34,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^upload/$', 'images.views.upload', name='upload'),
+    url(r'^adminactions/', include('adminactions.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
