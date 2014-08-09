@@ -223,6 +223,8 @@ AUTHENTICATION_BACKENDS = (
    'social.backends.google.GooglePlusAuth',
    'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
+   'social_auth.backends.contrib.github.GithubBackend',
+   'social_auth.backends.contrib.linkedin.LinkedinBackend',
 )
 
 # SOCIAL_AUTH_USER_MODEL = 'users.User'
