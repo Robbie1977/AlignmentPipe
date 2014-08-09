@@ -138,7 +138,7 @@ def plotResults(request, image_id):
     from matplotlib.figure import Figure
     from matplotlib.dates import DateFormatter
     import numpy as np
-    from django.shortcuts import redirect
+    # from django.shortcuts import redirect
     # if not request.user.is_authenticated():
     #     return redirect('/admin/')
     fig = Figure()
