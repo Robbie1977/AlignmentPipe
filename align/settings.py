@@ -218,13 +218,13 @@ TEMPLATE_DIRS = (
 # )
 
 AUTHENTICATION_BACKENDS = (
-   'social.backends.facebook.FacebookOAuth2',
+  #  'social.backends.facebook.FacebookOAuth2',
    'social.backends.google.GoogleOAuth2',
    'social.backends.google.GooglePlusAuth',
-   'social.backends.twitter.TwitterOAuth',
+  #  'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
    'social_auth.backends.contrib.github.GithubBackend',
-   'social_auth.backends.contrib.linkedin.LinkedinBackend',
+  #  'social_auth.backends.contrib.linkedin.LinkedinBackend',
 )
 
 # SOCIAL_AUTH_USER_MODEL = 'users.User'
@@ -239,10 +239,10 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
     'social.backends.google.GooglePlusAuth',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.yahoo.YahooOpenId',
+    # 'social.backends.twitter.TwitterOAuth',
+    # 'social.backends.yahoo.YahooOpenId',
     'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    # 'social_auth.backends.contrib.linkedin.LinkedinBackend',
 )
 
 INSTALLED_APPS = (
