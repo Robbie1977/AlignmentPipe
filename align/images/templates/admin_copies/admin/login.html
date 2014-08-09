@@ -51,7 +51,16 @@
   </div>
   <div class="form-row">
     <br />
-    Alternatively: <a href="{% url 'social:begin' 'google-oauth2' %}">login via Google</a>
+    <table>
+      <tr>
+        <td>Alternatively:</td>
+        <td><a href="{% url 'social:begin' 'google-oauth2' %}">login via Google</a></td>
+      </tr>
+      <tr>
+        <td> </td>
+        <td><a href="{% url 'social:begin' 'github' %}">login via GitHub</a></td>
+      </tr>
+    </table>
   </div>
 </form>
 <br />
