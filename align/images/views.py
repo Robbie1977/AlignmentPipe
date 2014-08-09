@@ -21,7 +21,7 @@ uploaddir = str(Server.objects.filter(host_name=host).values('upload_dir')[0]['u
 
 def upload_admin_log(request, uploadimage):
     """Log changes to Admin log."""
-    change_message = "Uploaded image %s with orientation %s using %s" % (uploadimage.name, uploadimage.orig_orientation, uploadimage.setting)
+    change_message = "Uploaded image %s with orientation %s using %s" % (uploadimage.name, uploadimage.orig_orientation, uploadimage.settings)
     action_flag = ADDITION
     try:
       LogEntry.objects.log_action(
