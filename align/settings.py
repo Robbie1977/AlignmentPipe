@@ -223,7 +223,7 @@ AUTHENTICATION_BACKENDS = (
    'social.backends.google.GooglePlusAuth',
   #  'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
-   'social.backends.contrib.github.GithubBackend',
+   'social.backends.github.GithubOAuth2',
   #  'social_auth.backends.contrib.linkedin.LinkedinBackend',
 )
 
@@ -241,7 +241,7 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social.backends.google.GooglePlusAuth',
     # 'social.backends.twitter.TwitterOAuth',
     # 'social.backends.yahoo.YahooOpenId',
-    'social.backends.contrib.github.GithubBackend',
+    'social.backends.github.GithubOAuth2',
     # 'social_auth.backends.contrib.linkedin.LinkedinBackend',
 )
 
