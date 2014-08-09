@@ -139,8 +139,8 @@ def plotResults(request, image_id):
     from matplotlib.dates import DateFormatter
     import numpy as np
     from django.shortcuts import redirect
-    if not request.user.is_authenticated():
-        return redirect('/admin/')
+    # if not request.user.is_authenticated():
+    #     return redirect('/admin/')
     fig = Figure()
     ax=fig.add_subplot(3,1,1)
     if Original_nrrd.objects.filter(image=image_id).count() > 0:
