@@ -38,8 +38,10 @@ def upload_admin_log(request, uploadimage):
 
 def index(request):
     from django.shortcuts import redirect
+    if request.user.is_authenticated() and not request.user.is_staff:
+      request.user.is_staff = True
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+      return redirect('/login/?next=%s' % request.path)
     if not request.user == '':
       cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
       if cu == 1:
