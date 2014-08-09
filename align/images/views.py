@@ -41,7 +41,7 @@ def index(request):
     if request.user.is_authenticated() and not request.user.is_staff:
       request.user.is_staff = True
     if not request.user.is_authenticated():
-      return redirect('/login/?next=%s' % request.path)
+      return redirect('/admin/')
     if not request.user == '':
       cu = int(User.objects.filter(username=request.user).values('id')[0]['id'])
       if cu == 1:
@@ -60,7 +60,7 @@ def index(request):
 def detail(request, image_id):
     from django.shortcuts import redirect
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/admin/')
     if not request.user == '':
       align_list = Alignment.objects.get(id=image_id)
       context = {'record': align_list}
@@ -85,7 +85,7 @@ def upload(request):
     import os, stat, sys
     from django.shortcuts import redirect
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/admin/')
     # Handle file upload
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
@@ -140,7 +140,7 @@ def plotResults(request, image_id):
     import numpy as np
     from django.shortcuts import redirect
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/admin/')
     fig = Figure()
     ax=fig.add_subplot(3,1,1)
     if Original_nrrd.objects.filter(image=image_id).count() > 0:
@@ -194,7 +194,7 @@ def plotNrrd(request, image_id, image_type):
     from system.models import checkDir, Server
     from django.shortcuts import redirect
     if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/admin/')
 
     record = checkDir(Alignment.objects.get(id=image_id))
 
