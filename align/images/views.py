@@ -27,7 +27,7 @@ def upload_admin_log(request, uploadimage):
       LogEntry.objects.log_action(
         user_id = request.user.id,
         content_type_id = ContentType.objects.get_for_model(Alignment).pk,
-        object_id = uploadimage.pk,
+        object_id = uploadimage.id,
         object_repr = unicode(uploadimage.name),
         change_message = unicode(change_message),
         action_flag = action_flag,
