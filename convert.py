@@ -93,6 +93,8 @@ def convRec(record):
       print metadata
       # TBD: add voxel size data
       # header['keyvaluepairs'] = dict(metadata)
+    tif.close()
+    check_call(['gzip', file])
     image = np.squeeze(image)
     sh = np.array(np.shape(image))
     ch = np.argmin(sh)
@@ -175,8 +177,7 @@ def convRec(record):
     # record.update({'original_nrrd': upd})
     record['max_stage'] = 2
     # collection.save(record)
-    tif.close()
-    check_call(['gzip', file])
+
     print 'conversion complete.'
     del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
     return record
