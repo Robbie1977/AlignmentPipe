@@ -90,6 +90,16 @@ class Alignment(models.Model):
         return '<img src="/images/nrrd/template/%s"/>' % str(self.id)
     temp_image.short_description = 'template image for reference'
     temp_image.allow_tags = True
+    # def available_files(self):
+    #     created = {}
+    #     if 'nrrd' in self.aligned_bg:
+    #       created.append({'Aligned BG':str(self.aligned_bg)})
+    #     if 'nrrd' in self.aligned_sg:
+    #       created.append({'Aligned SG':str(self.aligned_sg)})
+    #     if 'nrrd' in self.aligned_ac1:
+    #       created.append({'Aligned AC1':str(self.aligned_ac1)})
+    #     return created
+
 
 class Original_nrrd(models.Model):
     image = models.ForeignKey(Alignment)
@@ -101,6 +111,11 @@ class Original_nrrd(models.Model):
     pre_hist = models.CommaSeparatedIntegerField(max_length=255, default=range(0,255))
     def __str__(self):
         return self.Alignment.name + ' channel ' + str(channel)
+    # def available_files(self):
+    #   created = {}
+    #   if 'nrrd' in str(self.file):
+    #     created.append({('Original Ch' + str(self.channel)):str(self.file)})
+    #   return created
 
 class Upload(models.Model):
     import system.models
@@ -111,3 +126,16 @@ class Upload(models.Model):
     orientation = models.CharField(max_length=50, choices=orien, default='left-posterior-superior', blank=True)
     def curStage(self):
         return self.file
+
+class Mask_original(models.Model):
+    image = models.ForeignKey(Original_nrrd)
+    intensity_threshold = models.IntegerField(default=20)
+    min_object_size = models.IntegerField(default=1000)
+    complete = models.BooleanField(default=False)
+
+class Mask_aligned(models.Model):
+    image = models.ForeignKey(Alignment)
+    channel = models.CharField(max_length=3, choices=(('Background','bg'),('Signal','sg'),('Additional', 'ac1')), default='sg')
+    intensity_threshold = models.IntegerField(default=20)
+    min_object_size = models.IntegerField(default=1000)
+    complete = models.BooleanField(default=False)
