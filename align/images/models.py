@@ -113,8 +113,7 @@ class Original_nrrd(models.Model):
         return str(self.image) + ' channel ' + str(self.channel)
     def owner(self):
         im_id = Alignment.objects.filter(id=self.image)
-        u_id = im_id.values_list('user', flat=True).distinct()
-        return u_id
+        return str(im_id.user)
     owner.admin_order_field = 'image'
     owner.short_description = 'User'
     # def available_files(self):
