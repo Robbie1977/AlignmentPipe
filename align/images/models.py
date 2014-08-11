@@ -110,7 +110,7 @@ class Original_nrrd(models.Model):
     is_index = models.BooleanField(default=False)
     pre_hist = models.CommaSeparatedIntegerField(max_length=255, default=range(0,255))
     def __str__(self):
-        return self.Alignment.name + ' channel ' + str(channel)
+        return self.image + ' channel ' + str(channel)
     # def available_files(self):
     #   created = {}
     #   if 'nrrd' in str(self.file):

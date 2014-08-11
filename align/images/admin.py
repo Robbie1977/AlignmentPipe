@@ -107,6 +107,6 @@ class AlignmentAdmin(admin.ModelAdmin):
 
 AlignmentAdmin.allow_tags = True
 admin.site.register(Alignment, AlignmentAdmin)
-# admin.site.register(Original_nrrd)
+admin.site.register(Original_nrrd)
 admin.site.register(Mask_aligned)
 admin.site.register(Mask_original)
