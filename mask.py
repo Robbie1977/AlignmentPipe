@@ -17,7 +17,7 @@ if __name__ == "__main__":
       count +=1
       print 'Create original image mask: ' + str(count) + ' of ' + str(total)
       outfile = str(line[3]).replace('.nrrd','-objMask.nrrd')
-      labelObj(tempfolder + str(line[3]), tempfolder + outfile, line[1], line[2])
+      labelObj(tempfolder + str(line[3]), tempfolder + outfile, t=line[1], ms=line[2])
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
@@ -37,7 +37,7 @@ if __name__ == "__main__":
       if str(line[3]) == 'ac1':
         chan = 6
       outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
-      labelObj(tempfolder + str(line[chan]), tempfolder + outfile, line[1], line[2])
+      labelObj(tempfolder + str(line[chan]), tempfolder + outfile, t=line[1], ms=line[2])
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
