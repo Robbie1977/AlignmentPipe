@@ -49,13 +49,13 @@ class CompleteStage(admin.SimpleListFilter):
         if self.value() == 'failed':
             return queryset.filter(alignment_stage__lte=0)
 
-class OriginalMaskAdminInline(admin.TabularInline):
+class OriginalMaskAdminInline(admin.StackedInline):
     model = Mask_original
 
-class AlignedMaskAdminInline(admin.TabularInline):
+class AlignedMaskAdminInline(admin.StackedInline):
     model = Mask_aligned
 
-class OriginalAdminInline(admin.TabularInline):
+class OriginalAdminInline(admin.StackedInline):
     model = Original_nrrd
 
 
