@@ -132,7 +132,7 @@ class OriginalAdmin(admin.ModelAdmin):
                     'new_max',
                     'owner' )
     list_filter = ['image', 'channel', 'is_index']
-    inlines = [OriginalMaskAdminInline]
+    inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:
     #     return Original_nrrd.objects.all()
