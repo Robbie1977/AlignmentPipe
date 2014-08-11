@@ -18,6 +18,7 @@ if __name__ == "__main__":
       print 'Create original image mask: ' + str(count) + ' of ' + str(total)
       outfile = str(line[3]).replace('.nrrd','-objMask.nrrd')
       labelObj(tempfolder + str(line[3]), tempfolder + outfile, t=line[1], ms=line[2])
+      cur.execute("UPDATE images_mask_original SET complete=True WHERE id = %s ", [str(line[0])])
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
@@ -38,6 +39,7 @@ if __name__ == "__main__":
         chan = 6
       outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
       labelObj(tempfolder + str(line[chan]), tempfolder + outfile, t=line[1], ms=line[2])
+      cur.execute("UPDATE images_mask_aligned SET complete=True WHERE id = %s ", [str(line[0])])
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
