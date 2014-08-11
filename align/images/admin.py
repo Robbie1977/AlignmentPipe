@@ -49,6 +49,12 @@ class CompleteStage(admin.SimpleListFilter):
         if self.value() == 'failed':
             return queryset.filter(alignment_stage__lte=0)
 
+class OrigianlAdminInline(admin.TabularInline):
+    model = Mask_original
+
+class AlignedAdminInline(admin.TabularInline):
+    model = Mask_aligned
+
 
 class AlignmentAdmin(admin.ModelAdmin):
     exclude = ('aligned_tif')
@@ -99,6 +105,8 @@ class AlignmentAdmin(admin.ModelAdmin):
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
     list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
+    inlines = (OriginalAdminInline,
+            AlignedAdminInline )
 
     def queryset(self, request):
       if request.user.is_superuser:
