@@ -49,11 +49,14 @@ class CompleteStage(admin.SimpleListFilter):
         if self.value() == 'failed':
             return queryset.filter(alignment_stage__lte=0)
 
-class OriginalAdminInline(admin.TabularInline):
+class OriginalMaskAdminInline(admin.TabularInline):
     model = Mask_original
 
-class AlignedAdminInline(admin.TabularInline):
+class AlignedMaskAdminInline(admin.TabularInline):
     model = Mask_aligned
+
+class OriginalAdminInline(admin.TabularInline):
+    model = Original_nrrd
 
 
 class AlignmentAdmin(admin.ModelAdmin):
@@ -105,7 +108,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
     list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
-    inlines = [OriginalAdminInline, AlignedAdminInline]
+    inlines = [OriginalAdminInline, AlignedMaskAdminInline]
 
     def queryset(self, request):
       if request.user.is_superuser:
@@ -129,7 +132,7 @@ class OriginalAdmin(admin.ModelAdmin):
                     'new_max',
                     'owner' )
     list_filter = ['image', 'channel', 'is_index', 'owner']
-
+    inlines = [OriginalMaskAdminInline]
     def queryset(self, request):
       if request.user.is_superuser:
         return Original_nrrd.objects.all()
