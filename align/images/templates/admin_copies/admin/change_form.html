@@ -4,18 +4,6 @@
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
-{% if  %}
-<script type="text/javascript">
-$(function() {
-    tools = [
-        {
-            url: "{% url collections id=original.id %}",
-            title: "Collections"
-        }
-    ];
-    appendObjectTools(tools);
-});
-    </script>
 {{ media }}
 {% endblock %}
 

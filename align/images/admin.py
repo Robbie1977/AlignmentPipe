@@ -108,14 +108,12 @@ class AlignmentAdmin(admin.ModelAdmin):
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
     list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
-    inlines = [OriginalAdminInline, AlignedMaskAdminInline]
+    # inlines = [OriginalAdminInline, AlignedMaskAdminInline]
 
     def queryset(self, request):
       if request.user.is_superuser:
         return Alignment.objects.all()
       return Alignment.objects.filter(Q(user=request.user) | Q(user=0))
-    class Media:
-        js = ("appendObjectTools.js",)
 
 AlignmentAdmin.allow_tags = True
 admin.site.register(Alignment, AlignmentAdmin)
