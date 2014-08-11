@@ -135,7 +135,7 @@ class Mask_original(models.Model):
 
 class Mask_aligned(models.Model):
     image = models.ForeignKey(Alignment)
-    channel = models.CharField(max_length=3, choices=(('Background','bg'),('Signal','sg'),('Additional', 'ac1')), default='sg')
+    channel = models.CharField(max_length=3, choices=(('bg', 'Background'),('sg', 'Signal'),('ac1', 'Additional')), default='sg')
     intensity_threshold = models.IntegerField(default=20)
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
