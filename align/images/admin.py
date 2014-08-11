@@ -114,6 +114,10 @@ class AlignmentAdmin(admin.ModelAdmin):
       if request.user.is_superuser:
         return Alignment.objects.all()
       return Alignment.objects.filter(Q(user=request.user) | Q(user=0))
+    def show_ch1_image(self, obj):
+      im_id = Original_nrrd.object.filter(image=obj.id).filter(channel=1)
+      return '<a href="/admin/images/mask_original/add/?image=%s">Create ch1 mask</a>' % (im_id.pk)
+    show_ch1_image.allow_tags = True
 
 AlignmentAdmin.allow_tags = True
 admin.site.register(Alignment, AlignmentAdmin)
