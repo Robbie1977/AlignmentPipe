@@ -133,10 +133,10 @@ class OriginalAdmin(admin.ModelAdmin):
                     'owner' )
     list_filter = ['image', 'channel', 'is_index', 'owner']
     inlines = [OriginalMaskAdminInline]
-    def queryset(self, request):
-      if request.user.is_superuser:
-        return Original_nrrd.objects.all()
-      return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
+    # def queryset(self, request):
+    #   if request.user.is_superuser:
+    #     return Original_nrrd.objects.all()
+    #   return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
 
 admin.site.register(Original_nrrd, OriginalAdmin)
 admin.site.register(Mask_aligned)
