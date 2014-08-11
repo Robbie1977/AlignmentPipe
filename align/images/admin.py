@@ -126,7 +126,7 @@ class OrigianlAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Original_nrrd.objects.all()
-      return Original_nrrd.objects.filter(Q(image.user=request.user) | Q(image.user=0))
+      return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
 
 admin.site.register(Original_nrrd)
 admin.site.register(Mask_aligned)
