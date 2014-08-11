@@ -1,5 +1,5 @@
 from django.contrib import admin
-from images.models import Alignment, Original_nrrd
+from images.models import Alignment, Original_nrrd, Mask_aligned, Mask_original
 from system.models import Setting
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
