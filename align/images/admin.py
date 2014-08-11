@@ -135,7 +135,7 @@ class OriginalAdmin(admin.ModelAdmin):
                     'new_min',
                     'new_max',
                     'owner' )
-    list_filter = ['image', 'channel', 'is_index']
+    list_filter = ['channel', 'is_index']
     inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:
