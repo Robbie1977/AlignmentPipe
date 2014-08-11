@@ -111,6 +111,8 @@ class Original_nrrd(models.Model):
     pre_hist = models.TextField(max_length=255, default=str(range(0,255)))
     def __str__(self):
         return str(self.image) + ' channel ' + str(self.channel)
+    def owner(self):
+        return self.image.user
     # def available_files(self):
     #   created = {}
     #   if 'nrrd' in str(self.file):
