@@ -55,35 +55,51 @@ class Alignment(models.Model):
         return stage[self.alignment_stage]
     curStage.short_description = 'Current stage?'
     def ch1_image(self):
+      if self.max_stage > 1:
         return '<img src="/images/nrrd/Ch1_file/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     ch1_image.short_description = 'original image ch1'
     ch1_image.allow_tags = True
     def ch2_image(self):
+      if self.max_stage > 1:
         return '<img src="/images/nrrd/Ch2_file/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     ch2_image.short_description = 'original image ch2'
     ch2_image.allow_tags = True
     def ch3_image(self):
+      if self.max_stage > 1:
         return '<img src="/images/nrrd/Ch3_file/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     ch3_image.short_description = 'original image ch3'
     ch3_image.allow_tags = True
     def bg_image(self):
+      if self.max_stage > 5:
         return '<img src="/images/nrrd/aligned_bg/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     bg_image.short_description = 'aligned BG image'
     bg_image.allow_tags = True
     def sg_image(self):
+      if self.max_stage > 6:
         return '<img src="/images/nrrd/aligned_sg/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     sg_image.short_description = 'aligned SG image'
     sg_image.allow_tags = True
     def ac1_image(self):
+      if self.max_stage > 6:
         return '<img src="/images/nrrd/aligned_ac1/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     ac1_image.short_description = 'aligned AC1 image'
     ac1_image.allow_tags = True
     def hist_image(self):
+      if self.max_stage > 1:
         return '<img src="/images/hist/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     hist_image.short_description = 'original image histogram (new contrast range maked in cyan)'
     hist_image.allow_tags = True
     def init_image(self):
+      if self.max_stage > 2:
         return '<img src="/images/nrrd/temp_initial_nrrd/%s"/>' % str(self.id)
+      return '<img src="/static/waiting.gif"/>'
     init_image.short_description = 'initial BG alignment'
     init_image.allow_tags = True
     def temp_image(self):
