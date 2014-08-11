@@ -112,7 +112,7 @@ class Original_nrrd(models.Model):
     def __str__(self):
         return str(self.image) + ' channel ' + str(self.channel)
     def owner(self):
-        return self.image.user
+        return alignment__user
     owner.admin_order_field = 'image'
     owner.short_description = 'User'
     # def available_files(self):
