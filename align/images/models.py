@@ -110,7 +110,7 @@ class Original_nrrd(models.Model):
     is_index = models.BooleanField(default=False)
     pre_hist = models.CommaSeparatedIntegerField(max_length=255, default=range(0,255))
     def __str__(self):
-        return self.image + ' channel ' + str(channel)
+        return str(self.image) + ' channel ' + str(channel)
     # def available_files(self):
     #   created = {}
     #   if 'nrrd' in str(self.file):
@@ -139,3 +139,5 @@ class Mask_aligned(models.Model):
     intensity_threshold = models.IntegerField(default=20)
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
+    def __str__(self):
+        return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel) + ' channel'
