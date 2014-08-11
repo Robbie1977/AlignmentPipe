@@ -23,21 +23,21 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '7' in run_stage:
-      cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.intensity_threshold, images_mask_aligned.min_object_size, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1 FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = False")
-      records = cur.fetchall()
-      total = len(records)
-      count = 0
-      print records
-      for line in records:
-        count +=1
-        chan = 5
-        print 'Create aligned image mask: ' + str(count) + ' of ' + str(total)
-        if str(line[3]) == 'bg':
-          chan = 4
-        if str(line[3]) == 'ac1':
-          chan = 6
-        outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
-        indexObjects(tempfolder + str(line[chan]), tempfolder + outfile, line[1], line[2])
-      print 'done'
-    else:
-      print 'inactive or stage 0 not selected'
+    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.intensity_threshold, images_mask_aligned.min_object_size, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1 FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = False")
+    records = cur.fetchall()
+    total = len(records)
+    count = 0
+    print records
+    for line in records:
+      count +=1
+      chan = 5
+      print 'Create aligned image mask: ' + str(count) + ' of ' + str(total)
+      if str(line[3]) == 'bg':
+        chan = 4
+      if str(line[3]) == 'ac1':
+        chan = 6
+      outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
+      indexObjects(tempfolder + str(line[chan]), tempfolder + outfile, line[1], line[2])
+    print 'done'
+  else:
+    print 'inactive or stage 7 not selected'
