@@ -105,8 +105,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
     list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
-    inlines = (OriginalAdminInline,
-            AlignedAdminInline )
+    inlines = [OrigianlAdminInline, AlignedAdminInline]
 
     def queryset(self, request):
       if request.user.is_superuser:
@@ -136,6 +135,6 @@ class OrigianlAdmin(admin.ModelAdmin):
         return Original_nrrd.objects.all()
       return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
 
-admin.site.register(Original_nrrd)
+admin.site.register(Original_nrrd, OriginalAdmin)
 admin.site.register(Mask_aligned)
 admin.site.register(Mask_original)
