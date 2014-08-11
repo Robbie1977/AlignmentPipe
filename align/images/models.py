@@ -108,7 +108,7 @@ class Original_nrrd(models.Model):
     new_max = models.IntegerField(default=255)
     file = models.TextField(max_length=1000, blank=True)
     is_index = models.BooleanField(default=False)
-    pre_hist = models.CommaSeparatedIntegerField(max_length=255, default=range(0,255))
+    pre_hist = models.TextField(max_length=255, default=str(range(0,255)))
     def __str__(self):
         return str(self.image) + ' channel ' + str(channel)
     # def available_files(self):
