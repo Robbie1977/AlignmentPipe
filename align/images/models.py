@@ -140,4 +140,4 @@ class Mask_aligned(models.Model):
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
     def __str__(self):
-        return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel) + ' channel'
+        return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper + ' channel'
