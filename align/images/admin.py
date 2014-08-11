@@ -107,6 +107,26 @@ class AlignmentAdmin(admin.ModelAdmin):
 
 AlignmentAdmin.allow_tags = True
 admin.site.register(Alignment, AlignmentAdmin)
+
+# class OrigianlAdmin(admin.ModelAdmin):
+#     readonly_fields = ('image',
+#                     'channel',
+#                     'new_min',
+#                     'new_max',
+#                     'file',
+#                     'is_index',
+#                     'pre_hist' )
+#     list_display = ('image',
+#                     'channel',
+#                     'new_min',
+#                     'new_max' )
+#     list_filter = ['image', 'channel', 'is_index']
+#
+#     def queryset(self, request):
+#       if request.user.is_superuser:
+#         return Original_nrrd.objects.all()
+#       return Original_nrrd.objects.filter(Q(image.user=request.user) | Q(image.user=0))
+
 admin.site.register(Original_nrrd)
 admin.site.register(Mask_aligned)
 admin.site.register(Mask_original)
