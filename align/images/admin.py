@@ -147,6 +147,10 @@ class OriginalAdmin(admin.ModelAdmin):
     #   if request.user.is_superuser:
     #     return Original_nrrd.objects.all()
     #   return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
+    def queryset(self, request):
+      if request.user.is_superuser:
+        return Original_nrrd.objects.all()
+      return Original_nrrd.objects.filter(Q(__alignment__user=request.user) | Q(__alignment__user=0))
 OriginalAdmin.allow_tags = True
 admin.site.register(Original_nrrd, OriginalAdmin)
 
