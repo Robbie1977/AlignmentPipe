@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from images.models import Alignment, Original_nrrd, comp_orien, conv_orien, Upload
+from images.models import Alignment, Original_nrrd, comp_orien, conv_orien, Upload, Mask_original, Mask_aligned
 from system.models import Setting, Server, Template
 from django.views import generic
 from socket import gethostname
@@ -286,7 +286,7 @@ def plotNrrd(request, image_id, image_type):
           p = p + 1
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
         del xdata, zdata, data, mask_data
-        fig.text(0.3,0.005,subtext)  
+        fig.text(0.3,0.005,subtext)
       else:
         zdata = np.max(data, axis=2)
         xdata = np.max(data, axis=1)
