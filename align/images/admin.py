@@ -165,13 +165,13 @@ class MaskForm(forms.ModelForm):
 class MaskAlignedAdmin(admin.ModelAdmin):
     form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
-    list_filter = ('channel', 'complete' )
+    list_filter = ('channel', 'complete', )
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
-    list_filter = ('complete' )
+    list_filter = ('complete', )
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)
