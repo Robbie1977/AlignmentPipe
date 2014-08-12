@@ -170,8 +170,8 @@ class Mask_original(models.Model):
       if self.image.image.max_stage > 1:
         return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.image.channel), str(self.image.image.id)
       return '<img src="/static/waiting.gif"/>'
-    ch1_image.short_description = 'original image'
-    ch1_image.allow_tags = True
+    orig_image.short_description = 'original image'
+    orig_image.allow_tags = True
 
 
 class Mask_aligned(models.Model):
