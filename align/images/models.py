@@ -139,6 +139,8 @@ class Original_nrrd(models.Model):
     #   return created
     def chan_image(self):
       return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.channel), str(self.image.id)
+    chan_image.short_description = 'channel image'
+    chan_image.allow_tags = True
 
 class Upload(models.Model):
     import system.models
