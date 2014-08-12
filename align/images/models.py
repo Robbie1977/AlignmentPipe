@@ -166,6 +166,13 @@ class Mask_original(models.Model):
       return '<img src="/static/waiting.gif"/>'
     mask_image.short_description = 'detected objects'
     mask_image.allow_tags = True
+    def orig_image(self):
+      if self.image.image.max_stage > 1:
+        return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.image.channel), str(self.image.image.id)
+      return '<img src="/static/waiting.gif"/>'
+    ch1_image.short_description = 'original image'
+    ch1_image.allow_tags = True
+
 
 class Mask_aligned(models.Model):
     image = models.ForeignKey(Alignment)
