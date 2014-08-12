@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND (NOT (images_mask_original.cut_objects = None))")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}'")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -35,7 +35,7 @@ if __name__ == "__main__":
       count +=1
       print 'Cut object(s) from original image: ' + str(count) + ' of ' + str(total)
       maskfile = str(line[2]).replace('.nrrd','-objMask.nrrd')
-      labelObj(tempfolder + str(line[2]), tempfolder + maskfile, labels=str(line[1]))
+      cutObj(tempfolder + str(line[2]), tempfolder + maskfile, labels=str(line[1]))
       cur.execute("UPDATE images_mask_original SET cut_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
