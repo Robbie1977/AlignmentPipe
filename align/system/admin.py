@@ -4,7 +4,7 @@ from system.models import Setting, Server, Template
 from images.models import stage
 import system.forms
 
-serstage = stage
+serstage = stage.copy()
 serstage[0] = 'edit original images'
 serstage[7] = 'edit aligned images'
 for i in serstage.keys():
