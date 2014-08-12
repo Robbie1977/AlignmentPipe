@@ -163,7 +163,7 @@ admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
-    readonly_fields = ('mask_image', 'detected_objects', 'orig_image', )
-    list_filter = ('complete', )
+    readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', )
+    list_filter = ('complete', 'owner' )
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)

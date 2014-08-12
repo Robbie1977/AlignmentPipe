@@ -138,7 +138,7 @@ class Original_nrrd(models.Model):
     #     created.append({('Original Ch' + str(self.channel)):str(self.file)})
     #   return created
     def chan_image(self):
-      return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.channel), str(self.image.id)
+      return '<img src="/images/nrrd/Ch%s_file/%s"/>' % (str(self.channel), str(self.image.id))
     chan_image.short_description = 'channel image'
     chan_image.allow_tags = True
 
@@ -171,12 +171,20 @@ class Mask_original(models.Model):
     mask_image.short_description = 'detected objects'
     mask_image.allow_tags = True
     def orig_image(self):
+      ch_id = self.image
+      im_id = ch_id.image
       try:
-        return self.image.chan_image
+        return '<img src="/images/nrrd/Ch%s_file/%s"/>' % (str(ch_id.channel), str(im_id.id))
       except:
         return '<img src="/static/waiting.gif"/>'
     orig_image.short_description = 'original image'
     orig_image.allow_tags = True
+    def owner(self):
+      ch_id = self.image
+      im_id = ch_id.image
+      return str(im_id.user)
+    owner.admin_order_field = 'image'
+    owner.short_description = 'User'
 
 
 class Mask_aligned(models.Model):
