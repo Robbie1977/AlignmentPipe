@@ -146,12 +146,12 @@ admin.site.register(Original_nrrd, OriginalAdmin)
 
 class MaskAlignedAdmin(admin.ModelAdmin):
     readonly_fields = ('mask_image')
-    list_filter = ['image', 'channel', 'complete']
+    list_filter = ['channel', 'complete']
 
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
     readonly_fields = ('mask_image')
-    list_filter = ['image', 'complete']
+    list_filter = ['complete']
 
 admin.site.register(Mask_original, MaskOriginalAdmin)
