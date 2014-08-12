@@ -143,11 +143,11 @@ class Original_nrrd(models.Model):
     chan_image.allow_tags = True
     def chan_ident(self):
       ident = '...'
-      if int(self.channel) == int(self.image.background_channel):
+      if str(self.channel) == str(self.image.background_channel):
         ident = 'background'
-      if int(self.channel) == int(self.image.signal_channel):
+      if str(self.channel) == str(self.image.signal_channel):
         ident = 'signal'
-      if int(self.channel) == int(self.image.ac1_channel):
+      if str(self.channel) == str(self.image.ac1_channel):
         ident = 'additional channel 1'
       return ident
     chan_ident.short_description = 'channel identified as'
