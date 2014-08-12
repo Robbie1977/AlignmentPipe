@@ -127,7 +127,7 @@ admin.site.register(Alignment, AlignmentAdmin)
 class OriginalAdmin(admin.ModelAdmin):
     readonly_fields = ('image',
                     'channel',
-                    'chan_ident', 
+                    'chan_ident',
                     'chan_image',
                     'new_min',
                     'new_max',
@@ -141,7 +141,7 @@ class OriginalAdmin(admin.ModelAdmin):
                     'new_min',
                     'new_max',
                     'owner' )
-    list_filter = ['chan_ident', 'channel', 'is_index', 'owner']
+    list_filter = ['channel', 'is_index', 'owner']
     # inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:
