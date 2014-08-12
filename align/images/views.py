@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 
 from images.forms import UploadForm
 
+import gc
+
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
 
@@ -287,13 +289,16 @@ def plotNrrd(request, image_id, image_type):
             ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
             ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
             p = p + 1
+            gc.collect()
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
-        del xdata, zdata, data, mask_data
+        del xdata, zdata, data, mask_data, mdata
+        gc.collect()
         fig.text(0.3,0.005,subtext)
       else:
         zdata = np.max(data, axis=2)
         xdata = np.max(data, axis=1)
         del data
+        gc.collect()
         fig = Figure()
         ax=fig.add_subplot(1,2,1)
         imgplot = ax.imshow(xdata)
@@ -320,6 +325,7 @@ def plotNrrd(request, image_id, image_type):
       response = HttpResponse(content_type='image/png')
 
       canvas.print_png(response)
+      gc.collect()
       return response
     else:
       fig = Figure()
@@ -330,4 +336,5 @@ def plotNrrd(request, image_id, image_type):
       fig.text(0.3,0.5,'No Data Found!', fontsize=32)
       response = HttpResponse(content_type='image/png')
       canvas.print_png(response)
+      gc.collect()
       return response
