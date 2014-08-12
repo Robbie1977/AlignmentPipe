@@ -266,8 +266,10 @@ def plotNrrd(request, image_id, image_type):
         # colmaps = np.array(['Blues', 'Greens', 'Oranges', 'Purples', 'Reds', 'Greys', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'])
         for i in indVs:
           ax=fig.add_subplot(indTot,2,p)
-          zdata = np.max(data[mask_data==i], axis=2)
-          xdata = np.max(data[mask_data==i], axis=1)
+          mdata = data
+          mdata[mask_data<>i]=0
+          zdata = np.max(mdata, axis=2)
+          xdata = np.max(mdata, axis=1)
           imgplot = ax.imshow(xdata)
           imgplot.set_cmap('spectral')
           ax.set_title('Obj ' + str(i))
