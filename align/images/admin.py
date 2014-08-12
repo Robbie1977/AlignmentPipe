@@ -135,11 +135,12 @@ class OriginalAdmin(admin.ModelAdmin):
                     'pre_hist',
                     'parent' )
     list_display = ('image',
+                    'chan_ident',
                     'channel',
                     'new_min',
                     'new_max',
                     'owner' )
-    list_filter = ['channel', 'is_index', 'owner']
+    list_filter = ['chan_ident', 'channel', 'is_index', 'owner']
     # inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:

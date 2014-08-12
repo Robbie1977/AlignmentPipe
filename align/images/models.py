@@ -141,6 +141,20 @@ class Original_nrrd(models.Model):
       return '<img src="/images/nrrd/Ch%s_file/%s"/>' % (str(self.channel), str(self.image.id))
     chan_image.short_description = 'channel image'
     chan_image.allow_tags = True
+    def chan_ident(self):
+      ident = '...'
+      if self.channel in self.image.background_channel:
+        ident = 'background'
+      if self.channel in self.image.signal_channel:
+        ident = 'signal'
+      if self.channel in self.image.ac1_channel:
+        ident = 'additional channel 1'
+      return ident
+    chan_ident.short_description = 'channel identified as'
+    def parent(self):
+      return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.id), str(self.image))
+    parent.short_description = 'parent details'
+    parent.allow_tags = True
 
 class Upload(models.Model):
     import system.models
