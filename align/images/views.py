@@ -223,7 +223,6 @@ def plotNrrd(request, image_id, image_type):
       fsize = 12
     elif 'mask_original' in image_type:
       record = Mask_original.objects.get(id=image_id)
-      # temprec = Original_nrrd.objects.get(id=record.image_id)
       file = tempfolder + str(record.image.file)
       orient = str(record.image.image.settings.template.orientation)
       subtext = 'Detected objects'
@@ -265,28 +264,28 @@ def plotNrrd(request, image_id, image_type):
         p = 1
         # colmaps = np.array(['Blues', 'Greens', 'Oranges', 'Purples', 'Reds', 'Greys', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'])
         for i in indVs:
-          ax=fig.add_subplot(indTot,2,p)
-          mdata = data
-          mdata[mask_data<>i]=0
-          zdata = np.max(mdata, axis=2)
-          xdata = np.max(mdata, axis=1)
-          imgplot = ax.imshow(xdata)
-          imgplot.set_cmap('spectral')
-          ax.set_title('Obj ' + str(i))
-          ax.set_xlabel('Z [' + str(opositeOr(ori[2])) + '->' + str(ori[2]) + '] (Px)', fontsize=10)
-          ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-          ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-          ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-          p = p + 1
-          ax=fig.add_subplot(indTot,2,p)
-          imgplot = ax.imshow(zdata)
-          imgplot.set_cmap('spectral')
-          ax.set_title('Max proj. (Z)')
-          ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
-          ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-          ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-          ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-          p = p + 1
+          if i > 0:
+            ax=fig.add_subplot(indTot,2,p)
+            mdata = np.select(not np.uint8(mask_data) = np.uint8(i), data, default=np.uint8(0))
+            zdata = np.max(mdata, axis=2)
+            xdata = np.max(mdata, axis=1)
+            imgplot = ax.imshow(xdata)
+            imgplot.set_cmap('spectral')
+            ax.set_title('Obj ' + str(i))
+            ax.set_xlabel('Z [' + str(opositeOr(ori[2])) + '->' + str(ori[2]) + '] (Px)', fontsize=10)
+            ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
+            ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
+            ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
+            p = p + 1
+            ax=fig.add_subplot(indTot,2,p)
+            imgplot = ax.imshow(zdata)
+            imgplot.set_cmap('spectral')
+            ax.set_title('Max proj. (Z)')
+            ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
+            ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
+            ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
+            ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
+            p = p + 1
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
         del xdata, zdata, data, mask_data
         fig.text(0.3,0.005,subtext)
