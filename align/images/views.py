@@ -225,28 +225,28 @@ def plotNrrd(request, image_id, image_type):
       fsize = 12
     elif 'mask_original' in image_type:
       record = Mask_original.objects.get(id=image_id)
-      file = tempfolder + str(record.image.file)
+      file = tempfolder + str(record.image.file).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_bg' in image_type:
       record = Mask_aligned.objects.get(id=image_id)
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_bg)
+      file = tempfolder + str(record.image.aligned_bg).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_sg' in image_type:
       record = Mask_aligned.objects.get(id=image_id)
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_sg)
+      file = tempfolder + str(record.image.aligned_sg).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_ac1' in image_type:
       record = Mask_aligned.objects.get(id=image_id)
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_ac1)
+      file = tempfolder + str(record.image.aligned_ac1).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
@@ -256,71 +256,32 @@ def plotNrrd(request, image_id, image_type):
       ori = list(orient)
       data, header = nrrd.read(file)
       data = data.swapaxes(0,1)
-      if labels:
-        mask = str(file).replace('.nrrd','-objMask.nrrd')
-        mask_data, mask_header = nrrd.read(file)
-        mask_data = mask_data.swapaxes(0,1)
-        indVs = np.unique(mask_data)
-        indTot = indVs.shape[0]
-        fig = Figure()
-        p = 1
-        # colmaps = np.array(['Blues', 'Greens', 'Oranges', 'Purples', 'Reds', 'Greys', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd'])
-        for i in indVs:
-          if i > 0:
-            ax=fig.add_subplot(np.ceil(indTot/2.0),2,p)
-            mdata = np.copy(data)
-            mdata[np.uint8(mask_data) != np.uint8(i)] = np.uint8(0)
-            zdata = np.max(mdata, axis=2)
-            # xdata = np.max(mdata, axis=1)
-            # imgplot = ax.imshow(xdata)
-            # imgplot.set_cmap('spectral')
-            # ax.set_title('Obj ' + str(i))
-            # ax.set_xlabel('Z [' + str(opositeOr(ori[2])) + '->' + str(ori[2]) + '] (Px)', fontsize=10)
-            # ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-            # ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-            # ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-            # p = p + 1
-            # ax=fig.add_subplot(indTot,2,p)
-            imgplot = ax.imshow(zdata)
-            # imgplot.set_cmap('spectral')
-            ax.set_title('Obj ' + str(i))
-            ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
-            ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-            ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-            ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-            p = p + 1
-            gc.collect()
-        fig.colorbar(imgplot, ax=ax, aspect=7.5)
-        del xdata, zdata, data, mask_data, mdata
-        gc.collect()
-        fig.text(0.3,0.005,subtext)
-      else:
-        zdata = np.max(data, axis=2)
-        xdata = np.max(data, axis=1)
-        del data
-        gc.collect()
-        fig = Figure()
-        ax=fig.add_subplot(1,2,1)
-        imgplot = ax.imshow(xdata)
-        imgplot.set_cmap('spectral')
-        ax.set_title('Max proj. (X)')
-        ax.set_xlabel('Z [' + str(opositeOr(ori[2])) + '->' + str(ori[2]) + '] (Px)', fontsize=10)
-        ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-        ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-        ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-        ax=fig.add_subplot(1,2,2)
-        imgplot = ax.imshow(zdata)
-        imgplot.set_cmap('spectral')
-        fig.colorbar(imgplot, ax=ax, aspect=7.5)
-        del xdata, zdata
-        fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
-        ax.set_title('Max proj. (Z)')
-        ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
-        ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
-        ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
-        ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
-        fig.text(0.3,0.005,subtext)
-        # fig.tight_layout()
+      zdata = np.max(data, axis=2)
+      xdata = np.max(data, axis=1)
+      del data
+      gc.collect()
+      fig = Figure()
+      ax=fig.add_subplot(1,2,1)
+      imgplot = ax.imshow(xdata)
+      imgplot.set_cmap('spectral')
+      ax.set_title('Max proj. (X)')
+      ax.set_xlabel('Z [' + str(opositeOr(ori[2])) + '->' + str(ori[2]) + '] (Px)', fontsize=10)
+      ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
+      ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
+      ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
+      ax=fig.add_subplot(1,2,2)
+      imgplot = ax.imshow(zdata)
+      imgplot.set_cmap('spectral')
+      fig.colorbar(imgplot, ax=ax, aspect=7.5)
+      del xdata, zdata
+      fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
+      ax.set_title('Max proj. (Z)')
+      ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
+      ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
+      ax.yaxis.set_ticks(np.round(np.linspace(ax.get_ylim()[0],ax.get_ylim()[1],3)))
+      ax.xaxis.set_ticks(np.round(np.linspace(ax.get_xlim()[0],ax.get_xlim()[1],3)))
+      fig.text(0.3,0.005,subtext)
+      # fig.tight_layout()
       canvas = FigureCanvas(fig)
       response = HttpResponse(content_type='image/png')
 
