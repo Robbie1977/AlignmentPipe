@@ -141,7 +141,7 @@ class OriginalAdmin(admin.ModelAdmin):
                     'new_min',
                     'new_max',
                     'owner' )
-    list_filter = ['channel', 'is_index', 'owner']
+    list_filter = ['channel', 'is_index']
     # inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:
@@ -161,13 +161,13 @@ class MaskForm(forms.ModelForm):
 class MaskAlignedAdmin(admin.ModelAdmin):
     form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
-    list_filter = ('channel', 'complete', 'owner', )
+    list_filter = ('channel', 'complete' )
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
-    list_filter = ('complete', 'owner', )
+    list_filter = ('complete' )
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)
