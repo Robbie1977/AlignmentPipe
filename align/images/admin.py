@@ -127,6 +127,7 @@ admin.site.register(Alignment, AlignmentAdmin)
 class OriginalAdmin(admin.ModelAdmin):
     readonly_fields = ('image',
                     'channel',
+                    'chan_ident', 
                     'chan_image',
                     'new_min',
                     'new_max',
