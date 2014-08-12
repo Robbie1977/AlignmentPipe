@@ -185,7 +185,10 @@ class Mask_original(models.Model):
       return str(im_id.user)
     owner.admin_order_field = 'image'
     owner.short_description = 'User'
-
+    def parent(self):
+      return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.image.id), str(self.image.image))
+    parent.short_description = 'parent details'
+    parent.allow_tags = True
 
 class Mask_aligned(models.Model):
     image = models.ForeignKey(Alignment)
@@ -206,3 +209,20 @@ class Mask_aligned(models.Model):
       return '<img src="/static/waiting.gif"/>'
     mask_image.short_description = 'detected objects'
     mask_image.allow_tags = True
+    def orig_image(self):
+      im_id = self.image
+      try:
+        return '<img src="/images/nrrd/aligned_%s/%s"/>' % (str(self.channel), str(im_id.id))
+      except:
+        return '<img src="/static/waiting.gif"/>'
+    orig_image.short_description = 'original image'
+    orig_image.allow_tags = True
+    def owner(self):
+      im_id = self.image
+      return str(im_id.user)
+    owner.admin_order_field = 'image'
+    owner.short_description = 'User'
+    def parent(self):
+      return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.id), str(self.image))
+    parent.short_description = 'parent details'
+    parent.allow_tags = True

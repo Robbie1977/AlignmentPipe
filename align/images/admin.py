@@ -127,23 +127,25 @@ admin.site.register(Alignment, AlignmentAdmin)
 class OriginalAdmin(admin.ModelAdmin):
     readonly_fields = ('image',
                     'channel',
+                    'chan_image',
                     'new_min',
                     'new_max',
                     'file',
                     'is_index',
-                    'pre_hist' )
+                    'pre_hist',
+                    'parent' )
     list_display = ('image',
                     'channel',
                     'new_min',
                     'new_max',
                     'owner' )
-    list_filter = ['channel', 'is_index']
+    list_filter = ['channel', 'is_index', 'owner']
     # inlines = (OriginalMaskAdminInline, )
     # def queryset(self, request):
     #   if request.user.is_superuser:
     #     return Original_nrrd.objects.all()
     #   return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
-
+OriginalAdmin.allow_tags = True
 admin.site.register(Original_nrrd, OriginalAdmin)
 
 
@@ -156,14 +158,14 @@ class MaskForm(forms.ModelForm):
 
 class MaskAlignedAdmin(admin.ModelAdmin):
     form = MaskForm
-    readonly_fields = ('mask_image', 'detected_objects', )
-    list_filter = ('channel', 'complete', )
+    readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
+    list_filter = ('channel', 'complete', 'owner', )
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
-    readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', )
-    list_filter = ('complete', 'owner' )
+    readonly_fields = ('mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
+    list_filter = ('complete', 'owner', )
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)
