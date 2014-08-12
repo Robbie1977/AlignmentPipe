@@ -7,8 +7,8 @@ import system.forms
 serstage = stage
 serstage[0] = 'edit original images'
 serstage[7] = 'edit aligned images'
-for i in int(serstage.keys()):
-  if i > 8:
+for i in serstage.keys():
+  if int(i) > 8:
     serstage.pop(i, None)
 
 STAGE_CHOICES = serstage.items()
