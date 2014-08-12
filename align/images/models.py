@@ -199,6 +199,16 @@ class Mask_original(models.Model):
       return str(im_id.user)
     owner.admin_order_field = 'image'
     owner.short_description = 'User'
+    def chan_ident(self):
+      ident = '...'
+      if str(self.image.channel) == str(self.image.image.background_channel):
+        ident = 'background'
+      if str(self.image.channel) == str(self.image.image.signal_channel):
+        ident = 'signal'
+      if str(self.image.channel) == str(self.image.image.ac1_channel):
+        ident = 'additional channel 1'
+      return ident
+    chan_ident.short_description = 'channel identified as'
     def parent(self):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.image.id), str(self.image.image))
     parent.short_description = 'parent details'
