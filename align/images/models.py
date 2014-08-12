@@ -153,10 +153,10 @@ class Mask_original(models.Model):
     intensity_threshold = models.IntegerField(default=35)
     min_object_size = models.IntegerField(default=10000)
     complete = models.BooleanField(default=False)
-    detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
-    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
+    detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
+    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     cut_complete = models.BooleanField(default=False)
-    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
+    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
     def __str__(self):
         return 'Mask for ' + str(self.image)
@@ -173,10 +173,10 @@ class Mask_aligned(models.Model):
     intensity_threshold = models.IntegerField(default=20)
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
-    detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
-    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
+    detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
+    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     cut_complete = models.BooleanField(default=False)
-    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default=[])
+    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
     def __str__(self):
         return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper() + ' channel'
