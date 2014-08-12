@@ -144,13 +144,21 @@ class OriginalAdmin(admin.ModelAdmin):
 
 admin.site.register(Original_nrrd, OriginalAdmin)
 
+
+
+class MaskForm(forms.ModelForm):
+    cut_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (0, 'background')))
+    crop_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (0, 'background')))
+
 class MaskAlignedAdmin(admin.ModelAdmin):
+    form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', )
     list_filter = ('channel', 'complete', )
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
 class MaskOriginalAdmin(admin.ModelAdmin):
+    form = MaskForm
     readonly_fields = ('mask_image', 'detected_objects', )
     list_filter = ('complete', )
 MaskOriginalAdmin.allow_tags = True

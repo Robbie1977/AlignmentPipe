@@ -3,7 +3,7 @@ import numpy as np
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
-from NRRDtools.labelObjects import labelObj
+from NRRDtools.labelObjects import labelObj, cutObj, cropObj
 
 
 if __name__ == "__main__":
@@ -18,7 +18,25 @@ if __name__ == "__main__":
       print 'Create original image mask: ' + str(count) + ' of ' + str(total)
       outfile = str(line[3]).replace('.nrrd','-objMask.nrrd')
       objs = labelObj(tempfolder + str(line[3]), tempfolder + outfile, t=line[1], ms=line[2])
-      cur.execute("UPDATE images_mask_original SET complete=True, detected_objects=%s WHERE id = %s ", [str(objs), str(line[0])])
+      cur.execute("UPDATE images_mask_original SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [str(objs), str(line[0])])
+      cur.connection.commit()
+      gc.collect()
+    print 'done'
+  else:
+    print 'inactive or stage 0 not selected'
+
+  if active and '0' in run_stage:
+    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND (NOT (images_mask_original.cut_objects = None))")
+    records = cur.fetchall()
+    total = len(records)
+    count = 0
+    print records
+    for line in records:
+      count +=1
+      print 'Cut object(s) from original image: ' + str(count) + ' of ' + str(total)
+      maskfile = str(line[2]).replace('.nrrd','-objMask.nrrd')
+      labelObj(tempfolder + str(line[2]), tempfolder + maskfile, labels=str(line[1]))
+      cur.execute("UPDATE images_mask_original SET cut_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
     print 'done'
@@ -41,7 +59,7 @@ if __name__ == "__main__":
         chan = 6
       outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
       objs = labelObj(tempfolder + str(line[chan]), tempfolder + outfile, t=line[1], ms=line[2])
-      cur.execute("UPDATE images_mask_aligned SET complete=True, detected_objects=%s WHERE id = %s ", [str(objs), str(line[0])])
+      cur.execute("UPDATE images_mask_aligned SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [str(objs), str(line[0])])
       cur.connection.commit()
       gc.collect()
     print 'done'

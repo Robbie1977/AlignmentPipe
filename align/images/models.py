@@ -154,6 +154,10 @@ class Mask_original(models.Model):
     min_object_size = models.IntegerField(default=10000)
     complete = models.BooleanField(default=False)
     detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    cut_complete = models.BooleanField(default=False)
+    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    crop_complete = models.BooleanField(default=False)
     def __str__(self):
         return 'Mask for ' + str(self.image)
     def mask_image(self):
@@ -170,6 +174,10 @@ class Mask_aligned(models.Model):
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
     detected_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    cut_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    cut_complete = models.BooleanField(default=False)
+    crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
+    crop_complete = models.BooleanField(default=False)
     def __str__(self):
         return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper() + ' channel'
     def mask_image(self):
