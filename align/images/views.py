@@ -258,6 +258,7 @@ def plotNrrd(request, image_id, image_type):
       if labels:
         mask = str(file).replace('.nrrd','-objMask.nrrd')
         mask_data, mask_header = nrrd.read(file)
+        mask_data = mask_data.swapaxes(0,1)
         indVs = np.unique(mask_data)
         indTot = indVs.shape[0]
         fig = Figure()
