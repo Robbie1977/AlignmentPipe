@@ -146,7 +146,7 @@ admin.site.register(Original_nrrd, OriginalAdmin)
 
 class MaskAlignedAdmin(admin.ModelAdmin):
     readonly_fields = ('mask_image', )
-    list_filter = ['channel', 'complete']
+    list_filter = ('channel', 'complete', )
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
