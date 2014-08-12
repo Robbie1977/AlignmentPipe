@@ -254,6 +254,8 @@ def plotNrrd(request, image_id, image_type):
       file = '/static/default.png'
     if os.path.isfile(file):
       ori = list(orient)
+      if labels:
+        ulab = np.unique(data)
       data, header = nrrd.read(file)
       data = data.swapaxes(0,1)
       zdata = np.max(data, axis=2)
@@ -273,13 +275,14 @@ def plotNrrd(request, image_id, image_type):
       imgplot = ax.imshow(zdata)
       imgplot.set_cmap('spectral')
 
-      del xdata, zdata
       if labels:
-        fig.colorbar(imgplot, ax=ax, aspect=7.5, ticks=np.unique(data))
-        fig.suptitle('detected objects')
+        fig.colorbar(imgplot, ax=ax, aspect=7.5, ticks=ulab)
+        fig.suptitle('Detected objects')
       else:
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
         fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
+      del xdata, zdata
+      gc.collect()
       ax.set_title('Max proj. (Z)')
       ax.set_xlabel('X [' + str(opositeOr(ori[0])) + '->' + str(ori[0]) + '] (Px)')
       ax.set_ylabel('Y [' + str(ori[1]) + '<-' + str(opositeOr(ori[1])) + '] (Px)')
