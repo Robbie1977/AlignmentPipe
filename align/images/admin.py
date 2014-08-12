@@ -143,5 +143,15 @@ class OriginalAdmin(admin.ModelAdmin):
     #   return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
 
 admin.site.register(Original_nrrd, OriginalAdmin)
-admin.site.register(Mask_aligned)
-admin.site.register(Mask_original)
+
+class MaskAlignedAdmin(admin.ModelAdmin):
+    readonly_fields = ('mask_image')
+    list_filter = ['image', 'channel', 'complete']
+
+admin.site.register(Mask_aligned, MaskAlignedAdmin)
+
+class MaskOriginalAdmin(admin.ModelAdmin):
+    readonly_fields = ('mask_image')
+    list_filter = ['image', 'complete']
+
+admin.site.register(Mask_original, MaskOriginalAdmin)
