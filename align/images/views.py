@@ -254,10 +254,10 @@ def plotNrrd(request, image_id, image_type):
       file = '/static/default.png'
     if os.path.isfile(file):
       ori = list(orient)
-      if labels:
-        ulab = np.unique(data)
       data, header = nrrd.read(file)
       data = data.swapaxes(0,1)
+      if labels:
+        ulab = np.unique(data)
       zdata = np.max(data, axis=2)
       xdata = np.max(data, axis=1)
       del data
