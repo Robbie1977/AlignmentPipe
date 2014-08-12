@@ -137,6 +137,8 @@ class Original_nrrd(models.Model):
     #   if 'nrrd' in str(self.file):
     #     created.append({('Original Ch' + str(self.channel)):str(self.file)})
     #   return created
+    def chan_image(self):
+      return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.channel), str(self.image.id)
 
 class Upload(models.Model):
     import system.models
@@ -168,7 +170,7 @@ class Mask_original(models.Model):
     mask_image.allow_tags = True
     def orig_image(self):
       try:
-        return '<img src="/images/nrrd/Ch%s_file/%s"/>' % str(self.image.channel), str(self.image.image.id)
+        return self.image.chan_image
       except:
         return '<img src="/static/waiting.gif"/>'
     orig_image.short_description = 'original image'
