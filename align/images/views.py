@@ -266,9 +266,10 @@ def plotNrrd(request, image_id, image_type):
         for i in indVs:
           if i > 0:
             ax=fig.add_subplot(indTot,2,p)
-            mdata = (np.uint8(mask_data) != np.uint8(i)) 
-            zdata = np.max(np.select(mdata, data, default=np.uint8(0)), axis=2)
-            xdata = np.max(np.select(mdata, data, default=np.uint8(0)), axis=1)
+            mdata = np.copy(data)
+            mdata[np.uint8(mask_data) != np.uint8(i)] = np.uint8(0)
+            zdata = np.max(mdata, axis=2)
+            xdata = np.max(mdata, axis=1)
             imgplot = ax.imshow(xdata)
             imgplot.set_cmap('spectral')
             ax.set_title('Obj ' + str(i))
