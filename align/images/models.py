@@ -150,9 +150,10 @@ class Upload(models.Model):
 
 class Mask_original(models.Model):
     image = models.ForeignKey(Original_nrrd)
-    intensity_threshold = models.IntegerField(default=20)
-    min_object_size = models.IntegerField(default=1000)
+    intensity_threshold = models.IntegerField(default=35)
+    min_object_size = models.IntegerField(default=10000)
     complete = models.BooleanField(default=False)
+    objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
     def __str__(self):
         return 'Mask for ' + str(self.image)
     def mask_image(self):
@@ -168,6 +169,7 @@ class Mask_aligned(models.Model):
     intensity_threshold = models.IntegerField(default=20)
     min_object_size = models.IntegerField(default=1000)
     complete = models.BooleanField(default=False)
+    objects = models.CommaSeparatedIntegerField(max_length=255, blank=True)
     def __str__(self):
         return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper() + ' channel'
     def mask_image(self):
