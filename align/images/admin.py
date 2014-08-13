@@ -179,8 +179,8 @@ class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
     # exclude = ('image')
     readonly_fields = ('available', 'mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
-    list_display = ('image', 'available', 'chan_ident', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'owner', )
-    list_filter = ('complete', 'cut_complete', 'crop_complete', )
+    list_display = ('image', 'available', 'chan_ident', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'auto_restart_alignment', 'owner', )
+    list_filter = ('complete', 'cut_complete', 'crop_complete', 'auto_restart_alignment', )
     def queryset(self, request):
       if request.user.is_superuser:
         return Mask_original.objects.all()
