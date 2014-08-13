@@ -182,6 +182,7 @@ def plotNrrd(request, image_id, image_type):
     from system.models import checkDir, Server
 
     labels = False
+    Dtemp = False
 
     file = 'default.png'
     subtext = ''
@@ -223,6 +224,7 @@ def plotNrrd(request, image_id, image_type):
       subtext = 'Orientation: ' + str(comp_orien[orient]) + ' (' + orient + ')'
       del temprec
       fsize = 12
+      Dtemp = True
     elif 'mask_original' in image_type:
       record = Mask_original.objects.get(id=image_id)
       file = tempfolder + str(record.image.file).replace('.nrrd','-objMask.nrrd')
@@ -280,7 +282,10 @@ def plotNrrd(request, image_id, image_type):
         fig.suptitle('Detected objects')
       else:
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
-        fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
+        if Dtemp:
+          fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
+        else:  
+          fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
       del xdata, zdata
       gc.collect()
       ax.set_title('Max proj. (Z)')
