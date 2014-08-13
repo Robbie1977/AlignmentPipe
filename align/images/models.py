@@ -176,6 +176,7 @@ class Mask_original(models.Model):
     cut_complete = models.BooleanField(default=False)
     crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
+    auto_restart_alignment = models.BooleanField(default=False)
     def __str__(self):
         return 'Mask for ' + str(self.image)
     def mask_image(self):

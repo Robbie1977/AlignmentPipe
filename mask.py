@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}'")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}'")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -39,6 +39,10 @@ if __name__ == "__main__":
       cur.execute("UPDATE images_mask_original SET cut_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
+      if line[3]:
+        cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
+        cur.connection.commit()
+        gc.collect()
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
