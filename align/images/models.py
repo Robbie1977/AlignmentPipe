@@ -167,7 +167,7 @@ class Upload(models.Model):
         return self.file
 
 class Mask_original(models.Model):
-    image = models.ForeignKey(Original_nrrd, limit_choices_to={'alignment__alignment_stage__lte=0'})
+    image = models.ForeignKey(Original_nrrd, limit_choices_to={'alignment__alignment_stage__lte'=0})
     intensity_threshold = models.IntegerField(default=35)
     min_object_size = models.IntegerField(default=10000)
     complete = models.BooleanField(default=False)
