@@ -218,6 +218,7 @@ class Mask_original(models.Model):
         return False
       else:
         return True
+    available.boolean = True
     available.short_description = 'available for manual processing'
 
 class Mask_aligned(models.Model):
@@ -263,4 +264,5 @@ class Mask_aligned(models.Model):
         return False
       else:
         return True
+    available.boolean = True
     available.short_description = 'available for manual processing'
