@@ -1,4 +1,4 @@
-import sys, subprocess, os
+import sys, subprocess, os, stat
 from socket import gethostname
 import psycopg2
 

@@ -1,4 +1,4 @@
-import os, sys, nrrd, cmtk, gc
+import os, sys, nrrd, cmtk, gc, stat
 import numpy as np
 import warpScoring.CheckImages as ci
 from cmtk import tempfolder, active, run_stage, cmtkdir, checkDir, host, template, cur, templatedir

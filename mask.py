@@ -1,4 +1,4 @@
-import os, sys, nrrd, cmtk, gc
+import os, sys, nrrd, cmtk, gc, stat
 import numpy as np
 import warpScoring.slicescore as slicescore
 import warpScoring.CheckImages as ci
