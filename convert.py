@@ -160,7 +160,10 @@ def convRec(record):
       else:
         cur.execute("INSERT INTO images_original_nrrd (image_id, channel, file, pre_hist, new_min, new_max, is_index) VALUES (%(image_id)s, %(channel)s, %(file)s, %(pre_histogram)s, %(new_min)s, %(new_max)s, False)", upd)
         cur.connection.commit()
-      os.chmod(Sname, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      try:
+        os.chmod(Sname, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
       ct = sum(chan[chan>20])
       if ct > rt:
         rt = ct

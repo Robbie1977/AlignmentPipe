@@ -93,7 +93,10 @@ def upload(request):
               cu = User.objects.get(username=request.user)
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
               newimage.save()
-              os.chmod(folder + os.path.sep + file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+              try:
+                os.chmod(folder + os.path.sep + file, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+              except:
+                pass
               upload_admin_log(request, newimage)
               return HttpResponseRedirect('/admin/images/alignment/')
             else:

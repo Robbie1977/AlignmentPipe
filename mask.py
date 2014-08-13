@@ -21,7 +21,10 @@ if __name__ == "__main__":
       cur.execute("UPDATE images_mask_original SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [objs.tolist(), str(line[0])])
       cur.connection.commit()
       gc.collect()
-      os.chmod(tempfolder + outfile, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      try:
+        os.chmod(tempfolder + outfile, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
@@ -45,7 +48,10 @@ if __name__ == "__main__":
         cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
         cur.connection.commit()
         gc.collect()
-        os.chmod(tempfolder + str(line[2]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        try:
+          os.chmod(tempfolder + str(line[2]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        except:
+          pass
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
@@ -69,7 +75,10 @@ if __name__ == "__main__":
         cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
         cur.connection.commit()
         gc.collect()
-        os.chmod(tempfolder + str(line[2]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        try:
+          os.chmod(tempfolder + str(line[2]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        except:
+          pass
     print 'done'
   else:
     print 'inactive or stage 0 not selected'
@@ -93,7 +102,10 @@ if __name__ == "__main__":
       cur.execute("UPDATE images_mask_aligned SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [objs.tolist(), str(line[0])])
       cur.connection.commit()
       gc.collect()
-      os.chmod(tempfolder + outfile, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      try:
+        os.chmod(tempfolder + outfile, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
@@ -117,7 +129,10 @@ if __name__ == "__main__":
       cur.execute("UPDATE images_mask_aligned SET cut_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
-      os.chmod(tempfolder + str(line[chan]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      try:
+        os.chmod(tempfolder + str(line[chan]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
@@ -141,7 +156,10 @@ if __name__ == "__main__":
       cur.execute("UPDATE images_mask_aligned SET crop_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
-      os.chmod(tempfolder + str(line[chan]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      try:
+        os.chmod(tempfolder + str(line[chan]), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
