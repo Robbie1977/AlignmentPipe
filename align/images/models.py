@@ -213,6 +213,12 @@ class Mask_original(models.Model):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.image.id), str(self.image.image))
     parent.short_description = 'parent details'
     parent.allow_tags = True
+    def available(self):
+      if self.image.image.alignment_stage > 0:
+        return False
+      else:
+        return True
+    available.short_description = 'available for manual processing'
 
 class Mask_aligned(models.Model):
     image = models.ForeignKey(Alignment)
@@ -250,3 +256,11 @@ class Mask_aligned(models.Model):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.id), str(self.image))
     parent.short_description = 'parent details'
     parent.allow_tags = True
+    def available(self):
+      if self.image.image.alignment_stage < 1:
+        return True
+      if self.image.alignment_stage < 7:
+        return False
+      else:
+        return True
+    available.short_description = 'available for manual processing'
