@@ -168,6 +168,10 @@ class MaskAlignedAdmin(admin.ModelAdmin):
     readonly_fields = ('available', 'mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
     list_display = ('image', 'available', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'owner', )
     list_filter = ('channel', 'complete', 'cut_complete', 'crop_complete', )
+    def queryset(self, request):
+      if request.user.is_superuser:
+        return Mask_aligned.objects.all()
+      return Mask_aligned.objects.filter('available'=True)
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
@@ -177,5 +181,9 @@ class MaskOriginalAdmin(admin.ModelAdmin):
     readonly_fields = ('available', 'mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
     list_display = ('image', 'available', 'chan_ident', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'owner', )
     list_filter = ('complete', 'cut_complete', 'crop_complete', )
+    def queryset(self, request):
+      if request.user.is_superuser:
+        return Mask_original.objects.all()
+      return Mask_original.objects.filter('available'=True)
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)
