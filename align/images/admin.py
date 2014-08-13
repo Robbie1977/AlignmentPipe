@@ -150,7 +150,7 @@ class OriginalAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Original_nrrd.objects.all()
-      return Original_nrrd.objects.filter(Q(image.user=request.user) | Q(image.user=0))
+      return Original_nrrd.objects.filter(Q(alignment__user=request.user) | Q(alignment__user=0))
 OriginalAdmin.allow_tags = True
 admin.site.register(Original_nrrd, OriginalAdmin)
 
@@ -171,7 +171,7 @@ class MaskAlignedAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Mask_aligned.objects.all()
-      return Mask_aligned.objects.filter(__alignment__user__in=[request.user, 0])
+      return Mask_aligned.objects.filter(image__user__in=[request.user, 0])
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
@@ -184,6 +184,6 @@ class MaskOriginalAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Mask_original.objects.all()
-      return Mask_original.objects.filter(__alignment__user__in=[request.user, 0]).filter(__alignment__alignment_stage=0)
+      return Mask_original.objects.filter(image__image__user__in=[request.user, 0]).filter(image__image__alignment_stage=0)
 MaskOriginalAdmin.allow_tags = True
 admin.site.register(Mask_original, MaskOriginalAdmin)
