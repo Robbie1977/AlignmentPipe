@@ -38,10 +38,16 @@ class Template(models.Model):
     name = models.CharField(max_length=50, default='Drosophila,Adult,TAG,LPS')
     orientation = models.CharField(max_length=50, choices=comp_orien.items(), default='LPS')
     file = models.TextField(max_length=1000, default=TAGtemplate[-1])
+    image = models.TextField(max_length=1000, default='/static/waiting.gif')
     def __str__(self):
         from images.models import comp_orien, conv_orien
         parts = str(self.name).split(',')
         return 'Template for the ' + parts[2] + ' of the ' + parts[1].lower() + ' ' + parts[0] + ' with an orientation of ' + comp_orien[parts[3]]
+    def temp_image(self):
+        return '<img src="/images/nrrd/template/%s"/>' % str(self.id)
+    temp_image.short_description = 'template image for reference'
+    temp_image.allow_tags = True
+
 
 class Setting(models.Model):
     name = models.TextField(max_length=50, default='Drosophila,Adult,TAG,General')

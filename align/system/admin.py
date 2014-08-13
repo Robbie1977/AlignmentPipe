@@ -19,7 +19,10 @@ class ServerForm(forms.ModelForm):
 class ServerAdmin(admin.ModelAdmin):
     form = ServerForm
 
+class TemplateAdmin(admin.ModelAdmin):
+    readonly_fields = ('temp_image', )
+TemplateAdmin.allow_tags = True
 
 admin.site.register(Setting)
 admin.site.register(Server, ServerAdmin)
-admin.site.register(Template)
+admin.site.register(Template, TemplateAdmin)

@@ -103,7 +103,7 @@ class Alignment(models.Model):
     init_image.short_description = 'initial BG alignment'
     init_image.allow_tags = True
     def temp_image(self):
-        return '<img src="/images/nrrd/template/%s"/>' % str(self.id)
+        return '<img src="%s"/>' % str(self.settings.template.image)
     temp_image.short_description = 'template image for reference'
     temp_image.allow_tags = True
     # def available_files(self):
