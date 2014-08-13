@@ -40,6 +40,7 @@ if __name__ == "__main__":
       cur.connection.commit()
       gc.collect()
       if line[3]:
+        print 'Auto restarting alignment...'
         cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
         cur.connection.commit()
         gc.collect()
@@ -69,3 +70,26 @@ if __name__ == "__main__":
     print 'done'
   else:
     print 'inactive or stage 7 not selected'
+
+  if active and '7' in run_stage:
+    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.cut_objects, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1, images_alignment.id FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = True AND images_mask_aligned.cut_complete = False AND images_mask_aligned.cut_objects is not null AND images_mask_aligned.cut_objects != '' AND images_mask_aligned.cut_objects != '{}'")
+    records = cur.fetchall()
+    total = len(records)
+    count = 0
+    print records
+    for line in records:
+      count +=1
+      chan = 4
+      print 'Cut object(s) from original image: ' + str(count) + ' of ' + str(total)
+      if str(line[2]) == 'bg':
+        chan = 3
+      if str(line[2]) == 'ac1':
+        chan = 5
+      maskfile = str(line[chan]).replace('.nrrd','-objMask.nrrd')
+      cutObj(tempfolder + str(line[chan]), tempfolder + maskfile, labels=str(line[1]))
+      cur.execute("UPDATE images_mask_aligned SET cut_complete=True WHERE id = %s ", [str(line[0])])
+      cur.connection.commit()
+      gc.collect()
+    print 'done'
+  else:
+    print 'inactive or stage 0 not selected'
