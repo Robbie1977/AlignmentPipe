@@ -214,10 +214,13 @@ class Mask_original(models.Model):
     parent.short_description = 'parent details'
     parent.allow_tags = True
     def available(self):
-      if self.image.image.alignment_stage > 0:
+      try:
+        if self.image.image.alignment_stage > 0:
+          return False
+        else:
+          return True
+      except:
         return False
-      else:
-        return True
     available.boolean = True
     available.short_description = 'available for manual processing'
 
@@ -258,11 +261,14 @@ class Mask_aligned(models.Model):
     parent.short_description = 'parent details'
     parent.allow_tags = True
     def available(self):
-      if self.image.image.alignment_stage < 1:
-        return True
-      if self.image.alignment_stage < 7:
+      try:
+        if self.image.alignment_stage < 1:
+          return True
+        if self.image.alignment_stage < 7:
+          return False
+        else:
+          return True
+      except:
         return False
-      else:
-        return True
     available.boolean = True
     available.short_description = 'available for manual processing'
