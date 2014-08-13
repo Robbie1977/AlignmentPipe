@@ -216,7 +216,7 @@ def plotNrrd(request, image_id, image_type):
       orient = str(record.settings.template.orientation)
       subtext = 'Orientation: ' + str(comp_orien[orient]) + ' (' + orient + ')'
     elif 'template' in image_type:
-      record = checkDir(Template.objects.get(id=image_id))
+      record = Template.objects.get(id=image_id)
       temprec = Server.objects.get(host_name=host)
       file = str(temprec.template_dir) + str(record.file)
       orient = str(record.orientation)
