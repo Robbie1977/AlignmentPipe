@@ -150,7 +150,7 @@ def plotResults(request, image_id):
         ax.set_ylim(0,np.max(v))
         ax.set_yscale('symlog', linthreshx=np.average(v))
         ax.grid(True)
-
+        gc.collect()
         ax.set_title('Ch' + str(i) + ' histogram', fontsize=14, color=chanCol[i-1])
     else:
       fig.text(0.3,0.5,'No Data Found!', fontsize=32)
@@ -159,11 +159,9 @@ def plotResults(request, image_id):
     fig.tight_layout()
     canvas = FigureCanvas(fig)
     response = HttpResponse(content_type='image/png')
-
+    gc.collect()
     canvas.print_png(response)
     return response
-
-    image_type
 
 def opositeOr(position):
     Or = {'R':'L','L':'R','P':'A','A':'P','S':'I','I':'S'}
@@ -284,7 +282,7 @@ def plotNrrd(request, image_id, image_type):
         fig.colorbar(imgplot, ax=ax, aspect=7.5)
         if Dtemp:
           fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
-        else:  
+        else:
           fig.suptitle(str(image_type).replace('temp_initial_nrrd', 'after initial alignment').replace('_',' ').replace('file', 'after preprocessing').title().replace('Template',str(record.settings.template)).replace('Bg','Background').replace('Sg','Signal').replace('Ac1','Additional Channel 1'), fontsize=fsize)
       del xdata, zdata
       gc.collect()
