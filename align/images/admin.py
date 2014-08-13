@@ -171,7 +171,7 @@ class MaskAlignedAdmin(admin.ModelAdmin):
     def queryset(self, request):
       if request.user.is_superuser:
         return Mask_aligned.objects.all()
-      return Mask_aligned.objects.filter(Q(__mask_aligned__available=True) | Q(__alignment__user=request.user) | Q(__alignment__user=0))
+      return Mask_aligned.objects.filter(Q(__alignment__user=request.user) | Q(__alignment__user=0))
 MaskAlignedAdmin.allow_tags = True
 admin.site.register(Mask_aligned, MaskAlignedAdmin)
 
