@@ -240,7 +240,7 @@ class Mask_aligned(models.Model):
         return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper() + ' channel'
     def mask_image(self):
       if self.complete:
-         return '<img src="/images/nrrd/mask_aligned_%s/%s"/>' % str(self.channel), str(self.image.id)
+         return '<img src="/images/nrrd/mask_aligned_%s/%s"/>' % (str(self.channel), str(self.image.id))
       return '<img src="/static/waiting.gif"/>'
     mask_image.short_description = 'detected objects'
     mask_image.allow_tags = True
