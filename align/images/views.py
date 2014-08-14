@@ -227,30 +227,30 @@ def plotNrrd(request, image_id, image_type):
       fsize = 12
       Dtemp = True
     elif 'mask_original' in image_type:
-      record = Mask_original.objects.get(id=image_id)
+      record = checkDir(Alignment.objects.get(id=image_id))
       file = tempfolder + str(record.image.file).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_bg' in image_type:
-      record = Mask_aligned.objects.get(id=image_id)
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_bg).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.image.settings.template.orientation)
+      file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_sg' in image_type:
-      record = Mask_aligned.objects.get(id=image_id)
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_sg).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.image.settings.template.orientation)
+      file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_ac1' in image_type:
-      record = Mask_aligned.objects.get(id=image_id)
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.image.aligned_ac1).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.image.settings.template.orientation)
+      file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     else:
