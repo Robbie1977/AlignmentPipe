@@ -197,6 +197,27 @@ def plotNrrd(request, image_id, image_type):
         del temprec
         orient = str(record.settings.template.orientation)
         subtext = 'Orientation: ' + str(comp_orien[orient]) + ' (' + orient + ')'
+    elif 'mask_aligned_bg' in image_type:
+      record = checkDir(Alignment.objects.get(id=image_id))
+      # temprec = Original_nrrd.objects.get(id=record.image_id)
+      file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
+      subtext = 'Detected objects'
+      labels = True
+    elif 'mask_aligned_sg' in image_type:
+      record = checkDir(Alignment.objects.get(id=image_id))
+      # temprec = Original_nrrd.objects.get(id=record.image_id)
+      file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
+      subtext = 'Detected objects'
+      labels = True
+    elif 'mask_aligned_ac1' in image_type:
+      record = checkDir(Alignment.objects.get(id=image_id))
+      # temprec = Original_nrrd.objects.get(id=record.image_id)
+      file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.settings.template.orientation)
+      subtext = 'Detected objects'
+      labels = True
     elif 'temp_initial_nrrd' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
       file = tempfolder + str(record.temp_initial_nrrd)
@@ -230,27 +251,6 @@ def plotNrrd(request, image_id, image_type):
       record = checkDir(Alignment.objects.get(id=image_id))
       file = tempfolder + str(record.image.file).replace('.nrrd','-objMask.nrrd')
       orient = str(record.image.image.settings.template.orientation)
-      subtext = 'Detected objects'
-      labels = True
-    elif 'mask_aligned_bg' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id))
-      # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.settings.template.orientation)
-      subtext = 'Detected objects'
-      labels = True
-    elif 'mask_aligned_sg' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id))
-      # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.settings.template.orientation)
-      subtext = 'Detected objects'
-      labels = True
-    elif 'mask_aligned_ac1' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id))
-      # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     else:
