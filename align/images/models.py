@@ -2,7 +2,7 @@ from django.db import models
 from socket import gethostname
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
-import os, sys
+import os
 
 host = gethostname()
 
@@ -245,10 +245,11 @@ class Mask_aligned(models.Model):
     mask_image.short_description = 'detected objects'
     mask_image.allow_tags = True
     def orig_image(self):
+      im_id = self.image
       try:
-        return '<img src="/images/nrrd/aligned_%s/%s"/>' % (str(self.channel), str(self.image.id))
+        return '<img src="/images/nrrd/aligned_%s/%s"/>' % (str(self.channel), str(im_id.id))
       except:
-        return "Unexpected error:" % sys.exc_info()[0]
+        return '<img src="/static/waiting.gif"/>'
     orig_image.short_description = 'original image'
     orig_image.allow_tags = True
     def owner(self):
