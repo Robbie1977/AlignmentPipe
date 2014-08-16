@@ -177,6 +177,7 @@ class Mask_original(models.Model):
     crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
     auto_restart_alignment = models.BooleanField(default=False)
+    notes = models.TextField(max_length=10000, blank=True)
     def __str__(self):
         return 'Mask for ' + str(self.image)
     def mask_image(self):
@@ -236,6 +237,7 @@ class Mask_aligned(models.Model):
     cut_complete = models.BooleanField(default=False)
     crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
+    notes = models.TextField(max_length=10000, blank=True)
     def __str__(self):
         return 'Mask for aligned ' + str(self.image) + ' ' + str(self.channel).upper() + ' channel'
     def mask_image(self):
