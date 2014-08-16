@@ -78,7 +78,7 @@ class AvailableUsers(admin.SimpleListFilter):
         # Compare the requested value
         # to decide how to filter the queryset.
         if self.value() == 'public':
-            return queryset.filter(user='Public')
+            return queryset.filter(user=0)
         if self.value() == 'me':
             return queryset.filter(user=request.user)
 
