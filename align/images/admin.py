@@ -66,11 +66,8 @@ class AvailableUsers(admin.SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        if request.user.is_superuser:
-          return Alignment.user.lookups()
-        else:
-          return (('public', _('public alignments')),
-                (str(request.user), _('your alignments')))
+        return (('public', _('public alignments')),
+                ('me', _('your alignments')))
 
     def queryset(self, request, queryset):
         """
