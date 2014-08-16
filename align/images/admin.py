@@ -67,7 +67,7 @@ class AvailableUsers(admin.SimpleListFilter):
         in the right sidebar.
         """
         if request.user.is_superuser:
-          return queryset.user.lookups()
+          return Alignment.user.lookups()
         else:
           return (('public', _('public alignments')),
                 (str(request.user), _('your alignments')))
