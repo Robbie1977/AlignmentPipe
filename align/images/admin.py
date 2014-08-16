@@ -79,8 +79,8 @@ class AvailableUsers(admin.SimpleListFilter):
         # to decide how to filter the queryset.
         if self.value() == 'public':
             return queryset.filter(user=0)
-        else:
-            return queryset.filter(user=self.value())
+        if self.value() == 'me':
+            return queryset.filter(user=request.user)
 
 
 class OriginalMaskAdminInline(admin.StackedInline):
