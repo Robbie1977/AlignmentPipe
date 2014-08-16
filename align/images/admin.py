@@ -51,6 +51,41 @@ class CompleteStage(admin.SimpleListFilter):
         if self.value() == 'failed':
             return queryset.filter(alignment_stage__lte=0)
 
+class AvailableUsers(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = _('User')
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'users'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        if request.user.is_superuser:
+          return queryset.user.lookups()
+        else:
+          return (('public', _('public alignments')),
+                (str(request.user), _('your alignments')))
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+        if self.value() == 'public':
+            return queryset.filter(user=0)
+        else:
+            return queryset.filter(user=self.value())
+
+
 class OriginalMaskAdminInline(admin.StackedInline):
     model = Mask_original
 
@@ -109,7 +144,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'classes': ['collapse']}),
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
-    list_filter = ['alignment_stage', 'user', CompleteStage, 'max_stage'] #'last_host',
+    list_filter = ['alignment_stage', AvailableUsers, CompleteStage, 'max_stage'] #'last_host',
     # inlines = [OriginalAdminInline, AlignedMaskAdminInline]
 
     def queryset(self, request):
