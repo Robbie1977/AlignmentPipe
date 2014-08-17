@@ -28,6 +28,7 @@ class CompleteStage(admin.SimpleListFilter):
             ('complete', _('alignment complete')),
             ('awaiting', _('awaiting an alignment stage')),
             ('processing', _('alignment stage in progress')),
+            ('paused', _('paused during alignment process')),
             ('failed', _('awaiting user action')),
         )
 
