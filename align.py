@@ -126,7 +126,7 @@ def align(name, template=template, bgfile='image_Ch1.nrrd', alignSet='', passLev
 
 if __name__ == "__main__":
   if active and '5' in run_stage:
-    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var, system_setting.final_pass_level FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 5 AND images_original_nrrd.channel = images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY id")
+    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var, system_setting.final_pass_level FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 5 AND images_original_nrrd.channel = images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY images_alignment.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     print 'inactive or stage 5 not selected'
 
   if active and '6' in run_stage:
-    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 6 AND images_original_nrrd.channel != images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY id")
+    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 6 AND images_original_nrrd.channel != images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY images_alignment.id")
     records = cur.fetchall()
     total = len(records)
     count = 0

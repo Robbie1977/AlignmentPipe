@@ -8,7 +8,7 @@ from NRRDtools.labelObjects import labelObj, cutObj, cropObj
 
 if __name__ == "__main__":
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.intensity_threshold, images_mask_original.min_object_size, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = False ORDER BY id")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.intensity_threshold, images_mask_original.min_object_size, images_original_nrrd.file FROM images_mask_original, images_original_nrrd WHERE images_original_nrrd.id = images_mask_original.image_id AND images_mask_original.complete = False ORDER BY images_mask_original.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}' ORDER BY id")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}' ORDER BY images_mask_original.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.crop_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.crop_complete = False AND images_mask_original.crop_objects is not null AND images_mask_original.crop_objects != '' AND images_mask_original.crop_objects != '{}' ORDER BY id")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.crop_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.crop_complete = False AND images_mask_original.crop_objects is not null AND images_mask_original.crop_objects != '' AND images_mask_original.crop_objects != '{}' ORDER BY images_mask_original.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '7' in run_stage:
-    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.intensity_threshold, images_mask_aligned.min_object_size, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1 FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = False ORDER BY id")
+    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.intensity_threshold, images_mask_aligned.min_object_size, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1 FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = False ORDER BY images_mask_aligned.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     print 'inactive or stage 7 not selected'
 
   if active and '7' in run_stage:
-    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.cut_objects, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1, images_alignment.id FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = True AND images_mask_aligned.cut_complete = False AND images_mask_aligned.cut_objects is not null AND images_mask_aligned.cut_objects != '' AND images_mask_aligned.cut_objects != '{}' ORDER BY id")
+    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.cut_objects, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1, images_alignment.id FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = True AND images_mask_aligned.cut_complete = False AND images_mask_aligned.cut_objects is not null AND images_mask_aligned.cut_objects != '' AND images_mask_aligned.cut_objects != '{}' ORDER BY images_mask_aligned.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     print 'inactive or stage 7 not selected'
 
   if active and '7' in run_stage:
-    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.crop_objects, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1, images_alignment.id FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = True AND images_mask_aligned.crop_complete = False AND images_mask_aligned.crop_objects is not null AND images_mask_aligned.crop_objects != '' AND images_mask_aligned.crop_objects != '{}' ORDER BY id")
+    cur.execute("SELECT images_mask_aligned.id, images_mask_aligned.crop_objects, images_mask_aligned.channel, images_alignment.aligned_bg, images_alignment.aligned_sg, images_alignment.aligned_ac1, images_alignment.id FROM images_mask_aligned, images_alignment WHERE images_alignment.id = images_mask_aligned.image_id AND images_mask_aligned.complete = True AND images_mask_aligned.crop_complete = False AND images_mask_aligned.crop_objects is not null AND images_mask_aligned.crop_objects != '' AND images_mask_aligned.crop_objects != '{}' ORDER BY images_mask_aligned.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
