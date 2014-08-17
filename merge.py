@@ -97,7 +97,7 @@ def merge(name):
 
 if __name__ == "__main__":
   if active and '10' in run_stage:
-    cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 10")
+    cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 10 ORDER BY id")
     records = cur.fetchall()
     total = len(records)
     count = 0

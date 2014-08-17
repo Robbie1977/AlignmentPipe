@@ -218,7 +218,7 @@ def convert(name):
 
 if __name__ == "__main__":
   if active and '1' in run_stage:
-    cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 1")
+    cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 1 ORDER BY id")
     records = cur.fetchall()
     total = len(records)
     count = 0
