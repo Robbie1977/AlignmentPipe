@@ -79,7 +79,7 @@ class Alignment(models.Model):
     bg_image.short_description = 'aligned BG image'
     bg_image.allow_tags = True
     def bg_download(self):
-      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_bg), str(aligned_bg))
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_bg), str(self.aligned_bg))
     bg_download.short_description = 'download aligned background'
     bg_download.allow_tags = True
     def sg_image(self):
@@ -89,7 +89,7 @@ class Alignment(models.Model):
     sg_image.short_description = 'aligned SG image'
     sg_image.allow_tags = True
     def sg_download(self):
-      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_sg), str(aligned_sg))
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_sg), str(self.aligned_sg))
     sg_download.short_description = 'download aligned signal'
     sg_download.allow_tags = True
     def ac1_image(self):
@@ -99,7 +99,7 @@ class Alignment(models.Model):
     ac1_image.short_description = 'aligned AC1 image'
     ac1_image.allow_tags = True
     def ac1_download(self):
-      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_ac1), str(aligned_ac1))
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_ac1), str(self.aligned_ac1))
     ac1_download.short_description = 'download aligned additional channel 1'
     ac1_download.allow_tags = True
     def hist_image(self):
@@ -154,7 +154,7 @@ class Original_nrrd(models.Model):
     chan_image.short_description = 'channel image'
     chan_image.allow_tags = True
     def chan_download(self):
-      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.file), str(file))
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.file), str(self.file))
     chan_download.short_description = 'download original channel'
     chan_download.allow_tags = True
     def chan_ident(self):
