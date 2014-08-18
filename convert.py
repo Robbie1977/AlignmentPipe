@@ -221,6 +221,10 @@ if __name__ == "__main__":
     cur.execute("SELECT name FROM images_alignment WHERE alignment_stage = 1 ORDER BY id")
     records = cur.fetchall()
     total = len(records)
+    if total == 0:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1 WHERE alignment_stage = 2001 ORDER BY id LIMIT 2")
+      cur.connection.commit()
+      gc.collect()
     count = 0
     for line in records:
       count +=1

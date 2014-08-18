@@ -51,6 +51,10 @@ if __name__ == "__main__":
     cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_affine_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 3 AND images_original_nrrd.channel = images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY images_alignment.id")
     records = cur.fetchall()
     total = len(records)
+    if total == 0:
+      cur.execute("UPDATE images_alignment SET alignment_stage = 3 WHERE alignment_stage = 2003 ORDER BY id LIMIT 2")
+      cur.connection.commit()
+      gc.collect()
     count = 0
     print records
     for line in records:
