@@ -222,7 +222,7 @@ if __name__ == "__main__":
     records = cur.fetchall()
     total = len(records)
     if total == 0:
-      cur.execute("UPDATE images_alignment SET alignment_stage = 1 WHERE alignment_stage = 2001 ORDER BY id LIMIT 2")
+      cur.execute("UPDATE images_alignment SET alignment_stage = 1 FROM (SELECT id FROM images_alignment WHERE alignment_stage = 2001 ORDER BY id LIMIT 2) s WHERE s.id = images_alignment.id")
       cur.connection.commit()
       gc.collect()
     count = 0
