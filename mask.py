@@ -45,7 +45,7 @@ if __name__ == "__main__":
       gc.collect()
       if line[3]:
         print 'Auto restarting alignment...'
-        cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
+        cur.execute("UPDATE images_alignment SET alignment_stage=2002 WHERE id = %s ", [str(line[4])])
         cur.connection.commit()
         gc.collect()
         try:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
       gc.collect()
       if line[3]:
         print 'Auto restarting alignment...'
-        cur.execute("UPDATE images_alignment SET alignment_stage=2 WHERE id = %s ", [str(line[4])])
+        cur.execute("UPDATE images_alignment SET alignment_stage=2002 WHERE id = %s ", [str(line[4])])
         cur.connection.commit()
         gc.collect()
         try:
