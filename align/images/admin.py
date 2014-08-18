@@ -145,7 +145,7 @@ class AlignmentAdmin(admin.ModelAdmin):
     #                           'classes': ['collapse']}),
     # ]
     list_display = ('name', 'user', 'complete', 'curStage', 'max_stage', 'temp_initial_score', 'aligned_score', 'notes') #, 'last_host'
-    list_filter = ['alignment_stage', AvailableUsers, CompleteStage, 'max_stage'] #'last_host',
+    list_filter = [AvailableUsers, CompleteStage, 'alignment_stage', 'max_stage'] #'last_host',
     # inlines = [OriginalAdminInline, AlignedMaskAdminInline]
 
     def queryset(self, request):
