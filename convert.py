@@ -21,11 +21,11 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     m=np.min(bins)
     M=np.max(bins)
     for x in range(1,np.shape(bins)[0]-1):
-        if np.sum(histogram[:x]) > th:
+        if np.sum(histogram[1:x]) > (th+th/2.0):
             m = bins[x-1]
             break
     for x in range(np.shape(bins)[0]-1,0,-1):
-        if np.sum(histogram[x:]) > th:
+        if np.sum(histogram[x:]) > (th/2.0):
             M = bins[x]
             break
     data[data>M]=M
