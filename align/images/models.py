@@ -78,18 +78,30 @@ class Alignment(models.Model):
       return '<img src="/static/waiting.gif"/>'
     bg_image.short_description = 'aligned BG image'
     bg_image.allow_tags = True
+    def bg_download(self):
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_bg), str(aligned_bg))
+    bg_download.short_description = 'download aligned background'
+    bg_download.allow_tags = True
     def sg_image(self):
       if self.max_stage > 6:
         return '<img src="/images/nrrd/aligned_sg/%s"/>' % str(self.id)
       return '<img src="/static/waiting.gif"/>'
     sg_image.short_description = 'aligned SG image'
     sg_image.allow_tags = True
+    def sg_download(self):
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_sg), str(aligned_sg))
+    sg_download.short_description = 'download aligned signal'
+    sg_download.allow_tags = True
     def ac1_image(self):
       if self.max_stage > 6:
         return '<img src="/images/nrrd/aligned_ac1/%s"/>' % str(self.id)
       return '<img src="/static/waiting.gif"/>'
     ac1_image.short_description = 'aligned AC1 image'
     ac1_image.allow_tags = True
+    def ac1_download(self):
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.aligned_ac1), str(aligned_ac1))
+    ac1_download.short_description = 'download aligned additional channel 1'
+    ac1_download.allow_tags = True
     def hist_image(self):
       if self.max_stage > 1:
         return '<img src="/images/hist/%s"/>' % str(self.id)
@@ -141,6 +153,10 @@ class Original_nrrd(models.Model):
       return '<img src="/images/nrrd/Ch%s_file/%s"/>' % (str(self.channel), str(self.image.id))
     chan_image.short_description = 'channel image'
     chan_image.allow_tags = True
+    def chan_download(self):
+      return '<a href="/static/downloads/%s"/>%s</a>' % (str(self.file), str(file))
+    chan_download.short_description = 'download original channel'
+    chan_download.allow_tags = True
     def chan_ident(self):
       ident = '...'
       if str(self.channel) == str(self.image.background_channel):
