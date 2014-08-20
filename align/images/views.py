@@ -249,8 +249,8 @@ def plotNrrd(request, image_id, image_type):
       Dtemp = True
     elif 'mask_original' in image_type:
       record = Original_nrrd.objects.get(id=image_id)
-      file = tempfolder + str(record.image.file).replace('.nrrd','-objMask.nrrd')
-      orient = str(record.image.image.settings.template.orientation)
+      file = tempfolder + str(record.file).replace('.nrrd','-objMask.nrrd')
+      orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     else:
