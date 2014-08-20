@@ -18,6 +18,7 @@ class ServerForm(forms.ModelForm):
 
 class ServerAdmin(admin.ModelAdmin):
     form = ServerForm
+    list_filter = ('active')
 
 class TemplateAdmin(admin.ModelAdmin):
     readonly_fields = ('temp_image', )
