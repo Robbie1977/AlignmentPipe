@@ -46,7 +46,7 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
         th=long((np.sum(histogram[mid:]))*threshold)
     print 'high end balancing:'
     print 'number of background voxels: ' + str(c)
-    print 'number of data voxels: ' + str(np.sum(histogram[:mid])-c)
+    print 'number of data voxels: ' + str(np.sum(histogram[mid:])-c)
     print 'threshold set to: ' + str(th)
     for x in range(np.shape(bins)[0]-1,0,-1):
         if (np.sum(histogram[x:]) + (np.sum(histogram[0:temp])-c)) > th:
