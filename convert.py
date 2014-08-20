@@ -27,7 +27,7 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
             m = bins[x-1]
             temp = x-1
             break
-    if (th - np.sum(histogram[0:temp]) > (th/4):
+    if (th - np.sum(histogram[0:temp])) > (th/4):
       th = th / 4 # limit to a fourth threshold for top end cutting.
     for x in range(np.shape(bins)[0]-1,0,-1):
         if (np.sum(histogram[x:]) + np.sum(histogram[0:temp]) > th:
