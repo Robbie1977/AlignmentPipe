@@ -11,21 +11,26 @@ def AutoBalance(data,threshold=adjust_thresh,background=0):
     binc=np.bincount(data.flat)
     histogram=binc[binc>0]
     del binc
+    temp=1
+    c = 0
     if background in bins:
         i = np.where(bins==background)
         v = bins[i][0]
         c = histogram[i][0]
-        th=long(((np.sum(histogram)-histogram[i][0])/np.shape(data)[2])*threshold)
+        th=long((np.sum(histogram[:])-c)*threshold)
     else:
-        th=long((np.sum(histogram)/np.shape(data)[2])*threshold)
+        th=long((np.sum(histogram[:]))*threshold)
     m=np.min(bins)
     M=np.max(bins)
     for x in range(1,np.shape(bins)[0]-1):
-        if np.sum(histogram[1:x]) > (th+th/2.0):
+        if (np.sum(histogram[0:x])-c) > th:
             m = bins[x-1]
+            temp = x-1
             break
+    if (th - np.sum(histogram[0:temp]) > (th/4):
+      th = th / 4 # limit to a fourth threshold for top end cutting.
     for x in range(np.shape(bins)[0]-1,0,-1):
-        if np.sum(histogram[x:]) > (th/2.0):
+        if (np.sum(histogram[x:]) + np.sum(histogram[0:temp]) > th:
             M = bins[x]
             break
     data[data>M]=M
