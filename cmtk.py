@@ -116,3 +116,13 @@ if record:
 
 else:
   print 'No active records found for hostname:' + host + ' This could be due to your hostname changing check a server record exists for this machine.'
+  cwd = os.getcwd()
+  if 'AlignmentPipe' in cwd:
+    active = False
+    tempfolder = cwd.replace('AlignmentPipe', 'tmp')
+    cmtkdir = cwd.replace('/VFB/aligner/AlignmentPipe/', '/VFBTools/cmtk/bin/')
+    templatedir = cwd.replace('/VFB/aligner/AlignmentPipe/', '/VFBTools/')
+    uploaddir = cwd.replace('AlignmentPipe', 'uploads')
+    cur.execute("INSERT INTO system_server (host_name, active, temp_dir, cmtk_dir, template_dir, upload_dir) VALUES (%s, %s, %s, %s, %s, %s)", [host, active, tempfolder, cmtkdir, templatedir, uploaddir])
+    cur.connection.commit()
+    print 'Server added to DB as inactive'
