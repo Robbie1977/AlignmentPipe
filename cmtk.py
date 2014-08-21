@@ -119,7 +119,7 @@ else:
   cwd = os.getcwd()
   if 'AlignmentPipe' in cwd:
     active = True
-    runstages = [2,3,4]
+    runstages = '2,3,4'
     tempfolder = cwd.replace('AlignmentPipe', 'tmp/')
     cmtkdir = cwd.replace('VFB','VFBTools').replace('aligner', 'cmtk').replace('AlignmentPipe', 'bin/')
     templatedir = cwd.replace('VFB/aligner/AlignmentPipe', 'VFBTools/')
