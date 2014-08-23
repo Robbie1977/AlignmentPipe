@@ -127,3 +127,9 @@ else:
     cur.execute("INSERT INTO system_server (host_name, active, temp_dir, cmtk_dir, template_dir, upload_dir, run_stages) VALUES (%s, %s, %s, %s, %s, %s, %s)", [host, active, tempfolder, cmtkdir, templatedir, uploaddir, runstages])
     cur.connection.commit()
     print 'Server added to DB as inactive'
+
+if cur:
+  cur.close()
+if con:
+  con.close()
+  
