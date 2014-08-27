@@ -61,6 +61,9 @@ if __name__ == "__main__":
       count +=1
       print 'Affine alignment: ' + str(count) + ' of ' + str(total)
       affine(line[0], template=(templatedir + line[1]), bgfile=(tempfolder + line[2]), affineSet=line[3])
+    # clear old failed alignments:
+    cur.execute("UPDATE images_alignment SET alignment_stage = 3 WHERE last_host = %s AND alignment_stage = 1003", [str(host)])
+    cur.connection.commit()
     print 'done'
   else:
     print 'inactive or stage 3 not selected'

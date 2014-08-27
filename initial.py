@@ -69,6 +69,9 @@ if __name__ == "__main__":
       count +=1
       print 'Initial alignment: ' + str(count) + ' of ' + str(total)
       initial(line[0], template=(templatedir + line[1]), init_threshold=line[2], bgfile=(tempfolder + line[3]), alignSet=line[5], initialSet=line[4])
+    # clear old failed alignments:
+    cur.execute("UPDATE images_alignment SET alignment_stage = 2 WHERE last_host = %s AND alignment_stage = 1002", [str(host)])
+    cur.connection.commit()
     print 'done'
   else:
     print 'inactive or stage 2 not selected'
