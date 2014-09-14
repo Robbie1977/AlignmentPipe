@@ -1,4 +1,4 @@
-import sys, subprocess, os, stat
+import sys, subprocess, os, stat, nrrd
 from socket import gethostname
 import psycopg2
 
@@ -76,6 +76,11 @@ if record:
     print 'nice %sreformatx %s -o %s --floating %s %s %s' % (cmtkdir, settings, imageOUT, floatingImage, template, xform)
     r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
     try:
+      data1, header1 = nrrd.read(imageOUT)
+      header1['encoding'] = 'gzip'
+      if header1['space directions'] == ['none', 'none', 'none']:
+        header1.pop("space directions", None)
+      nrrd.write(imageOUT, data1, options=header1)
       os.chmod(imageOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
     except:
       pass
