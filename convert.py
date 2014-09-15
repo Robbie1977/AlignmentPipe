@@ -203,8 +203,10 @@ def convRec(record):
         mt = ct
         sg = c+1
     print 'BG: ' + str(bg) + ', SG: ' + str(sg)
-    record['background_channel'] = bg
-    record['signal_channel'] = sg
+    if record['background_channel'] == 0:
+      record['background_channel'] = bg
+    if record['signal_channel'] == 0:
+      record['signal_channel'] = sg
     record['alignment_stage'] = 2
     # record.update({'original_nrrd': upd})
     record['max_stage'] = 2
