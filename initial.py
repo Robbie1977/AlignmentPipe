@@ -19,7 +19,7 @@ def initialRec(record, template=template, init_threshold=0.3, bgfile='image_Ch1.
     record['alignment_stage'] = 3
   else:
     record['alignment_stage'] = 0
-  if r > 0: record['alignment_stage'] = 0
+  if r > 0: record['alignment_stage'] = 1002
   record['max_stage'] = 3
   return record
 

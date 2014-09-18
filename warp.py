@@ -9,7 +9,7 @@ def warpRec(record, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   warp, r = cmtk.warp(bgfile, template=template, settings=warpSet)
   record['alignment_stage'] = 5
-  if r > 0: record['alignment_stage'] = 0
+  if r > 0: record['alignment_stage'] = 1004
   record['max_stage'] = 5
   record['last_host'] = host
   return record

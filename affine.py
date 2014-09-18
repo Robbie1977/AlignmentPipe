@@ -10,7 +10,7 @@ def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--d
   affine, r = cmtk.affine(bgfile, template=template, scale=affineSet)
   print affine
   record['alignment_stage'] = 4
-  if r > 0: record['alignment_stage'] = 0
+  if r > 0: record['alignment_stage'] = 1003
   record['max_stage'] = 4
   record['last_host'] = host
   return record
