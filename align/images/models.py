@@ -286,8 +286,8 @@ class Mask_aligned(models.Model):
       if str(self.channel) == 'bg':
         chanFile == self.image.aligned_ac1
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
-    mask_download.short_description = 'download image'
-    mask_download.allow_tags = True
+    image_download.short_description = 'download image'
+    image_download.allow_tags = True
     def mask_download(self):
       chanFile == str(self.image.aligned_sg)
       if str(self.channel) == 'bg':
