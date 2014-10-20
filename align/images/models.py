@@ -231,6 +231,17 @@ class Mask_original(models.Model):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.image.id), str(self.image.image))
     parent.short_description = 'parent details'
     parent.allow_tags = True
+    def image_download(self):
+      chanFile = str(self.image.file)
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    image_download.short_description = 'download image'
+    image_download.allow_tags = True
+    def mask_download(self):
+      chanFile = str(self.image.file)
+      chanFile = chanFile.replace('.nrrd','-objMask.nrrd')
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    mask_download.short_description = 'download image mask'
+    mask_download.allow_tags = True
     def available(self):
       try:
         if self.image.image.alignment_stage > 0:

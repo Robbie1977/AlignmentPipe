@@ -218,7 +218,7 @@ admin.site.register(Mask_aligned, MaskAlignedAdmin)
 class MaskOriginalAdmin(admin.ModelAdmin):
     form = MaskForm
     # exclude = ('image')
-    readonly_fields = ('available', 'mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
+    readonly_fields = ('available', 'mask_image', 'detected_objects', 'mask_download', 'orig_image', 'image_download', 'owner', 'parent', )
     list_display = ('image', 'available', 'chan_ident', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'auto_restart_alignment', 'owner', )
     list_filter = ('complete', 'cut_complete', 'crop_complete', 'auto_restart_alignment', )
     def queryset(self, request):
