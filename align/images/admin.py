@@ -205,7 +205,7 @@ class MaskForm(forms.ModelForm):
 class MaskAlignedAdmin(admin.ModelAdmin):
     form = MaskForm
     # exclude = ('image')
-    readonly_fields = ('available', 'mask_image', 'detected_objects', 'orig_image', 'owner', 'parent', )
+    readonly_fields = ('available', 'mask_image', 'detected_objects', 'mask_download', 'orig_image', 'image_download', 'owner', 'parent', )
     list_display = ('image', 'available', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'owner', )
     list_filter = ('channel', 'complete', 'cut_complete', 'crop_complete', )
     def queryset(self, request):
