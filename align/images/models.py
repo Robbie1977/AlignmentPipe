@@ -279,6 +279,25 @@ class Mask_aligned(models.Model):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.id), str(self.image))
     parent.short_description = 'parent details'
     parent.allow_tags = True
+    def image_download(self):
+      chanFile == str(self.image.aligned_sg)
+      if str(self.channel) == 'bg':
+        chanFile == self.image.aligned_bg
+      if str(self.channel) == 'bg':
+        chanFile == self.image.aligned_ac1
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    mask_download.short_description = 'download image'
+    mask_download.allow_tags = True
+    def mask_download(self):
+      chanFile == str(self.image.aligned_sg)
+      if str(self.channel) == 'bg':
+        chanFile == self.image.aligned_bg
+      if str(self.channel) == 'bg':
+        chanFile == self.image.aligned_ac1
+      chanFile = chanFile.replace('.nrrd','-objMask.nrrd')
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    mask_download.short_description = 'download image mask'
+    mask_download.allow_tags = True
     def available(self):
       try:
         if self.image.alignment_stage < 1:
