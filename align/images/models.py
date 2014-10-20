@@ -280,20 +280,20 @@ class Mask_aligned(models.Model):
     parent.short_description = 'parent details'
     parent.allow_tags = True
     def image_download(self):
-      chanFile == str(self.image.aligned_sg)
+      chanFile = str(self.image.aligned_sg)
       if str(self.channel) == 'bg':
-        chanFile == self.image.aligned_bg
+        chanFile = self.image.aligned_bg
       if str(self.channel) == 'bg':
-        chanFile == self.image.aligned_ac1
+        chanFile = self.image.aligned_ac1
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
     image_download.short_description = 'download image'
     image_download.allow_tags = True
     def mask_download(self):
-      chanFile == str(self.image.aligned_sg)
+      chanFile = str(self.image.aligned_sg)
       if str(self.channel) == 'bg':
-        chanFile == self.image.aligned_bg
+        chanFile = self.image.aligned_bg
       if str(self.channel) == 'bg':
-        chanFile == self.image.aligned_ac1
+        chanFile = self.image.aligned_ac1
       chanFile = chanFile.replace('.nrrd','-objMask.nrrd')
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
     mask_download.short_description = 'download image mask'
