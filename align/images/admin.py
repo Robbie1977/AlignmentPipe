@@ -197,9 +197,9 @@ admin.site.register(Original_nrrd, OriginalAdmin)
 
 
 class MaskForm(forms.ModelForm):
-    cut_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (5, 'object labeled 5'), (6, 'object labeled 6'), (0, 'background')))
+    cut_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (5, 'object labeled 5'), (6, 'object labeled 6'), (7, 'object labeled 7'), (8, 'object labeled 8'), (9, 'object labeled 9'), (10, 'object labeled 10'), (0, 'background')))
     cut_objects.required = False
-    crop_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (0, 'background')))
+    crop_objects = system.forms.CSIMultipleChoiceField(choices=((1, 'object labeled 1'), (2, 'object labeled 2'), (3, 'object labeled 3'), (4, 'object labeled 4'), (5, 'object labeled 5'), (6, 'object labeled 6'), (7, 'object labeled 7'), (8, 'object labeled 8'), (9, 'object labeled 9'), (10, 'object labeled 10'), (0, 'background')))
     crop_objects.required = False
 
 class MaskAlignedAdmin(admin.ModelAdmin):
