@@ -42,7 +42,7 @@ class Template(models.Model):
     def __str__(self):
         from images.models import comp_orien, conv_orien
         parts = str(self.name).split(',')
-        return 'Template for the ' + parts[2] + ' of the ' + parts[1].lower() + ' ' + parts[0] + ' with an orientation of ' + comp_orien[parts[3]]
+        return 'Template for the ' + parts[2] + ' of the ' + parts[1].lower() + ' ' + parts[0]
     def temp_image(self):
         return '<img src="/images/nrrd/template/%s"/>' % str(self.id)
     temp_image.short_description = 'template image for reference'
