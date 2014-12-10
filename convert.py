@@ -73,10 +73,10 @@ def convRec(record):
   print 'Converting ' + file
   if os.path.exists(file) or os.path.exists(file + '.gz'):
     record['last_host'] = host
-    if os.path.exists(file + '.gz'):
+    if (os.path.exists(file + '.gz') and (not os.path.exists(file))):
       check_call(['gzip', '-d', file + '.gz'])
     if '.gz' in file:
-      check_call(['gzip', '-d', file])
+      check_call(['gzip', '-df', file])
       file = str(file).replace('.gz','')
       if str(record['original_ext']) == '.gz':
         record['name'] = str(os.path.splitext(os.path.basename(file))[0])
@@ -122,7 +122,7 @@ def convRec(record):
       # TBD: add voxel size data
       # header['keyvaluepairs'] = dict(metadata)
     tif.close()
-    check_call(['gzip', file])
+    check_call(['gzip', '-f', file])
     image = np.squeeze(image)
     sh = np.array(np.shape(image))
     ch = np.argmin(sh)
