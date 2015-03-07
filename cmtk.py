@@ -73,7 +73,7 @@ if record:
   def align(floatingImage, xform=floatingImage.replace('.nrrd','_warp.xform'), imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd'), template=template, settings=''):
     if 'default' in xform: xform=floatingImage.replace('.nrrd','_warp.xform')
     if 'default' in imageOUT: imageOUT=floatingImage.replace('.nrrd','_aligned.nrrd')
-    if 'None' in settings: settings = ''
+    if settings == None or 'None' in settings: settings = ''
     print 'nice %sreformatx %s -o %s --floating %s %s %s' % (cmtkdir, settings, imageOUT, floatingImage, template, xform)
     r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
     try:
