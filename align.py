@@ -48,21 +48,22 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   sgchan = '_Ch' + str(record['signal_channel'])
   bgchan = '_Ch' + str(record['background_channel'])
   acchan = '_Ch' + str(record['ac1_channel'])
-  if os.path.isfile(tempfolder+sgchan+'.nrrd'):
-    record['aligned_sg'], r =cmtk.align(tempfolder+sgfile+'.nrrd', xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+  chfile = chfile.replace(bgchan, acchan).replace(acchan,sgchan)
+  if os.path.isfile(chfile):
+    record['aligned_sg'], r =cmtk.align(chfile, xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['alignment_stage'] = 7
     record['max_stage'] = 7
     record['aligned_sg'] = str(record['aligned_sg']).replace(tempfolder,'')
   else:
-    print sgchan+'.nrrd' + ' not found'
+    print chfile + ' not found'
     r = 5
-  
-  if os.path.isfile(tempfolder+acchan+'.nrrd'):
-    record['aligned_ac1'], r =cmtk.align(tempfolder+acchan+'.nrrd', xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+  chfile = chfile.replace(sgchan, acchan)
+  if os.path.isfile(chfile):
+    record['aligned_ac1'], r =cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['max_stage'] = 7
     record['aligned_ac1'] = str(record['aligned_ac1']).replace(tempfolder,'')
   else:
-    print acchan+'.nrrd' + ' not found'
+    print chfile + ' not found'
   
   if r > 0:
     print 'Error code:' + str(r)
@@ -146,7 +147,7 @@ if __name__ == "__main__":
     print 'inactive or stage 5 not selected'
 
   if active and '6' in run_stage:
-    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 6 AND images_original_nrrd.channel != images_alignment.background_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY images_alignment.id")
+    cur.execute("SELECT images_alignment.name, system_template.file, images_original_nrrd.file, system_setting.cmtk_align_var FROM images_alignment, system_template, system_setting, images_original_nrrd WHERE alignment_stage = 6 AND images_original_nrrd.channel = images_alignment.signal_channel AND images_original_nrrd.image_id = images_alignment.id AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id ORDER BY images_alignment.id")
     records = cur.fetchall()
     total = len(records)
     if total == 0:
