@@ -48,20 +48,22 @@ def alignRem(record, template=template, chfile='image_Ch1.nrrd', alignSet=''):
   sgchan = '_Ch' + str(record['signal_channel'])
   bgchan = '_Ch' + str(record['background_channel'])
   acchan = '_Ch' + str(record['ac1_channel'])
-  if sgchan in chfile:
-    record['aligned_sg'], r =cmtk.align(chfile, xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+  if os.path.isfile(tempfolder+sgchan+'.nrrd'):
+    record['aligned_sg'], r =cmtk.align(tempfolder+sgfile+'.nrrd', xform=chfile.replace(sgchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['alignment_stage'] = 7
     record['max_stage'] = 7
     record['aligned_sg'] = str(record['aligned_sg']).replace(tempfolder,'')
-  elif acchan in chfile:
-    record['aligned_ac1'], r =cmtk.align(chfile, xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
+  else:
+    print sgchan+'.nrrd' + ' not found'
+    r = 5
+  
+  if os.path.isfile(tempfolder+acchan+'.nrrd'):
+    record['aligned_ac1'], r =cmtk.align(tempfolder+acchan+'.nrrd', xform=chfile.replace(acchan + '.nrrd', bgchan + '_warp.xform'), template=template, settings=alignSet)
     record['max_stage'] = 7
     record['aligned_ac1'] = str(record['aligned_ac1']).replace(tempfolder,'')
-  elif bgchan in chfile:
-    print chfile + ' background channel'
   else:
-    print chfile + ' not identified'
-    r = 5
+    print acchan+'.nrrd' + ' not found'
+  
   if r > 0:
     print 'Error code:' + str(r)
     record['alignment_stage'] = 0
