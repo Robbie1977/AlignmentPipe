@@ -27,8 +27,8 @@ def pushLive(id, name, sgfile):
     print "Created wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
 
 if __name__ == "__main__":
-  if active and '4' in run_stage:
-    cur.execute("SELECT images_alignment.id, images_alignment.name, images_alignment.aligned_sg FROM images_alignment WHERE alignment_stage = 5 ORDER BY images_alignment.id")
+  if active and '5' in run_stage:
+    cur.execute("SELECT images_alignment.id, images_alignment.name, images_alignment.aligned_sg FROM images_alignment WHERE alignment_stage = 7 ORDER BY images_alignment.id")
     records = cur.fetchall()
     for line in records:
       pushLive(line[0], line[1], sgfile=(tempfolder + line[2]))
