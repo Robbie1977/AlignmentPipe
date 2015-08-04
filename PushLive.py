@@ -18,6 +18,10 @@ def pushLive(id, name, sgfile):
     while len(last) < 3:
         last = "0" + last
     first = "A" + first
+    if not os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first):
+        os.makedirs(tempfolder + "../../IMAGE_DATA/VFB/i/" + first)
+    if not os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last):
+        os.makedirs(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last)
     print 'Linking ' + sgfile + ' to ' + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd"
     os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
 
