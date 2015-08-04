@@ -7,15 +7,15 @@ wlzDir = "/partition/bocian/VFBTools/Woolz2013Full/bin/"
 Fiji = "nice /partition/bocian/VFBTools/Fiji/ImageJ-linux64 --headless"
 
 def pushLive(id, name, sgfile):
-    if (id > 999):
-        first = str(id)[:-3]
-        last = str(id)[-3:]
+    if (id > 9999):
+        first = str(id)[:-4]
+        last = str(id)[-4:]
     else:
-        first = "00"
+        first = "000"
         last = str(id)
-    while len(first) < 2:
+    while len(first) < 3:
         first = "0" + first
-    while len(last) < 3:
+    while len(last) < 4:
         last = "0" + last
     first = "A" + first
     if not os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first):
