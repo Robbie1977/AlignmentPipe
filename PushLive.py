@@ -31,7 +31,7 @@ if __name__ == "__main__":
     cur.execute("SELECT images_alignment.id, images_alignment.name, images_alignment.aligned_sg FROM images_alignment WHERE alignment_stage = 5 ORDER BY images_alignment.id")
     records = cur.fetchall()
     for line in records:
-      pushLive(line[0], line[1], sgfile=(tempfolder + line[2])
+      pushLive(line[0], line[1], sgfile=(tempfolder + line[2]))
     print 'done'
   else:
     print 'inactive or stage 4 not selected'
