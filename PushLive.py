@@ -28,8 +28,8 @@ def pushLive(id, name, sgfile):
             os.remove(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         data, head = nrrd.read(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
-        if head['sizes'][3] < 270:
-            print "Inflating from " + head['sizes'][3] + " slices to 270..."
+        if head['sizes'][2] < 270:
+            print "Inflating from " + head['sizes'][2] + " slices to 270..."
             subprocess.call(Fiji + " -macro Convert185-270.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
