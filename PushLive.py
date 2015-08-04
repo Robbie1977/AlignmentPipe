@@ -18,7 +18,7 @@ def pushLive(id, name, sgfile):
     while len(last) < 3:
         last = "0" + last
     first = "A" + first
-    print 'Linking ' + sgfile + ' to ' + "/data/VFB/i/" + first + "/" + last + "/volume.nrrd"
+    print 'Linking ' + sgfile + ' to ' + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd"
     os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
 
 
