@@ -4,7 +4,7 @@ import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
 
 wlzDir = "/partition/bocian/VFBTools/Woolz2013Full/bin/"
-Fiji = "/partition/bocian/VFBTools/Fiji/ImageJ-linux64"
+Fiji = "nice /partition/bocian/VFBTools/Fiji/ImageJ-linux64 --headless"
 
 def pushLive(id, name, sgfile):
     if (id > 999):
@@ -25,8 +25,7 @@ def pushLive(id, name, sgfile):
     print 'Linking ' + sgfile + ' to ' + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd"
     os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
 
-
-    subprocess.call("nice " + Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
+    subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
     print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
     # TBD: resolve voxel size from template.
     subprocess.call("nice " + wlzDir + "WlzExtFFConvert -f tif -F wlz " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif |" + wlzDir + "WlzThreshold -v2 |" + wlzDir + "WlzSetVoxelSize -z0.46 -x0.4612588 -y0.4612588 >" + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.wlz" , shell=True)
