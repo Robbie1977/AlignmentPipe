@@ -18,13 +18,15 @@ def pushLive(id, name, sgfile):
     while len(last) < 3:
         last = "0" + last
     first = "A" + first
+    print 'Linking ' + sgfile + ' to ' + "/data/VFB/i/" + first + "/" + last + "/volume.nrrd"
     os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
 
-    print 'Linking ' + sgfile + ' to ' + "/data/VFB/i/" + first + "/" + last + "/volume.nrrd"
+
     subprocess.call("nice " + Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
+    print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
     # TBD: resolve voxel size from template.
     subprocess.call("nice " + wlzDir + "WlzExtFFConvert -f tif -F wlz " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif |" + wlzDir + "WlzThreshold -v2 |" + wlzDir + "WlzSetVoxelSize -z0.46 -x0.4612588 -y0.4612588 >" + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.wlz" , shell=True)
-    print "Created wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
+
 
 if __name__ == "__main__":
   if active and '5' in run_stage:
