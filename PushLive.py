@@ -17,7 +17,7 @@ def pushLive(id, name, sgfile):
         first = "0" + first
     while len(last) < 4:
         last = "0" + last
-    first = "A" + first
+    first = "a" + first
     if not os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first):
         os.makedirs(tempfolder + "../../IMAGE_DATA/VFB/i/" + first)
     if not os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last):
