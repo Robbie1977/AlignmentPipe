@@ -33,7 +33,7 @@ def pushLive(id, name, sgfile):
             dataNew = np.zeros([head['sizes'][0],head['sizes'][1],270],dtype=np.uint8)
             dataNew[:,:,25:210]=data;
             head['encoding'] = 'gzip'
-            if head['space directions'] == ['none', 'none', 'none']:
+            If 'space direction' in head:
                 head.pop("space directions", None)
             nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", dataNew, options=head)
         print "Converting to Tiff"
