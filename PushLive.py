@@ -1,7 +1,8 @@
-import os, sys, nrrd, cmtk, gc, subprocess, shutil
+import os, sys, nrrd, cmtk, gc, subprocess, shutil, png
 import numpy as np
 import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
+from PIL import Image
 
 wlzDir = "/partition/bocian/VFBTools/Woolz2013Full/bin/"
 Fiji = "nice /partition/bocian/VFBTools/Fiji/ImageJ-linux64 --headless"
@@ -44,6 +45,7 @@ def pushLive(id, name, sgfile):
             data[filesize[0]][filesize[1]][filesize[2]] = np.uint8(100)
         nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", data, options=head)
         print "Creating Thumbnail"
+        im = Image.fromarray(im)
         if np.shape(im)[0] < np.shape(im)[1]:
             im = im.resize((120,60), Image.ANTIALIAS)
         elif np.shape(im)[0] > np.shape(im)[1]:
