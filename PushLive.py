@@ -33,7 +33,7 @@ def pushLive(id, name, sgfile):
             dataNew = np.zeros([head['sizes'][0],head['sizes'][1],270],dtype=np.uint8)
             dataNew[:,:,25:210]=data;
             head['encoding'] = 'gzip'
-            If head.has_key('space direction'):
+            if head.has_key('space direction'):
                 head.pop("space directions", None)
             data = dataNew
         if (data[0][0][0] < 1):
