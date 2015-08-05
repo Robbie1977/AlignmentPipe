@@ -67,7 +67,11 @@ if __name__ == "__main__":
     cur.execute("SELECT id, name, aligned_sg FROM images_alignment WHERE alignment_stage = 11 ORDER BY images_alignment.id")
     records = cur.fetchall()
     for line in records:
-      pushLive(line[0], line[1], sgfile=(tempfolder + line[2]))
+        try:
+            pushLive(line[0], line[1], sgfile=(tempfolder + line[2]))
+        except:
+          cur.execute("UPDATE images_alignment SET alignment_stage = 21, notes = 'FAILED' WHERE id = %s", [str(line[0])])
+          cur.connection.commit()
     print 'done'
   else:
     print 'inactive or stage 4 not selected'
