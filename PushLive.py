@@ -29,7 +29,7 @@ def pushLive(id, name, sgfile):
         os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         data, head = nrrd.read(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         if head['sizes'][2] < 270:
-            print "Inflating from " + head['sizes'][2] + " slices to 270..."
+            print "Inflating from " + str(head['sizes'][2]) + " slices to 270..."
             subprocess.call(Fiji + " -macro Convert185-270.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
@@ -39,7 +39,7 @@ def pushLive(id, name, sgfile):
     else:
         print "Skipping " + name
     gc.collect()
-    
+
 if __name__ == "__main__":
   if active and '5' in run_stage:
     cur.execute("SELECT images_alignment.id, images_alignment.name, images_alignment.aligned_sg FROM images_alignment WHERE alignment_stage = 7 ORDER BY images_alignment.id")
