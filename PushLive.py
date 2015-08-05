@@ -36,12 +36,21 @@ def pushLive(id, name, sgfile):
             if head.has_key('space direction'):
                 head.pop("space directions", None)
             data = dataNew
+        im = np.transpose(np.max(data,axis=2))
         if (data[0][0][0] < 1):
             data[0][0][0] = np.uint8(100)
         filesize = np.subtract(data.shape, 1)
         if (data[filesize[0]][filesize[1]][filesize[2]] < 1):
             data[filesize[0]][filesize[1]][filesize[2]] = np.uint8(100)
         nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", data, options=head)
+        print "Creating Thumbnail"
+        if np.shape(im)[0] < np.shape(im)[1]:
+            im = im.resize((120,60), Image.ANTIALIAS)
+        elif np.shape(im)[0] > np.shape(im)[1]:
+            im = im.resize((60,120), Image.ANTIALIAS)
+        else:
+            im = im.resize((60,60), Image.ANTIALIAS)
+        im.save(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/thumbnail.png","PNG")
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
