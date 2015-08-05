@@ -1,4 +1,4 @@
-import os, sys, nrrd, cmtk, gc, subprocess
+import os, sys, nrrd, cmtk, gc, subprocess, shutil
 import numpy as np
 import warpScoring.CheckImages as ci
 from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
@@ -26,7 +26,7 @@ def pushLive(id, name, sgfile):
         print 'Linking ' + sgfile + ' to ' + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd"
         if os.path.exists(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd"):
             os.remove(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
-        os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
+        shutil.copyfile(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         data, head = nrrd.read(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         if head['sizes'][2] == 185:
             print "Inflating from " + str(head['sizes'][2]) + " slices to 270..."
