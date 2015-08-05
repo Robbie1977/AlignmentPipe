@@ -28,21 +28,28 @@ def pushLive(id, name, sgfile):
             os.remove(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         os.symlink(sgfile, tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
         data, head = nrrd.read(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd")
-        if head['sizes'][2] < 270:
+        if head['sizes'][2] == 185:
             print "Inflating from " + str(head['sizes'][2]) + " slices to 270..."
-            subprocess.call(Fiji + " -macro Convert185-270.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
+            dataNew = np.zeros([head['sizes'][0],head['sizes'][1],270],dtype=np.uint8)
+            dataNew[:,:,25:210]=data;
+            head['encoding'] = 'gzip'
+            if head['space directions'] == ['none', 'none', 'none']:
+                head.pop("space directions", None)
+            nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", dataNew, options=head)
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
         # TBD: resolve voxel size from template.
         subprocess.call("nice " + wlzDir + "WlzExtFFConvert -f tif -F wlz " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif |" + wlzDir + "WlzThreshold -v2 |" + wlzDir + "WlzSetVoxelSize -z0.46 -x0.4612588 -y0.4612588 >" + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.wlz" , shell=True)
+        cur.execute("UPDATE images_alignment SET alignment_stage = 21 WHERE id = %s", [str(id)])
+        cur.connection.commit()
     else:
         print "Skipping " + name
     gc.collect()
 
 if __name__ == "__main__":
   if active and '5' in run_stage:
-    cur.execute("SELECT images_alignment.id, images_alignment.name, images_alignment.aligned_sg FROM images_alignment WHERE alignment_stage = 7 ORDER BY images_alignment.id")
+    cur.execute("SELECT id, name, aligned_sg FROM images_alignment WHERE alignment_stage = 11 ORDER BY images_alignment.id")
     records = cur.fetchall()
     for line in records:
       pushLive(line[0], line[1], sgfile=(tempfolder + line[2]))
