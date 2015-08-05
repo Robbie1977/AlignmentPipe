@@ -41,7 +41,7 @@ def pushLive(id, name, sgfile):
         filesize = np.subtract(data.shape, 1)
         if (data[filesize[0]][filesize[1]][filesize[2]] < 1):
             data[filesize[0]][filesize[1]][filesize[2]] = np.uint8(100)
-        nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", dataNew, options=head)
+        nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", data, options=head)
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
