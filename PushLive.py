@@ -35,7 +35,13 @@ def pushLive(id, name, sgfile):
             head['encoding'] = 'gzip'
             If 'space direction' in head:
                 head.pop("space directions", None)
-            nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", dataNew, options=head)
+            data = dataNew
+        if (data[0][0][0] < 1):
+            data[0][0][0] = np.uint8(sys.argv[1])
+        filesize = np.subtract(data.shape, 1)
+        if (data[filesize[0]][filesize[1]][filesize[2]] < 1):
+            data[filesize[0]][filesize[1]][filesize[2]] = np.uint8(sys.argv[1])
+        nrrd.write(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd", dataNew, options=head)
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
