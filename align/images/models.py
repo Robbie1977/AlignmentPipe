@@ -217,8 +217,8 @@ class Mask_original(models.Model):
         return '<img src="/images/nrrd/mod_original/%s-%s"/>' % (str(im_id.id),str(self.id))
       except:
         return '<img src="/static/waiting.gif"/>'
-    orig_image.short_description = 'original image'
-    orig_image.allow_tags = True
+    mod_image.short_description = 'modified image'
+    mod_image.allow_tags = True
     def owner(self):
       ch_id = self.image
       im_id = ch_id.image
@@ -242,8 +242,8 @@ class Mask_original(models.Model):
     def modified_download(self):
       chanFile = str(self.image.file).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(self.id) + '.nrrd')
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
-    image_download.short_description = 'download image'
-    image_download.allow_tags = True
+    modified_download.short_description = 'download image'
+    modified_download.allow_tags = True
     def image_download(self):
       chanFile = str(self.image.file)
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
