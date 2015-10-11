@@ -19,7 +19,7 @@ if __name__ == "__main__":
       outfile = str(line[3]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[3]).replace('.nrrd','-modFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       if not os.path.isfile(tempfolder + modfile):
-          copyfile(tempfolder + str(line[3]), tempfolder + modfile)
+          shutil.copyfile(tempfolder + str(line[3]), tempfolder + modfile)
       objs = labelObj(tempfolder + str(line[3]), tempfolder + outfile, t=line[1], ms=line[2])
       cur.execute("UPDATE images_mask_original SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [objs.tolist(), str(line[0])])
       cur.connection.commit()
