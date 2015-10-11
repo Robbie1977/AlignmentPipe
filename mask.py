@@ -57,7 +57,7 @@ if __name__ == "__main__":
         cur.connection.commit()
         gc.collect()
         try:
-          os.chmod(tempfolder + modfile), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+          os.chmod((tempfolder + modfile), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
         except:
           pass
 
