@@ -185,7 +185,7 @@ def plotNrrd(request, image_id, image_type):
     if ('-' in image_id):
         mask_id = str(image_id.split('-')[1])
         image_id = str(image_id.split('-')[0])
-    
+
     labels = False
     Dtemp = False
 
@@ -262,7 +262,6 @@ def plotNrrd(request, image_id, image_type):
       file = tempfolder + str(record.file).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.image.settings.template.orientation)
       subtext = 'Modified Image'
-      labels = True
     else:
       file = '/static/default.png'
     if os.path.isfile(file):
