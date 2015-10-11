@@ -77,6 +77,7 @@ if __name__ == "__main__":
       print 'Crop object(s) from original image: ' + str(count) + ' of ' + str(total)
       maskfile = str(line[2]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[2]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
+      shutil.copyfile(str(line[chan]),modfile)
       cropObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       cur.execute("UPDATE images_mask_original SET crop_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
@@ -177,6 +178,7 @@ if __name__ == "__main__":
         chan = 5
       maskfile = str(line[chan]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[chan]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
+      shutil.copyfile(str(line[chan]),modfile)
       cropObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       print 'Updating with results...'
       cur.execute("UPDATE images_alignment SET images_alignment.aligned_%s=%s WHERE id = %s ", [str(line[2]), modfile, str(line[6])])
