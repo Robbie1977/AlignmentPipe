@@ -181,6 +181,10 @@ def plotNrrd(request, image_id, image_type):
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
     from system.models import checkDir, Server
+    mask_id = 0
+    if ('-' in image_id):
+        mask_id = image_id.split('-')[1]
+        image_id = image_id.split('-')[0]
 
     labels = False
     Dtemp = False
@@ -198,23 +202,23 @@ def plotNrrd(request, image_id, image_type):
         orient = str(record.settings.template.orientation)
         subtext = 'Orientation: ' + str(comp_orien[orient]) + ' (' + orient + ')'
     elif 'mask_aligned_bg' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id.split('-')[0]))
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',image_id.split('-')[1]+'.nrrd')
+      file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_sg' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id.split('-')[0]))
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',image_id.split('-')[1]+'.nrrd')
+      file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
     elif 'mask_aligned_ac1' in image_type:
-      record = checkDir(Alignment.objects.get(id=image_id.split('-')[0]))
+      record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
-      file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd').replace('.nrrd',image_id.split('-')[1]+'.nrrd')
+      file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
@@ -248,8 +252,8 @@ def plotNrrd(request, image_id, image_type):
       fsize = 12
       Dtemp = True
     elif 'mask_original' in image_type:
-      record = Original_nrrd.objects.get(id=image_id.split('-')[0])
-      file = tempfolder + str(record.file).replace('.nrrd','-objMask.nrrd').replace('.nrrd',image_id.split('-')[1]+'.nrrd')
+      record = Original_nrrd.objects.get(id=image_id)
+      file = tempfolder + str(record.file).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
