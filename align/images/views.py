@@ -185,10 +185,7 @@ def plotNrrd(request, image_id, image_type):
     if ('-' in image_id):
         mask_id = str(image_id.split('-')[1])
         image_id = str(image_id.split('-')[0])
-    if ('&#45' in image_id):
-        mask_id = str(image_id.split('&#45')[1])
-        image_id = str(image_id.split('&#45')[0])
-
+    
     labels = False
     Dtemp = False
 
