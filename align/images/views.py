@@ -181,10 +181,10 @@ def plotNrrd(request, image_id, image_type):
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
     from system.models import checkDir, Server
-    mask_id = 0
+    mask_id = '0'
     if ('-' in image_id):
-        mask_id = image_id.split('-')[1]
-        image_id = image_id.split('-')[0]
+        mask_id = str(image_id.split('-')[1])
+        image_id = str(image_id.split('-')[0])
 
     labels = False
     Dtemp = False
