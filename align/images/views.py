@@ -260,6 +260,12 @@ def plotNrrd(request, image_id, image_type):
       orient = str(record.image.settings.template.orientation)
       subtext = 'Detected objects'
       labels = True
+  elif 'mod_original' in image_type:
+      record = Original_nrrd.objects.get(id=image_id)
+      file = tempfolder + str(record.file).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id+'.nrrd')
+      orient = str(record.image.settings.template.orientation)
+      subtext = 'Modified Image'
+      labels = True
     else:
       file = '/static/default.png'
     if os.path.isfile(file):

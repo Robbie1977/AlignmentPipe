@@ -211,6 +211,14 @@ class Mask_original(models.Model):
         return '<img src="/static/waiting.gif"/>'
     orig_image.short_description = 'original image'
     orig_image.allow_tags = True
+    def mod_image(self):
+      ch_id = self.image
+      try:
+        return '<img src="/images/nrrd/mod_original/%s-%s"/>' % (str(im_id.id),str(self.id))
+      except:
+        return '<img src="/static/waiting.gif"/>'
+    orig_image.short_description = 'original image'
+    orig_image.allow_tags = True
     def owner(self):
       ch_id = self.image
       im_id = ch_id.image
@@ -231,6 +239,11 @@ class Mask_original(models.Model):
       return '<a href="/admin/images/alignment/%s"/>%s</a>' % (str(self.image.image.id), str(self.image.image))
     parent.short_description = 'parent details'
     parent.allow_tags = True
+    def modified_download(self):
+      chanFile = str(self.image.file).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(self.id) + '.nrrd')
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    image_download.short_description = 'download image'
+    image_download.allow_tags = True
     def image_download(self):
       chanFile = str(self.image.file)
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
