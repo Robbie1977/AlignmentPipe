@@ -33,7 +33,7 @@ if __name__ == "__main__":
     print 'inactive or stage 0 not selected'
 
   if active and '0' in run_stage:
-    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id, images_original_nrrd.id FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}' ORDER BY images_mask_original.id")
+    cur.execute("SELECT images_mask_original.id, images_mask_original.cut_objects, images_original_nrrd.file, images_mask_original.auto_restart_alignment, images_alignment.id, images_original_nrrd.id, images_mask_original.overwrite_original, images_alignment.name FROM images_mask_original, images_original_nrrd, images_alignment WHERE images_original_nrrd.id = images_mask_original.image_id AND images_original_nrrd.image_id = images_alignment.id AND images_mask_original.complete = True AND images_mask_original.cut_complete = False AND images_mask_original.cut_objects is not null AND images_mask_original.cut_objects != '' AND images_mask_original.cut_objects != '{}' ORDER BY images_mask_original.id")
     records = cur.fetchall()
     total = len(records)
     count = 0
@@ -43,18 +43,46 @@ if __name__ == "__main__":
       print 'Cut object(s) from original image: ' + str(count) + ' of ' + str(total)
       maskfile = str(line[2]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[2]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
-      shutil.copyfile(tempfolder + str(line[2]),tempfolder + modfile)
+      if not os.path.isfile(tempfolder + modfile):
+          shutil.copyfile(tempfolder + str(line[2]),tempfolder + modfile)
       cutObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       cur.execute("UPDATE images_mask_original SET cut_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
       gc.collect()
-      if line[3]:
-        print 'Updating with results...'
-        cur.execute("UPDATE images_original_nrrd SET file=%s WHERE id = %s ", [modfile, str(line[5])])
+      newId = str(line[4])
+      oldId = str(line[4])
+      if line[6]:
+          print 'Updating with results...'
+          cur.execute("UPDATE images_original_nrrd SET file=%s WHERE id = %s ", [modfile, str(line[5])])
+          cur.connection.commit()
+          gc.collect()
+      else:
+        print 'Creating new alignment record with results...'
+        oldName = str(line[7])
+        newName = str(line[7]) + "_CutFromMask" + str(line[0])
+        cur.execute("INSERT INTO images_alignment (name, settings, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user) SELECT %s, settings, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user FROM images_alignment WHERE image = %s", [newName, oldId])
         cur.connection.commit()
         gc.collect()
+        cur.execute("SELECT id FROM images_alignment WHERE name = %s", [newName]
+        results = cur.fetchall()
+        newId = results[0][0]
+        gc.collect()
+        cur.execute("INSERT INTO images_original_nrrd (image, channel, new_min, new_max, file, is_index, pre_hist) SELECT %s, channel, new_min, new_max, replace(file, %s, %s), is_index, pre_hist FROM images_original_nrrd WHERE image = %s", [newId, oldName, newName, oldId])
+        cur.connection.commit()
+        gc.collect()
+        cur.execute("SELECT file FROM images_original_nrrd WHERE image = %s", [newId]
+        results = cur.fetchall()
+        print 'Duplicating files...'
+        for fl in results:
+            shutil.copyfile(tempfolder + str(fl[0]).replace(newName, oldName),tempfolder + str(fl[0]))
+        shutil.copyfile(tempfolder + modfile,tempfolder + str(line[2]).replace(oldName, newName))
+        print 'Switching to new alignment...'
+        cur.execute("UPDATE images_mask_original SET image=%s WHERE id = %s ", [newId])
+        cur.connection.commit()
+        gc.collect()
+      if line[3]:
         print 'Auto restarting alignment...'
-        cur.execute("UPDATE images_alignment SET alignment_stage=2002 WHERE id = %s ", [str(line[4])])
+        cur.execute("UPDATE images_alignment SET alignment_stage=2002 WHERE id = %s ", [newId])
         cur.connection.commit()
         gc.collect()
         try:
@@ -77,7 +105,8 @@ if __name__ == "__main__":
       print 'Crop object(s) from original image: ' + str(count) + ' of ' + str(total)
       maskfile = str(line[2]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[2]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
-      shutil.copyfile(tempfolder + str(line[2]),tempfolder + modfile)
+      if not os.path.isfile(tempfolder + modfile):
+          shutil.copyfile(tempfolder + str(line[2]),tempfolder + modfile)
       cropObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       cur.execute("UPDATE images_mask_original SET crop_complete=True WHERE id = %s ", [str(line[0])])
       cur.connection.commit()
@@ -116,7 +145,7 @@ if __name__ == "__main__":
       outfile = str(line[chan]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[chan]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       if not os.path.isfile(tempfolder + modfile):
-          copyfile(tempfolder + str(line[chan]), tempfolder + modfile)
+          shutil.copyfile(tempfolder + str(line[chan]), tempfolder + modfile)
       objs = labelObj(tempfolder + str(line[chan]), tempfolder + outfile, t=line[1], ms=line[2])
       cur.execute("UPDATE images_mask_aligned SET complete=True, cut_complete=False, crop_complete=False, detected_objects=%s WHERE id = %s ", [objs.tolist(), str(line[0])])
       cur.connection.commit()
@@ -138,14 +167,15 @@ if __name__ == "__main__":
     for line in records:
       count +=1
       chan = 4
-      print 'Cut object(s) from original image: ' + str(count) + ' of ' + str(total)
+      print 'Cut object(s) from aligned image: ' + str(count) + ' of ' + str(total)
       if str(line[2]) == 'bg':
         chan = 3
       if str(line[2]) == 'ac1':
         chan = 5
       maskfile = str(line[chan]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[chan]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
-      shutil.copyfile(tempfolder + str(line[chan]),tempfolder + modfile)
+      if not os.path.isfile(tempfolder + modfile):
+          shutil.copyfile(tempfolder + str(line[chan]),tempfolder + modfile)
       cutObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       print 'Updating with results...'
       cur.execute("UPDATE images_alignment SET images_alignment.aligned_%s=%s WHERE id = %s ", [str(line[2]), modfile, str(line[6])])
@@ -171,14 +201,15 @@ if __name__ == "__main__":
     for line in records:
       count +=1
       chan = 4
-      print 'Crop to object(s) in original image: ' + str(count) + ' of ' + str(total)
+      print 'Crop to object(s) in aligned image: ' + str(count) + ' of ' + str(total)
       if str(line[2]) == 'bg':
         chan = 3
       if str(line[2]) == 'ac1':
         chan = 5
       maskfile = str(line[chan]).replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
       modfile = str(line[chan]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(line[0]) + '.nrrd')
-      shutil.copyfile(tempfolder + str(line[chan]),tempfolder + modfile)
+      if not os.path.isfile(tempfolder + modfile):
+          shutil.copyfile(tempfolder + str(line[chan]),tempfolder + modfile)
       cropObj(tempfolder + modfile, tempfolder + maskfile, labels=str(line[1]))
       print 'Updating with results...'
       cur.execute("UPDATE images_alignment SET images_alignment.aligned_%s=%s WHERE id = %s ", [str(line[2]), modfile, str(line[6])])

@@ -192,6 +192,7 @@ class Mask_original(models.Model):
     cut_complete = models.BooleanField(default=False)
     crop_objects = models.CommaSeparatedIntegerField(max_length=255, blank=True, default={})
     crop_complete = models.BooleanField(default=False)
+    overwrite_original = models.BooleanField(default=False)
     auto_restart_alignment = models.BooleanField(default=False)
     notes = models.TextField(max_length=10000, blank=True)
     def __str__(self):

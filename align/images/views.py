@@ -170,22 +170,6 @@ def opositeOr(position):
     Or = {'R':'L','L':'R','P':'A','A':'P','S':'I','I':'S'}
     return Or[position]
 
-def cloneNrrd(request, image_id, image_name, image_mask):
-    import os
-    import nrrd
-    import numpy as np
-    from system.models import checkDir, Server
-
-    record = checkDir(Alignment.objects.get(id=image_id))
-    mask = Mask_original.objects.get(id=image_mask)
-    command = '?'
-
-    for item in record.all:
-        if item != 'id':
-            command += item + '=' + record.item
-
-    return command
-
 def plotNrrd(request, image_id, image_type):
     import os
     import matplotlib

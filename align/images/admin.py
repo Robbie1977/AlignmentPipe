@@ -220,7 +220,7 @@ class MaskOriginalAdmin(admin.ModelAdmin):
     # exclude = ('image')
     readonly_fields = ('available', 'mask_image', 'detected_objects', 'mask_download', 'orig_image', 'image_download', 'mod_image', 'modified_download', 'owner', 'parent', )
     list_display = ('image', 'available', 'chan_ident', 'complete', 'detected_objects', 'cut_complete', 'crop_complete', 'auto_restart_alignment', 'owner', 'notes', )
-    list_filter = ('complete', 'cut_complete', 'crop_complete', 'auto_restart_alignment', )
+    list_filter = ('complete', 'cut_complete', 'crop_complete', 'overwrite_original', 'auto_restart_alignment', )
     def queryset(self, request):
       if request.user.is_superuser:
         return Mask_original.objects.all()
