@@ -212,10 +212,8 @@ class Mask_original(models.Model):
     orig_image.short_description = 'original image'
     orig_image.allow_tags = True
     def mod_image(self):
-      ch_id = self.image
-      im_id = ch_id.image
       try:
-        return '<img src="/images/nrrd/mod_original/%s-%s"/>' % (str(im_id.id),str(self.id))
+        return '<img src="/images/nrrd/mod_original/%s-%s"/>' % (str(self.image.id),str(self.id))
       except:
         return '<img src="/static/waiting.gif"/>'
     mod_image.short_description = 'modified image'
