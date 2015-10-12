@@ -70,14 +70,18 @@ if __name__ == "__main__":
         cur.execute("INSERT INTO images_original_nrrd (image, channel, new_min, new_max, file, is_index, pre_hist) SELECT %s, channel, new_min, new_max, replace(file, %s, %s), is_index, pre_hist FROM images_original_nrrd WHERE image = %s", [newId, oldName, newName, oldId])
         cur.connection.commit()
         gc.collect()
-        cur.execute("SELECT file FROM images_original_nrrd WHERE image = %s", [newId]
+        cur.execute("SELECT file, id FROM images_original_nrrd WHERE image = %s", [newId]
         results = cur.fetchall()
         print 'Duplicating files...'
+        newOrig = line[5]
         for fl in results:
             shutil.copyfile(tempfolder + str(fl[0]).replace(newName, oldName),tempfolder + str(fl[0]))
+            if (str(line[2]) == str(fl[0]).replace(newName, oldName)):
+                newOrig = fl[1]
+                print 'file matched'
         shutil.copyfile(tempfolder + modfile,tempfolder + str(line[2]).replace(oldName, newName))
         print 'Switching to new alignment...'
-        cur.execute("UPDATE images_mask_original SET image=%s WHERE id = %s ", [newId])
+        cur.execute("UPDATE images_mask_original SET image=%s WHERE id = %s ", [newOrig])
         cur.connection.commit()
         gc.collect()
       if line[3]:
