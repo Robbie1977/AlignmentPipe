@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^details/(?P<image_id>\w+)', views.detail, name='details'),
     url(r'^hist/(?P<image_id>\w+)', views.plotResults, name='histograms'),
     url(r'^nrrd/(?P<image_type>\w+)/(?P<image_id>[0-9,-]+)', views.plotNrrd, name='nrrd'),
+    url(r'^clone/(?P<image_id>\w+)/(?P<image_mask>\w+)/(?P<image_name>[\w,-,\.]+)', views.cloneNrrd, name='clone'),
     # url(r'^/(?P<image_id>\w+/$)', views.detail, name='detail')
     # url(r'^$', views.index, name='details')
     # url(r'^/staticImage.png$', 'images.views.showStaticImage'),
