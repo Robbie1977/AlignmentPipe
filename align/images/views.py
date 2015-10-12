@@ -177,7 +177,7 @@ def cloneNrrd(request, image_id, image_name, image_mask):
     from system.models import checkDir, Server
 
     record = checkDir(Alignment.objects.get(id=image_id))
-    mask = checkDir(Mask_original.objects.get(id=image_mask))
+    mask = Mask_original.objects.get(id=image_mask)
     command = '?'
 
     for item in record:
