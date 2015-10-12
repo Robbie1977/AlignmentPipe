@@ -224,7 +224,8 @@ def plotNrrd(request, image_id, image_type):
       labels = True
     elif 'mod_aligned' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
-      file = tempfolder + str(record[image_type.replace('mod_','')]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id+'.nrrd')
+      chan_name = str(image_type.replace('mod_',''))
+      file = tempfolder + str(record[chan_name]).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
       subtext = 'Modified Image'
       Dtemp = True
