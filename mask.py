@@ -63,14 +63,14 @@ if __name__ == "__main__":
         cur.execute("INSERT INTO images_alignment (name, settings, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user) SELECT %s, settings, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user FROM images_alignment WHERE image = %s", [newName, oldId])
         cur.connection.commit()
         gc.collect()
-        cur.execute("SELECT id FROM images_alignment WHERE name = %s", [newName]
+        cur.execute("SELECT id FROM images_alignment WHERE name = %s", [newName])
         results = cur.fetchall()
         newId = results[0][0]
         gc.collect()
         cur.execute("INSERT INTO images_original_nrrd (image, channel, new_min, new_max, file, is_index, pre_hist) SELECT %s, channel, new_min, new_max, replace(file, %s, %s), is_index, pre_hist FROM images_original_nrrd WHERE image = %s", [newId, oldName, newName, oldId])
         cur.connection.commit()
         gc.collect()
-        cur.execute("SELECT file, id FROM images_original_nrrd WHERE image = %s", [newId]
+        cur.execute("SELECT file, id FROM images_original_nrrd WHERE image = %s", [newId])
         results = cur.fetchall()
         print 'Duplicating files...'
         newOrig = line[5]
