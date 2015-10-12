@@ -241,7 +241,7 @@ class Mask_original(models.Model):
     def modified_download(self):
       chanFile = str(self.image.file).replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(self.id) + '.nrrd')
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
-    modified_download.short_description = 'download image'
+    modified_download.short_description = 'download modified image'
     modified_download.allow_tags = True
     def image_download(self):
       chanFile = str(self.image.file)
@@ -293,6 +293,13 @@ class Mask_aligned(models.Model):
         return '<img src="/static/waiting.gif"/>'
     orig_image.short_description = 'original image'
     orig_image.allow_tags = True
+    def mod_image(self):
+      try:
+        return '<img src="/images/nrrd/mod_aligned_%s/%s-%s"/>' % (str(self.channel), str(self.image.id),str(self.id))
+      except:
+        return '<img src="/static/waiting.gif"/>'
+    mod_image.short_description = 'modified image'
+    mod_image.allow_tags = True
     def owner(self):
       im_id = self.image
       return str(im_id.user)
@@ -306,7 +313,7 @@ class Mask_aligned(models.Model):
       chanFile = str(self.image.aligned_sg)
       if str(self.channel) == 'bg':
         chanFile = self.image.aligned_bg
-      if str(self.channel) == 'bg':
+      if str(self.channel) == 'ac1':
         chanFile = self.image.aligned_ac1
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
     image_download.short_description = 'download image'
@@ -315,12 +322,22 @@ class Mask_aligned(models.Model):
       chanFile = str(self.image.aligned_sg)
       if str(self.channel) == 'bg':
         chanFile = self.image.aligned_bg
-      if str(self.channel) == 'bg':
+      if str(self.channel) == 'ac1':
         chanFile = self.image.aligned_ac1
-      chanFile = chanFile.replace('.nrrd','-objMask.nrrd')
+      chanFile = chanFile.replace('.nrrd','-objMask.nrrd').replace('.nrrd', str(self.id) + '.nrrd')
       return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
     mask_download.short_description = 'download image mask'
     mask_download.allow_tags = True
+    def modified_download(self):
+      chanFile = str(self.image.aligned_sg)
+      if str(self.channel) == 'bg':
+        chanFile = self.image.aligned_bg
+      if str(self.channel) == 'ac1':
+        chanFile = self.image.aligned_ac1
+      chanFile = chanFile.replace('.nrrd','-ModFile.nrrd').replace('.nrrd', str(self.id) + '.nrrd')
+      return '<a href="/static/downloads/%s"/>%s</a>' % (chanFile, chanFile)
+    modified_download.short_description = 'download modified image'
+    modified_download.allow_tags = True
     def available(self):
       try:
         if self.image.alignment_stage < 1:
