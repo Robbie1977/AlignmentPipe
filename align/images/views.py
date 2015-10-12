@@ -180,7 +180,7 @@ def cloneNrrd(request, image_id, image_name, image_mask):
     mask = Mask_original.objects.get(id=image_mask)
     command = '?'
 
-    for item in record:
+    for item in record.all:
         if item != 'id':
             command += item + '=' + record.item
 
