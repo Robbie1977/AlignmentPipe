@@ -118,6 +118,9 @@ class Alignment(models.Model):
         return '<img src="%s"/>' % str(self.settings.template.image)
     temp_image.short_description = 'template image for reference'
     temp_image.allow_tags = True
+    def clone(self):
+        new_kwargs = dict([(fld.name, getattr(old, fld.name)) for fld in old._meta.fields if fld.name != old._meta.pk]);
+        return self.__class__.objects.create(**new_kwargs)
     # def available_files(self):
     #     created = {}
     #     if 'nrrd' in self.aligned_bg:
