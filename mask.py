@@ -81,7 +81,9 @@ if __name__ == "__main__":
             if (str(line[2]) == str(fl[0]).replace(newName, oldName)):
                 newOrig = fl[1]
                 print 'file matched'
-        shutil.copyfile(tempfolder + modfile,tempfolder + str(line[2]).replace(oldName, newName))
+        shutil.copyfile(tempfolder + modfile, tempfolder + str(line[2]).replace(oldName, newName))
+        os.rename(tempfolder + modfile, tempfolder + str(modfile).replace(oldName, newName))
+        os.rename(tempfolder + maskfile, tempfolder + str(maskfile).replace(oldName, newName))
         print 'Switching to new alignment via ' + str(newOrig)
         cur.execute("UPDATE images_mask_original SET image_id=%s WHERE id = %s ", [newOrig, line[0]])
         cur.connection.commit()
@@ -91,10 +93,10 @@ if __name__ == "__main__":
         cur.execute("UPDATE images_alignment SET alignment_stage=2002 WHERE id = %s ", [newId])
         cur.connection.commit()
         gc.collect()
-        try:
-          os.chmod((tempfolder + modfile), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        except:
-          pass
+      try:
+        os.chmod((tempfolder + modfile), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+      except:
+        pass
 
     print 'done'
   else:
