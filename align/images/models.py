@@ -3,7 +3,6 @@ from socket import gethostname
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 import os
-from django import forms
 
 host = gethostname()
 
@@ -131,7 +130,7 @@ class Alignment(models.Model):
 
 
 class Original_nrrd(models.Model):
-    image = forms.ModelChoiceField(queryset=Alignment.objects.order_by('name'))
+    image = models.ForeignKey(Alignment)
     channel = models.IntegerField(default=0)
     new_min = models.IntegerField(default=0)
     new_max = models.IntegerField(default=255)
