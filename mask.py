@@ -61,7 +61,7 @@ if __name__ == "__main__":
         print "Old ID: %s", [str(oldId)]
         oldName = str(line[7])
         newName = str(line[7]) + "_ModByMask" + str(line[0])
-        cur.execute("INSERT INTO images_alignment(name, settings_id, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user_id) SELECT %s, settings_id, max_stage, last_host, aligned_score, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, temp_initial_nrrd, temp_initial_score, background_channel, signal_channel, ac1_channel, aligned_bg, aligned_sg, aligned_ac1, aligned_slice_score, aligned_avgslice_score, notes, reference, user_id FROM images_alignment WHERE id = %s", [newName, oldId])
+        cur.execute("INSERT INTO images_alignment(name, settings_id, max_stage, last_host, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, background_channel, signal_channel, ac1_channel, notes, reference, user_id) SELECT %s, settings_id, 2, last_host, alignment_stage, orig_orientation, loading_host, original_ext, original_path, crop_xyz, background_channel, signal_channel, ac1_channel, notes, reference, user_id FROM images_alignment WHERE id = %s", [newName, oldId])
         cur.connection.commit()
         gc.collect()
         cur.execute("SELECT id FROM images_alignment WHERE name = %s", [newName])
