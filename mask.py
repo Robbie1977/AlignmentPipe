@@ -83,7 +83,7 @@ if __name__ == "__main__":
                 print 'file matched'
         shutil.copyfile(tempfolder + modfile,tempfolder + str(line[2]).replace(oldName, newName))
         print 'Switching to new alignment...'
-        cur.execute("UPDATE images_mask_original SET image_id=%s WHERE id = %s ", [newId, line[0]])
+        cur.execute("UPDATE images_mask_original SET image_id=%s WHERE id = %s ", [newOrig, line[0]])
         cur.connection.commit()
         gc.collect()
       if line[3]:
