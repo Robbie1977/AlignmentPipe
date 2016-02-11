@@ -201,7 +201,7 @@ class Mask_original(models.Model):
       if self.complete:
         return '<img src="/images/nrrd/mask_original/%s-%s"/>' % (str(self.image.id),str(self.id))
       return '<img src="/static/waiting.gif"/>'
-    mask_image.short_description = 'detected objects'
+    mask_image.short_description = 'detected objects in %s' % (str(self.image))
     mask_image.allow_tags = True
     def orig_image(self):
       ch_id = self.image
