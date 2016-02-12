@@ -220,7 +220,7 @@ def plotNrrd(request, image_id, image_type):
       # temprec = Original_nrrd.objects.get(id=record.image_id)
       file = tempfolder + str(record.aligned_ac1).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
-      subtext = 'Detected objects'
+      subtext = 'Objects for %s' % (str(record.aligned_ac1).replace('.nrrd','-objMask'+mask_id))
       labels = True
     elif 'mod_aligned' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
