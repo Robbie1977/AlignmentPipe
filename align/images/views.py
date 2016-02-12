@@ -206,14 +206,14 @@ def plotNrrd(request, image_id, image_type):
       # temprec = Original_nrrd.objects.get(id=record.image_id)
       file = tempfolder + str(record.aligned_bg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
-      subtext = 'Detected objects'
+      subtext = 'Objects for %s' % (str(record.aligned_ac1).replace('.nrrd','-objMask'+mask_id))
       labels = True
     elif 'mask_aligned_sg' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
       # temprec = Original_nrrd.objects.get(id=record.image_id)
       file = tempfolder + str(record.aligned_sg).replace('.nrrd','-objMask.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
-      subtext = 'Detected objects'
+      subtext = 'Objects for %s' % (str(record.aligned_ac1).replace('.nrrd','-objMask'+mask_id))
       labels = True
     elif 'mask_aligned_ac1' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
@@ -227,7 +227,7 @@ def plotNrrd(request, image_id, image_type):
       chan_name = str(image_type.replace('mod_',''))
       file = tempfolder + str(getattr(record, chan_name)).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id+'.nrrd')
       orient = str(record.settings.template.orientation)
-      subtext = 'Modified Image'
+      subtext = 'Modified Image %s' % (str(getattr(record, chan_name)).replace('.nrrd','-ModFile.nrrd').replace('.nrrd',mask_id))
       Dtemp = True
     elif 'temp_initial_nrrd' in image_type:
       record = checkDir(Alignment.objects.get(id=image_id))
