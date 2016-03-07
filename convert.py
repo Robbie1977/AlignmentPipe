@@ -78,7 +78,10 @@ def convRec(record):
             record['loading_host'] = 'roberts-mbp'
         if not record['loading_host'] == host:
             print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
-        file = record['original_path'] + record['name'] + record['original_ext']
+        if str(record['original_path']).endswith(os.path.sep):
+            file = record['original_path'] + record['name'] + record['original_ext']
+        else:
+            file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
         print 'Converting ' + file
         if (os.path.exists(file) or os.path.exists(file + '.gz')):
             record['last_host'] = host
