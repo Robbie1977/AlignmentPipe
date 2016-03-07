@@ -116,6 +116,8 @@ if record:
                 header1['encoding'] = 'gzip'
                 if header1['space directions'] == ['none', 'none', 'none']:
                     header1.pop("space directions", None)
+                if os.path.exists(imageOUT):
+                    os.remove(imageOUT)
                 nrrd.write(imageOUT, data1, options=header1)
                 os.chmod(imageOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
             except:
