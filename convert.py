@@ -240,7 +240,8 @@ def convRec(record):
             del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
         else:
             record['alignment_stage'] = 1001
-            record['notes'] = record['notes'] + '\nError during preprocessing!'
+            record['notes'] = record['notes'] + '\n' + time.strftime(
+                "%c") + ' Error with preprocessing file by ' + host
     except:
         record['alignment_stage'] = 0
         record['notes'] = record['notes'] + '\n' + time.strftime(
