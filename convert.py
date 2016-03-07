@@ -1,6 +1,7 @@
 import gc
 import os
 import stat
+import time
 from subprocess import check_call
 
 import numpy as np
@@ -242,7 +243,8 @@ def convRec(record):
             record['notes'] = record['notes'] + '\nError during preprocessing!'
     except:
         record['alignment_stage'] = 0
-        record['notes'] = 'Error with uploaded file!'
+        record['notes'] = '\n' + time.strftime(
+            "%c") + ' Error with handling uploaded file by ' + host
     return record
 
 
