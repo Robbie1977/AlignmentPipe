@@ -1,16 +1,23 @@
-import cmtk
 import gc
+
+import cmtk
 from cmtk import cur, tempfolder, active, run_stage, template, checkDir, host, templatedir
 
 
 def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--dofs 6,9 --auto-multi-levels 4'):
+    start = datetime.datetime.now()
   record = checkDir(record)
   print 'Staring affine alignment for: ' + record['name']
   # bgfile = record['original_nrrd'][('Ch' + str(record['background_channel']) + '_file')]
   affine, r = cmtk.affine(bgfile, template=template, scale=affineSet)
   print affine
+    totaltime = datetime.datetime.now() - start
   record['alignment_stage'] = 4
-  if r > 0: record['alignment_stage'] = 1003
+    if r > 0:
+        record['alignment_stage'] = 1003
+    else:
+        record['notes'] = record['notes'] + '\n' + time.strftime(
+            "%c") + ' Affine alignment performed by ' + host + ' in ' + str(totaltime)
   if r == 99: record['alignment_stage'] = 2
   record['max_stage'] = 4
   record['last_host'] = host

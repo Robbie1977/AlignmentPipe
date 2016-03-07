@@ -1,11 +1,13 @@
-import os, sys, nrrd, cmtk, gc, stat
-import numpy as np
+import cmtk
+import datetime
+import gc
+import time
 import warpScoring.CheckImages as ci
-from cmtk import tempfolder, active, run_stage, cmtkdir, checkDir, host, template, cur, templatedir
-
+from cmtk import tempfolder, active, run_stage, checkDir, host, template, cur, templatedir
 
 
 def initialRec(record, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd', alignSet='', initialSet='--principal-axes'):
+    start = datetime.datetime.now()
   record = checkDir(record)
   record['last_host'] = host
   print 'Staring initial alignment for: ' + record['name']
@@ -15,11 +17,17 @@ def initialRec(record, template=template, init_threshold=0.3, bgfile='image_Ch1.
   #Note: np.float128 array score converted to string as mongoDB only supports float(64/32 dependant on machine).
   record['temp_initial_nrrd'] = str(record['temp_initial_nrrd']).replace(tempfolder,'')
   print 'Result: ' + record['temp_initial_score']
+    totaltime = datetime.datetime.now() - start
   if record['temp_initial_score'] > init_threshold:
     record['alignment_stage'] = 3
   else:
     record['alignment_stage'] = 0
-  if r > 0: record['alignment_stage'] = 1002
+    if r > 0:
+        record['alignment_stage'] = 1002
+    else:
+        record['notes'] = record['notes'] + '\n' + time.strftime(
+            "%c") + ' Initial alignment performed by ' + host + ' in ' + str(totaltime) + ' scoring ' + record[
+                              'temp_initial_score'] + '/' + str(init_threshold)
   record['max_stage'] = 3
   return record
 
