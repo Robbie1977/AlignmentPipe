@@ -1,10 +1,11 @@
-import nrrd
 import os
 import stat
 import subprocess
 from socket import gethostname
 
 import psycopg2
+
+import nrrd
 
 con = psycopg2.connect(host='bocian.inf.ed.ac.uk', database='alignment', user='aligner_admin', password='default99')
 
@@ -48,14 +49,17 @@ if record:
     def initial(floatingImage, xformOUT=floatingImage.replace('.nrrd', '_initial.xform'), template=template,
                 mode='--principal-axes'):
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_initial.xform')
-        print 'nice %smake_initial_affine %s %s %s %s' % (cmtkdir, mode, template, floatingImage, xformOUT)
-        r = subprocess.call(
-            "nice %smake_initial_affine %s '%s' '%s' '%s'" % (cmtkdir, mode, template, floatingImage, xformOUT),
-            shell=True)
-        try:
-            os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        except:
-            pass
+        if (os.path.exists(template) and os.path.exists(floatingImage)):
+            print 'nice %smake_initial_affine %s %s %s %s' % (cmtkdir, mode, template, floatingImage, xformOUT)
+            r = subprocess.call(
+                "nice %smake_initial_affine %s '%s' '%s' '%s'" % (cmtkdir, mode, template, floatingImage, xformOUT),
+                shell=True)
+            try:
+                os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            except:
+                pass
+        else:
+            r = 99
         return xformOUT, r
 
 
@@ -64,14 +68,17 @@ if record:
                scale='--dofs 6,9 --auto-multi-levels 4'):
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_affine.xform')
         if 'default' in xformIN: xformIN = floatingImage.replace('.nrrd', '_initial.xform')
-        print 'nice %sregistration --initial %s %s -o %s %s %s' % (
-            cmtkdir, xformIN, scale, xformOUT, template, floatingImage)
-        r = subprocess.call("nice %sregistration --initial '%s' %s -o '%s' '%s' '%s'" % (
-            cmtkdir, xformIN, scale, xformOUT, template, floatingImage), shell=True)
-        try:
-            os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        except:
-            pass
+        if (os.path.exists(xformIN) and os.path.exists(template) and os.path.exists(floatingImage)):
+            print 'nice %sregistration --initial %s %s -o %s %s %s' % (
+                cmtkdir, xformIN, scale, xformOUT, template, floatingImage)
+            r = subprocess.call("nice %sregistration --initial '%s' %s -o '%s' '%s' '%s'" % (
+                cmtkdir, xformIN, scale, xformOUT, template, floatingImage), shell=True)
+            try:
+                os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            except:
+                pass
+        else:
+            r = 99
         return xformOUT, r
 
 
@@ -80,14 +87,17 @@ if record:
              settings='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1'):
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_warp.xform')
         if 'default' in xformIN: xformIN = floatingImage.replace('.nrrd', '_affine.xform')
-        print 'nice %swarp -o %s %s --initial %s %s %s' % (
-            cmtkdir, xformOUT, settings, xformIN, template, floatingImage)
-        r = subprocess.call("nice %swarp -o '%s' %s --initial '%s' '%s' '%s'" % (
-            cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
-        try:
-            os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        except:
-            pass
+        if (os.path.exists(xformIN) and os.path.exists(template) and os.path.exists(floatingImage)):
+            print 'nice %swarp -o %s %s --initial %s %s %s' % (
+                cmtkdir, xformOUT, settings, xformIN, template, floatingImage)
+            r = subprocess.call("nice %swarp -o '%s' %s --initial '%s' '%s' '%s'" % (
+                cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
+            try:
+                os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            except:
+                pass
+        else:
+            r = 99
         return xformOUT, r
 
 
@@ -96,19 +106,22 @@ if record:
         if 'default' in xform: xform = floatingImage.replace('.nrrd', '_warp.xform')
         if 'default' in imageOUT: imageOUT = floatingImage.replace('.nrrd', '_aligned.nrrd')
         if settings == None or 'None' in settings: settings = ''
-        print 'nice %sreformatx %s -o %s --floating %s %s %s' % (
-            cmtkdir, settings, imageOUT, floatingImage, template, xform)
-        r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (
-            cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
-        try:
-            data1, header1 = nrrd.read(imageOUT)
-            header1['encoding'] = 'gzip'
-            if header1['space directions'] == ['none', 'none', 'none']:
-                header1.pop("space directions", None)
-            nrrd.write(imageOUT, data1, options=header1)
-            os.chmod(imageOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
-        except:
-            pass
+        if (os.path.exists(xform) and os.path.exists(template) and os.path.exists(floatingImage)):
+            print 'nice %sreformatx %s -o %s --floating %s %s %s' % (
+                cmtkdir, settings, imageOUT, floatingImage, template, xform)
+            r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (
+                cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
+            try:
+                data1, header1 = nrrd.read(imageOUT)
+                header1['encoding'] = 'gzip'
+                if header1['space directions'] == ['none', 'none', 'none']:
+                    header1.pop("space directions", None)
+                nrrd.write(imageOUT, data1, options=header1)
+                os.chmod(imageOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            except:
+                pass
+        else:
+            r = 99
         return imageOUT, r
 
 

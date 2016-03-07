@@ -1,7 +1,7 @@
-import os, sys, nrrd, cmtk, gc
-import numpy as np
-import warpScoring.CheckImages as ci
-from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
+import cmtk
+import gc
+from cmtk import cur, tempfolder, active, run_stage, template, checkDir, host, templatedir
+
 
 def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--dofs 6,9 --auto-multi-levels 4'):
   record = checkDir(record)
@@ -11,6 +11,7 @@ def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--d
   print affine
   record['alignment_stage'] = 4
   if r > 0: record['alignment_stage'] = 1003
+  if r == 99: record['alignment_stage'] = 2
   record['max_stage'] = 4
   record['last_host'] = host
   return record

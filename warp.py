@@ -1,7 +1,7 @@
-import os, sys, nrrd, cmtk, gc
-import numpy as np
-import warpScoring.CheckImages as ci
-from cmtk import cur, tempfolder, active, run_stage, cmtkdir, template, checkDir, host, templatedir
+import cmtk
+import gc
+from cmtk import cur, tempfolder, active, run_stage, template, checkDir, host, templatedir
+
 
 def warpRec(record, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-spacing 80 --exploration 30 --coarsest 4 --accuracy 0.2 --refine 4 --energy-weight 1e-1'):
   record = checkDir(record)
@@ -10,6 +10,7 @@ def warpRec(record, template=template, bgfile='image_Ch1.nrrd', warpSet='--grid-
   warp, r = cmtk.warp(bgfile, template=template, settings=warpSet)
   record['alignment_stage'] = 5
   if r > 0: record['alignment_stage'] = 1004
+  if r == 99: record['alignment_stage'] = 2
   record['max_stage'] = 5
   record['last_host'] = host
   return record
