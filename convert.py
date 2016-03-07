@@ -1,11 +1,11 @@
 import gc
-import nrrd
 import os
 import stat
 from subprocess import check_call
 
 import numpy as np
 
+import nrrd
 import reorientate as ro
 from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
 from tiffile import TiffFile
@@ -77,7 +77,7 @@ def convRec(record):
             record['loading_host'] = 'roberts-mbp'
         if not record['loading_host'] == host:
             print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
-        file = record['original_path'] + os.path.sep + record['name'] + record['original_ext']
+        file = record['original_path'] + record['name'] + record['original_ext']
         print 'Converting ' + file
         if os.path.exists(file) or os.path.exists(file + '.gz'):
             record['last_host'] = host
@@ -89,9 +89,9 @@ def convRec(record):
                 if str(record['original_ext']) == '.gz':
                     record['name'] = str(os.path.splitext(os.path.basename(file))[0])
                     record['original_ext'] = str(os.path.splitext(os.path.basename(file))[1])
-                    print 'Opening file: ' + file + '...'
-                    tif = TiffFile(file)
-                    image = tif.asarray()
+            print 'Opening file: ' + file + '...'
+            tif = TiffFile(file)
+            image = tif.asarray()
             print 'Converting file: ' + file + '...'
             record = checkDir(record)
             if tif.is_lsm:
@@ -127,7 +127,7 @@ def convRec(record):
                         sh[rmdim] = np.max(sh)
                         rmdim = np.argmin(sh)
                     image = np.max(image, axis=rmdim)
-                    print 'slimed down to:'
+                    print 'slimmed down to:'
                     print(image.shape, image.dtype)
 
                 print metadata
