@@ -237,6 +237,9 @@ def convRec(record):
 
             print 'conversion complete.'
             del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
+        else:
+            record['alignment_stage'] = 1001
+            record['notes'] = record['notes'] + '\nError during preprocessing!'
     except:
         record['alignment_stage'] = 0
         record['notes'] = 'Error with uploaded file!'
