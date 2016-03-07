@@ -80,7 +80,7 @@ def convRec(record):
             print 'Warning: ' + host + ' is not the loading host (' + record['loading_host'] + ')'
         file = record['original_path'] + record['name'] + record['original_ext']
         print 'Converting ' + file
-        if os.path.exists(file) or os.path.exists(file + '.gz'):
+        if (os.path.exists(file) or os.path.exists(file + '.gz')):
             record['last_host'] = host
             if (os.path.exists(file + '.gz') and (not os.path.exists(file))):
                 check_call(['gzip', '-d', file + '.gz'])
@@ -241,7 +241,7 @@ def convRec(record):
         else:
             record['alignment_stage'] = 1001
             record['notes'] = record['notes'] + '\n' + time.strftime(
-                "%c") + ' Error with preprocessing file by ' + host
+                "%c") + ' Error finding file ' + file + ' on ' + host
     except:
         record['alignment_stage'] = 0
         record['notes'] = record['notes'] + '\n' + time.strftime(
