@@ -243,7 +243,7 @@ def convRec(record):
             record['notes'] = record['notes'] + '\nError during preprocessing!'
     except:
         record['alignment_stage'] = 0
-        record['notes'] = '\n' + time.strftime(
+        record['notes'] = record['notes'] + '\n' + time.strftime(
             "%c") + ' Error with handling uploaded file by ' + host
     return record
 
