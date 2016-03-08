@@ -243,12 +243,20 @@ def convRec(record):
             del upd, hist, chan, Nbound, tif, image, sh, ch, iy, ix, iz, Sname, rt, bg, ct, mt, sg
         else:
             record['alignment_stage'] = 1001
-            record['notes'] = record['notes'] + '\n' + time.strftime(
-                "%c") + ' Error finding file ' + file + ' on ' + host
+            if record['notes'] is None:
+                record['notes'] = time.strftime(
+                    "%c") + ' Error finding file ' + file + ' on ' + host
+            else:
+                record['notes'] = record['notes'] + '\n' + time.strftime(
+                    "%c") + ' Error finding file ' + file + ' on ' + host
     except:
         record['alignment_stage'] = 0
-        record['notes'] = record['notes'] + '\n' + time.strftime(
-            "%c") + ' Error with handling uploaded file by ' + host
+        if record['notes'] is None:
+            record['notes'] = time.strftime(
+                "%c") + ' Error with handling uploaded file by ' + host
+        else:
+            record['notes'] = record['notes'] + '\n' + time.strftime(
+                "%c") + ' Error with handling uploaded file by ' + host
     return record
 
 

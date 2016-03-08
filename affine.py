@@ -18,8 +18,12 @@ def affineRec(record, template=template, bgfile='image_Ch1.nrrd', affineSet='--d
     if r > 0:
         record['alignment_stage'] = 1003
     else:
-        record['notes'] = record['notes'] + '\n' + time.strftime(
-            "%c") + ' Affine alignment performed by ' + host + ' in ' + str(totaltime)
+        if record['notes'] is None:
+            record['notes'] = time.strftime(
+                "%c") + ' Affine alignment performed by ' + host + ' in ' + str(totaltime)
+        else:
+            record['notes'] = record['notes'] + '\n' + time.strftime(
+                "%c") + ' Affine alignment performed by ' + host + ' in ' + str(totaltime)
     if r == 99: record['alignment_stage'] = 2
     record['max_stage'] = 4
     record['last_host'] = host

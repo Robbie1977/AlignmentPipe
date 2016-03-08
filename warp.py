@@ -18,8 +18,12 @@ def warpRec(record, template=template, bgfile='image_Ch1.nrrd',
     if r > 0:
         record['alignment_stage'] = 1004
     else:
-        record['notes'] = record['notes'] + '\n' + time.strftime(
-            "%c") + ' Warp alignment performed by ' + host + ' in ' + str(totaltime)
+        if record['notes'] is None:
+            record['notes'] = time.strftime(
+                "%c") + ' Warp alignment performed by ' + host + ' in ' + str(totaltime)
+        else:
+            record['notes'] = record['notes'] + '\n' + time.strftime(
+                "%c") + ' Warp alignment performed by ' + host + ' in ' + str(totaltime)
     if r == 99: record['alignment_stage'] = 2
     record['max_stage'] = 5
     record['last_host'] = host
