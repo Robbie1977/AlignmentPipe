@@ -11,7 +11,9 @@ comp = {0:'awaiting processing',1:'convertion complete', 2:'preprocessing comple
 chan = {0: 'to be calculated', 1:'Channel 1', 2:'Channel 2', 3:'Channel 3'}
 ori = ['LPS', 'RPI', 'RAS', 'RIA', 'RSP', 'LAI', 'LSA', 'LIP', 'PLI', 'PRS', 'PIR', 'PSL', 'ALS', 'ARI', 'ASR', 'AIL',
        'ILA', 'IRP', 'IAR', 'IPL', 'SPR', 'SRA', 'SAL', 'SLP']  # X(>),Y(\/),Z(X).
-orien = [str(x).replace('R','right-').replace('L','left-').replace('P','posterior-').replace('A','anterior-').replace('S','superior').replace('I','inferior') for x in ori]
+orien = [
+    str(x[0] + '-' + x[1] + '-' + x[2]).replace('R', 'right').replace('L', 'left').replace('P', 'posterior').replace(
+        'A', 'anterior').replace('S', 'superior').replace('I', 'inferior') for x in ori]
 comp_orien = dict(zip(ori,orien))
 orien = zip(orien,orien)
 conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
