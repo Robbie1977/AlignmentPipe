@@ -1,15 +1,16 @@
-from django.db import models
-from socket import gethostname
-from django.contrib.auth.models import User
-from django.utils.safestring import mark_safe
 import os
+from socket import gethostname
+
+from django.contrib.auth.models import User
+from django.db import models
 
 host = gethostname()
 
 stage = {0:'failed (check settings and restart)',1:'preprocessing', 1001:'preprocessing image stack', 2:'initial alignment', 1002:'calculating initial alignment', 3:'affine alignment', 1003:'processing affine alignment', 4:'final warp alignment', 1004:'processing warp alignment', 5:'checking alignment', 1005:'aligning BG channel', 6: 'aligning other channels', 1006:'aligning all channel using BG warp', 7:'alignment done', 10:'request merged tif', 11: 'show in VFB',  1010:'creating merged tif', 20:'merged tif created', 21: 'available in VFB', 2001:'paused before preprocessing', 2002:'paused before initial alignment', 2003:'paused before affine alignment', 2004:'paused before warp alignment', 2005:'paused before BG alignment', 2006:'paused before SG alignment' }
 comp = {0:'awaiting processing',1:'convertion complete', 2:'preprocessing complete', 3:'initial alignment complete', 4:'affine alignment complete', 5:'final warp complete', 6: 'background alignment complete', 7: 'all channels aligned', 10: 'merged tif requested', 11: 'show in VFB', 20: 'merged tif created', 21: 'available in VFB'}
 chan = {0: 'to be calculated', 1:'Channel 1', 2:'Channel 2', 3:'Channel 3'}
-ori = ['LPS','RPI','RAS','LAI','PLI','PRS','ALS','ARI'] #X(>),Y(\/),Z(X).
+ori = ['LPS', 'RPI', 'RAS', 'RIA', 'RSP', 'LAI', 'LSA', 'LIP', 'PLI', 'PRS', 'PIR', 'PSL', 'ALS', 'ARI', 'ASR', 'AIL',
+       'ILA', 'IRP', 'IAR', 'IPL', 'SPR', 'SRA', 'SAL', 'SLP']  # X(>),Y(\/),Z(X).
 orien = [str(x).replace('R','right-').replace('L','left-').replace('P','posterior-').replace('A','anterior-').replace('S','superior').replace('I','inferior') for x in ori]
 comp_orien = dict(zip(ori,orien))
 orien = zip(orien,orien)
@@ -17,7 +18,6 @@ conv_orien = dict(zip(comp_orien.values(),comp_orien.keys()))
 # Create your models here.
 
 class Alignment(models.Model):
-    import system.models
     #from users.models import User
     #from system.models import Setting
     name = models.CharField(max_length=500)
@@ -173,7 +173,6 @@ class Original_nrrd(models.Model):
     parent.allow_tags = True
 
 class Upload(models.Model):
-    import system.models
     #from users.models import User
     #from system.models import Server, Setting, tempfolder
     file = models.FileField(upload_to='web' + os.path.sep)
