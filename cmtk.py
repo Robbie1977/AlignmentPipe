@@ -112,7 +112,8 @@ if record:
             r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (
                 cmtkdir, settings, imageOUT, floatingImage, template, xform), shell=True)
             try:
-                data1, header1 = nrrd.read(imageOUT)
+                data1, header1 = nrrd.read(template)
+                data1, header2 = nrrd.read(imageOUT)
                 header1['encoding'] = 'gzip'
                 if header1['space directions'] == ['none', 'none', 'none']:
                     header1.pop("space directions", None)
