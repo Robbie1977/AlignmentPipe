@@ -81,7 +81,6 @@ def upload(request):
             file = str(request.user) + '-' + str(request.FILES['file']).replace(' ', '_').replace('=', '-').replace('/',
                                                                                                                     '-').replace(
                 '\\', '-')
-            str(request.FILES['file']).replace(' ', '_')
             folder = str(st.MEDIA_ROOT)
             filenumber = 0
             while os.path.isfile(folder + os.path.sep + file) or os.path.isfile(folder + os.path.sep + file + '.gz'):
