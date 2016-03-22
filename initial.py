@@ -59,21 +59,14 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
                     [str(host), str(record['id'])])
         cur.connection.commit()
         record = initialRec(record, template, init_threshold, bgfile, alignSet, initialSet)
-        u = ''
+        u = str(record['id']) + ' -> '
         for k, v in record.items():
             if not (k == 'id' or v == None or v == 'None'):
-                if not u == '':
-                    u = u + ', '
-                if type(v) == type(''):
-                    u = u + str(k) + " = '" + str(v).replace('\'', '\\\'') + "'"
-                else:
-                    u = u + str(k) + " = " + str(v)
+                cur.execute("UPDATE images_alignment SET %s=%s WHERE id = %s ", [k, v, record['id']])
+                u = u + str(k) + '=' + str(v) + ', '
         print u
-        cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
         cur.connection.commit()
         gc.collect()
-        # for record in collection.find({'alignment_stage': 2, 'name': name}):
-        #   collection.save(initialRec(record))
 
 
 if __name__ == "__main__":

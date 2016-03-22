@@ -48,17 +48,12 @@ def warp(name, template=template, bgfile='image_Ch1.nrrd',
                     [str(host), str(record['id'])])
         cur.connection.commit()
         record = warpRec(record, template, bgfile, warpSet)
-        u = ''
+        u = str(record['id']) + ' -> '
         for k, v in record.items():
             if not (k == 'id' or v == None or v == 'None'):
-                if not u == '':
-                    u = u + ', '
-                if type(v) == type(''):
-                    u = u + str(k) + " = '" + str(v) + "'"
-                else:
-                    u = u + str(k) + " = " + str(v)
+                cur.execute("UPDATE images_alignment SET %s=%s WHERE id = %s ", [k, v, record['id']])
+                u = u + str(k) + '=' + str(v) + ', '
         print u
-        cur.execute("UPDATE images_alignment SET " + u + " WHERE id = %s ", [str(record['id'])])
         cur.connection.commit()
         gc.collect()
 
