@@ -78,11 +78,11 @@ def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            file = str(request.user) + '-' + str(request.FILES['file'])
+            file = str(request.user) + '-' + str(request.FILES['file']).replace(" ", "_")
             setting = Setting.objects.get(id=int(request.POST['settings']))
             if '.tif' in file or '.lsm' in file:
               # file = str(st.MEDIA_URL) + file
-              file = handle_uploaded_file(request.FILES['file'], dest=file.replace(" ", "_"))
+              file = handle_uploaded_file(request.FILES['file'], dest=file)
               name = str(os.path.splitext(os.path.basename(file))[0])
               ext = str(os.path.splitext(os.path.basename(file))[1])
               folder = str(st.MEDIA_ROOT)
