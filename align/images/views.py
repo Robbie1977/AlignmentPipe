@@ -1,20 +1,17 @@
 # Create your views here.
+import gc
+from socket import gethostname
+
+from django.contrib.admin.models import LogEntry, ADDITION
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from images.models import Alignment, Original_nrrd, comp_orien, conv_orien, Upload, Mask_original, Mask_aligned
-from system.models import Setting, Server, Template
-from django.views import generic
-from socket import gethostname
-from django.db.models import Q
-from django.contrib.auth.models import User
-
 from images.forms import UploadForm
-
-import gc
-
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
-from django.contrib.contenttypes.models import ContentType
+from images.models import Alignment, Original_nrrd, comp_orien
+from system.models import Setting, Server, Template
 
 host = gethostname()
 
@@ -76,7 +73,7 @@ def handle_uploaded_file(ufile, dest):
 def upload(request):
     from django.contrib import messages
     from django.conf import settings as st
-    import os, stat, sys
+    import os, stat
     # Handle file upload
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
@@ -85,7 +82,7 @@ def upload(request):
             setting = Setting.objects.get(id=int(request.POST['settings']))
             if '.tif' in file or '.lsm' in file:
               # file = str(st.MEDIA_URL) + file
-              file = handle_uploaded_file(request.FILES['file'], dest=file)
+              file = handle_uploaded_file(request.FILES['file'], dest=file.replace(" ", "_"))
               name = str(os.path.splitext(os.path.basename(file))[0])
               ext = str(os.path.splitext(os.path.basename(file))[1])
               folder = str(st.MEDIA_ROOT)
@@ -127,10 +124,8 @@ def plotResults(request, image_id):
     import os
     import tempfile
     os.environ['MPLCONFIGDIR'] = tempfile.mkdtemp()
-    import matplotlib
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
-    from matplotlib.dates import DateFormatter
     import numpy as np
     fig = Figure()
     ax=fig.add_subplot(3,1,1)
@@ -172,14 +167,10 @@ def opositeOr(position):
 
 def plotNrrd(request, image_id, image_type):
     import os
-    import matplotlib
     from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
     from matplotlib.figure import Figure
-    from matplotlib.dates import DateFormatter
     import nrrd
     import numpy as np
-    import matplotlib.image as mpimg
-    import matplotlib.pyplot as plt
     from system.models import checkDir, Server
     mask_id = image_id
     if ('-' in image_id):
