@@ -268,11 +268,6 @@ def convert(name):
         key.append(desc[0])
     for line in records:
         record = dict(zip(key, line))
-        # clear old failed alignments:
-        # if not (('karenin' in host) or ('blanik' in host)):
-        cur.execute("UPDATE images_alignment SET alignment_stage = 1 WHERE last_host = %s AND alignment_stage = 1001",
-                    [str(host)])
-        cur.connection.commit()
         # remove image from stack before processing:
         cur.execute("UPDATE images_alignment SET alignment_stage = 1001, last_host = %s WHERE id = %s ",
                     [str(host), str(record['id'])])
@@ -294,8 +289,13 @@ if __name__ == "__main__":
         records = cur.fetchall()
         total = len(records)
         if total == 0:
+            # add any paused records to the active list
             cur.execute(
                 "UPDATE images_alignment SET alignment_stage = 1 FROM (SELECT id FROM images_alignment WHERE alignment_stage = 2001 ORDER BY id LIMIT 2) s WHERE s.id = images_alignment.id")
+            # clear old failed alignments:
+            cur.execute(
+                "UPDATE images_alignment SET alignment_stage = 1 WHERE last_host = %s AND alignment_stage = 1001",
+                [str(host)])
             cur.connection.commit()
             gc.collect()
         count = 0
