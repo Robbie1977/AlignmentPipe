@@ -284,7 +284,7 @@ def convert(name):
                 if not u == '':
                     u = u + ', '
                 if type(v) == type(''):
-                    u = u + str(k) + " = '" + str(v) + "'"
+                    u = u + str(k) + " = '" + str(v).replace('\'', '\\\'') + "'"
                 else:
                     u = u + str(k) + " = " + str(v)
         print u
