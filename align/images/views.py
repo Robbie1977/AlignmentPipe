@@ -78,14 +78,20 @@ def upload(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            file = str(request.user) + '-' + str(request.FILES['file']).replace(' ', '_')
+            file = str(request.user) + '-'
+            str(request.FILES['file']).replace(' ', '_')
+            folder = str(st.MEDIA_ROOT)
+            filenumber = 0
+            while os.path.isfile(folder + os.path.sep + file) or os.path.isfile(folder + os.path.sep + file + '.gz'):
+                filenumber += 1
+                file = str(request.user) + '-' + str(filenumber) + '-'
+                str(request.FILES['file']).replace(' ', '_')
             setting = Setting.objects.get(id=int(request.POST['settings']))
             if '.tif' in file or '.lsm' in file:
               # file = str(st.MEDIA_URL) + file
               file = handle_uploaded_file(request.FILES['file'], dest=file)
               name = str(os.path.splitext(os.path.basename(file))[0])
               ext = str(os.path.splitext(os.path.basename(file))[1])
-              folder = str(st.MEDIA_ROOT)
               ori = str(request.POST['orientation'])
               cu = User.objects.get(username=request.user)
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
