@@ -62,7 +62,7 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
         u = str(record['id']) + ' -> '
         for k, v in record.items():
             if not (k == 'id' or v == None or v == 'None'):
-                cur.execute("UPDATE images_alignment SET %s=%s WHERE id = %s ", [k, v, record['id']])
+                cur.execute("UPDATE images_alignment SET " + str(k) + "=%s WHERE id = %s ", [v, record['id']])
                 u = u + str(k) + '=' + str(v) + ', '
         print u
         cur.connection.commit()
