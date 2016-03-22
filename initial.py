@@ -65,7 +65,7 @@ def initial(name, template=template, init_threshold=0.3, bgfile='image_Ch1.nrrd'
                 if not u == '':
                     u = u + ', '
                 if type(v) == type(''):
-                    u = u + str(k) + " = '" + str(v) + "'"
+                    u = u + str(k) + " = '" + str(v).replace('\'', '\\\'') + "'"
                 else:
                     u = u + str(k) + " = " + str(v)
         print u
