@@ -194,7 +194,8 @@ def convRec(record):
             else:
                 record['notes'] = record['notes'] + '\n' + time.strftime(
                     "%c") + ' Error finding file ' + file + ' on ' + host
-    except:
+    except Exception, e:
+        print str(e)
         record['alignment_stage'] = 0
         if record['notes'] is None:
             record['notes'] = time.strftime(
