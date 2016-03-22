@@ -146,6 +146,7 @@ def convRec(record):
                 upd.update(
                     {'image_id': record['id'], 'channel': + int(c + 1), 'file': str(Sname).replace(tempfolder, ''),
                      'pre_histogram': list(hist), 'new_min': int(Nbound['min']), 'new_max': int(Nbound['max'])})
+                print str(upd)
                 cur.execute(
                     "SELECT count(*) FROM images_original_nrrd WHERE image_id = %(image_id)s AND channel = %(channel)s",
                     upd)
