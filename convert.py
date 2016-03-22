@@ -9,12 +9,9 @@ import numpy as np
 import NRRDtools.autoBalance as ab
 import nrrd
 import reorientate as ro
-from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
+from cmtk import cur, tempfolder, active, run_stage, checkDir, host, comp_orien
 from tiffile import TiffFile
 
-
-def AutoBalance(data, threshold=adjust_thresh, background=0):
-    return ab.AutoBalance(data, threshold, background)
 
 def convRec(record):
     try:
@@ -104,9 +101,13 @@ def convRec(record):
             sg = 0
             bg = 0
             cur.execute(
-                "SELECT system_template.orientation FROM system_template, images_alignment WHERE images_alignment.id = %s",
+                "SELECT system_template.orientation FROM system_template, system_setting, images_alignment WHERE images_alignment.id = %s AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id",
                 [record['id']])
             tempOrien = cur.fetchone()[0]
+            cur.execute(
+                "SELECT system_setting.auto_balance_th FROM system_template, system_setting, images_alignment WHERE images_alignment.id = %s AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id",
+                [record['id']])
+            tempTresh = cur.fetchone()[0]
             if 'orig_orientation' not in record.keys():
                 if sh[ch] == 2:
                     record['orig_orientation'] = comp_orien[tempOrien]
@@ -120,7 +121,7 @@ def convRec(record):
             header['space'] = comp_orien[tempOrien]
             for c in xrange(0, sh[ch]):
                 upd = {}
-                chan, Nbound, hist = AutoBalance(np.squeeze(image[:, :, :, c]))
+                chan, Nbound, hist = ab.AutoBalance(np.squeeze(image[:, :, :, c]), threshold=tempTresh, background=0)
                 print 'Ch' + str(c + 1) + ' - ' + str(np.shape(chan))
                 Sname = tempfolder + record['name'] + '_Ch' + str(c + 1) + '.nrrd'
 
