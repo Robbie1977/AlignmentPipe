@@ -107,7 +107,7 @@ def convRec(record):
             cur.execute(
                 "SELECT system_setting.auto_balance_th FROM system_template, system_setting, images_alignment WHERE images_alignment.id = %s AND images_alignment.settings_id = system_setting.id AND system_setting.template_id = system_template.id",
                 [record['id']])
-            tempTresh = cur.fetchone()[0]
+            tempTresh = float(cur.fetchone()[0])
             if 'orig_orientation' not in record.keys():
                 if sh[ch] == 2:
                     record['orig_orientation'] = comp_orien[tempOrien]
