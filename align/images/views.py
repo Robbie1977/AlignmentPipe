@@ -84,8 +84,7 @@ def upload(request):
             filenumber = 0
             while os.path.isfile(folder + os.path.sep + file) or os.path.isfile(folder + os.path.sep + file + '.gz'):
                 filenumber += 1
-                file = str(request.user) + '-' + str(filenumber) + '-'
-                str(request.FILES['file']).replace(' ', '_')
+                file = str(request.user) + '-' + str(filenumber) + '-' + str(request.FILES['file']).replace(' ', '_')
             setting = Setting.objects.get(id=int(request.POST['settings']))
             if '.tif' in file or '.lsm' in file:
               # file = str(st.MEDIA_URL) + file
