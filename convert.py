@@ -6,6 +6,7 @@ from subprocess import check_call
 
 import numpy as np
 
+import NRRDtools.autoBalance as ab
 import nrrd
 import reorientate as ro
 from cmtk import cur, tempfolder, active, run_stage, adjust_thresh, checkDir, host, comp_orien
@@ -13,64 +14,7 @@ from tiffile import TiffFile
 
 
 def AutoBalance(data, threshold=adjust_thresh, background=0):
-    data = np.uint8(np.round(255.0 * (np.double(data) / np.max(data))))  # scale to 8 bit
-    bins = np.unique(data)
-    binc = np.bincount(data.flat)
-    histogram = binc[binc > 0]
-    del binc
-    gc.collect()
-    temp = 1
-    c = 0
-    mid = int(np.round(np.shape(bins)[0] / 2.0))
-    # low end threshold only uses data from low end
-    if background in bins[:mid]:
-        i = np.where(bins == background)
-        v = bins[i][0]
-        c = histogram[i][0]
-        th = long((np.sum(histogram[:mid]) - c) * threshold)
-    else:
-        th = long((np.sum(histogram[:mid])) * threshold)
-    print 'low end balancing:'
-    print 'number of background voxels: ' + str(c)
-    print 'number of data voxels: ' + str(np.sum(histogram[:mid]) - c)
-    print 'threshold set to: ' + str(th)
-    m = np.min(bins)
-    M = np.max(bins)
-    for x in range(1, np.shape(bins)[0] - 1):
-        if (np.sum(histogram[0:x]) - c) > th:
-            m = bins[x - 1]
-            temp = x - 1
-            break
-    print 'number of low end voxels cut: ' + str(np.sum(histogram[0:temp]) - c)
-    # high end threshold only uses data from high end
-    c = 0
-    if background in bins[mid:]:
-        i = np.where(bins == background)
-        v = bins[i][0]
-        c = histogram[i][0]
-        th = long((np.sum(histogram[mid:]) - c) * threshold)
-    else:
-        th = long((np.sum(histogram[mid:])) * threshold)
-    print 'high end balancing:'
-    print 'number of background voxels: ' + str(c)
-    print 'number of data voxels: ' + str(np.sum(histogram[mid:]) - c)
-    print 'threshold set to: ' + str(th)
-    for x in range(np.shape(bins)[0] - 1, 0, -1):
-        if (np.sum(histogram[x:])) > th:
-            M = bins[x]
-            temp = x + 1
-            break
-    print 'number of high end voxels cut: ' + str(np.sum(histogram[temp:]))
-    del temp
-    gc.collect()
-    data[data > M] = M
-    data[data < m] = m
-    dataA = np.round((data - m) * (255.0 / (M - m)))
-    hist = np.zeros(255, dtype=long)
-    for i in range(0, np.shape(bins)[0] - 1):
-        hist[bins[i]] = histogram[i]
-    return (dataA, {'min': int(m), 'max': int(M)}, hist)
-
+    return ab.AutoBalance(data, threshold, background)
 
 def convRec(record):
     try:
