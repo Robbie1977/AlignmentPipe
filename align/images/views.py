@@ -89,11 +89,14 @@ def upload(request):
                                                                                                             '_').replace(
                     '=', '-').replace('/', '-').replace('\\', '-')
             setting = Setting.objects.get(id=int(request.POST['settings']))
-            if '.tif' in file or '.lsm' in file:
+            if '.tif' in file or '.lsm' in file or '.tif.gz' in file or '.lsm.gz' in file:
               # file = str(st.MEDIA_URL) + file
               file = handle_uploaded_file(request.FILES['file'], dest=file)
               name = str(os.path.splitext(os.path.basename(file))[0])
               ext = str(os.path.splitext(os.path.basename(file))[1])
+              if ext == '.gz':
+                  ext = str(os.path.splitext(os.path.basename(name))[1])
+                  name = str(os.path.splitext(os.path.basename(name))[0])
               ori = str(request.POST['orientation'])
               cu = User.objects.get(username=request.user)
               newimage = Alignment(name=name, orig_orientation=ori, settings=setting, original_path=folder, original_ext=ext, alignment_stage=1, last_host=host, loading_host=host, user=cu)
