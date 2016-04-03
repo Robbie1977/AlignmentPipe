@@ -56,8 +56,9 @@ def pushLive(id, name, sgfile):
         print "Converting to Tiff"
         subprocess.call(Fiji + " -macro nrrd2tif.ijm " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.nrrd" + " -batch", shell=True)
         print "Creating wlz: " + "/VFB/i/" + first + "/" + last + "/volume.wlz"
-        # TBD: resolve voxel size from template.
-        subprocess.call("nice " + wlzDir + "WlzExtFFConvert -f tif -F wlz " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif |" + wlzDir + "WlzThreshold -v50 |" + wlzDir + "WlzSetVoxelSize -z0.46 -x0.4612588 -y0.4612588 >" + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.wlz" , shell=True)
+        
+        subprocess.call("nice " + wlzDir + "WlzExtFFConvert -f tif -F wlz " + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif |" + wlzDir + "WlzThreshold -v50 |" + wlzDir + "WlzSetVoxelSize -z" + head['space directions'][2][2] + " -x" + head['space directions'][0][0] + " -y" + head['space directions'][1][1] + " >" + tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.wlz" , shell=True)
+        
         cur.execute("UPDATE images_alignment SET alignment_stage = 21, notes = %s WHERE id = %s", [str("VFB_"+first+last),str(id)])
         cur.connection.commit()
     else:
