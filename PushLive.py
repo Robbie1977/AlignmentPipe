@@ -67,6 +67,8 @@ def pushLive(id, name, sgfile):
         
         cur.execute("UPDATE images_alignment SET alignment_stage = 21, notes = %s WHERE id = %s", [str("VFB_"+first+last),str(id)])
         cur.connection.commit()
+        print "Clearing up..."
+        os.remove(tempfolder + "../../IMAGE_DATA/VFB/i/" + first + "/" + last + "/volume.tif")
     else:
         print "Skipping " + name
     gc.collect()
