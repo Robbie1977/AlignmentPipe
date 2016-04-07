@@ -74,7 +74,10 @@ if record:
             r = subprocess.call("nice %sregistration --initial '%s' %s -o '%s' '%s' '%s'" % (
                 cmtkdir, xformIN, scale, xformOUT, template, floatingImage), shell=True)
             try:
-                os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+                os.chmod(xformOUT , 0o777)
+                for root,dirs,_ in os.walk(xformOUT):
+                    for d in dirs :
+                        os.chmod(os.xformOUT.join(root,d) , 0o777)
             except:
                 pass
         else:
@@ -93,7 +96,10 @@ if record:
             r = subprocess.call("nice %swarp -o '%s' %s --initial '%s' '%s' '%s'" % (
                 cmtkdir, xformOUT, settings, xformIN, template, floatingImage), shell=True)
             try:
-                os.chmod(xformOUT, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+                os.chmod(xformOUT , 0o777)
+                for root,dirs,_ in os.walk(xformOUT):
+                    for d in dirs :
+                        os.chmod(os.xformOUT.join(root,d) , 0o777)
             except:
                 pass
         else:
