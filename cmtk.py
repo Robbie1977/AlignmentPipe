@@ -1,4 +1,5 @@
 import os
+import shutil
 import stat
 import subprocess
 from socket import gethostname
@@ -50,6 +51,9 @@ if record:
                 mode='--principal-axes'):
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_initial.xform')
         if (os.path.exists(template) and os.path.exists(floatingImage)):
+            if os.path.exists(xformOUT):
+                print 'removing old alignment %s' % (xformOUT)
+                os.remove(xformOUT)
             print 'nice %smake_initial_affine %s %s %s %s' % (cmtkdir, mode, template, floatingImage, xformOUT)
             r = subprocess.call(
                 "nice %smake_initial_affine %s '%s' '%s' '%s'" % (cmtkdir, mode, template, floatingImage, xformOUT),
@@ -69,6 +73,9 @@ if record:
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_affine.xform')
         if 'default' in xformIN: xformIN = floatingImage.replace('.nrrd', '_initial.xform')
         if (os.path.exists(xformIN) and os.path.exists(template) and os.path.exists(floatingImage)):
+            if os.path.exists(xformOUT):
+                print 'removing old alignment %s' % (xformOUT)
+                shutil.rmtree(xformOUT)
             print 'nice %sregistration --initial %s %s -o %s %s %s' % (
                 cmtkdir, xformIN, scale, xformOUT, template, floatingImage)
             r = subprocess.call("nice %sregistration --initial '%s' %s -o '%s' '%s' '%s'" % (
@@ -91,6 +98,9 @@ if record:
         if 'default' in xformOUT: xformOUT = floatingImage.replace('.nrrd', '_warp.xform')
         if 'default' in xformIN: xformIN = floatingImage.replace('.nrrd', '_affine.xform')
         if (os.path.exists(xformIN) and os.path.exists(template) and os.path.exists(floatingImage)):
+            if os.path.exists(xformOUT):
+                print 'removing old alignment %s' % (xformOUT)
+                shutil.rmtree(xformOUT)
             print 'nice %swarp -o %s %s --initial %s %s %s' % (
                 cmtkdir, xformOUT, settings, xformIN, template, floatingImage)
             r = subprocess.call("nice %swarp -o '%s' %s --initial '%s' '%s' '%s'" % (
@@ -113,6 +123,9 @@ if record:
         if 'default' in imageOUT: imageOUT = floatingImage.replace('.nrrd', '_aligned.nrrd')
         if settings == None or 'None' in settings: settings = ''
         if (os.path.exists(xform) and os.path.exists(template) and os.path.exists(floatingImage)):
+            if os.path.exists(imageOUT):
+                print 'removing old alignment %s' % (imageOUT)
+                os.remove(imageOUT)
             print 'nice %sreformatx %s -o %s --floating %s %s %s' % (
                 cmtkdir, settings, imageOUT, floatingImage, template, xform)
             r = subprocess.call("nice %sreformatx %s -o '%s' --floating '%s' '%s' '%s'" % (
