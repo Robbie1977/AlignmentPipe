@@ -59,11 +59,17 @@ def convRec(record):
                 voxelZ = 0.5
                 voxelY = 0.5
                 voxelX = 0.5
+                #temp fix for zebrafish:
+                if (record['settings_id'] == 10):
+                    voxelZ = 1
+                    voxelY = 1
+                    voxelX = 1
                 header = {}
                 header['encoding'] = 'gzip'
                 header['space directions'] = [[float(voxelX), 0.0, 0.0], [0.0, float(voxelY), 0.0],
                                               [0.0, 0.0, float(voxelZ)]]
                 header['space units'] = ['"px"', '"px"', '"px"']
+                
                 print(image.shape, image.dtype)
                 if image.ndim > 4:
                     sh = np.array(image.shape)
